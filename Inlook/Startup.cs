@@ -16,6 +16,7 @@ namespace Inlook
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            // branch2
         }
 
         public IConfiguration Configuration { get; }
