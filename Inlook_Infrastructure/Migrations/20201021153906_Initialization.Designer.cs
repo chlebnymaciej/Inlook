@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inlook_Infrastructure.Migrations
 {
     [DbContext(typeof(Inlook_Context))]
-    [Migration("20201021144024_Initialization")]
+    [Migration("20201021153906_Initialization")]
     partial class Initialization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,9 +65,6 @@ namespace Inlook_Infrastructure.Migrations
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("StatusRead")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Subject")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
@@ -91,6 +88,9 @@ namespace Inlook_Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("CC")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("StatusRead")
                         .HasColumnType("bit");
 
                     b.HasKey("MailId", "RecipientId");

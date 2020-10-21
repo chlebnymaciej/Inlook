@@ -7,7 +7,6 @@ namespace Inlook_Infrastructure.Entities
     public class Mail
     {
         public Guid Id { get; set; }
-        public bool StatusRead { get; set; }
         public User Sender { get; set; }
         public Guid SenderId { get; set; }
         public string Subject { get; set; }

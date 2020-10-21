@@ -61,7 +61,6 @@ namespace Inlook_Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    StatusRead = table.Column<bool>(nullable: false),
                     SenderId = table.Column<Guid>(nullable: false),
                     Subject = table.Column<string>(maxLength: 100, nullable: true),
                     Text = table.Column<string>(nullable: true)
@@ -126,7 +125,8 @@ namespace Inlook_Infrastructure.Migrations
                 {
                     MailId = table.Column<Guid>(nullable: false),
                     RecipientId = table.Column<Guid>(nullable: false),
-                    CC = table.Column<bool>(nullable: false)
+                    CC = table.Column<bool>(nullable: false),
+                    StatusRead = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

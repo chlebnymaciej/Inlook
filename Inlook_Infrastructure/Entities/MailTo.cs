@@ -11,6 +11,6 @@ namespace Inlook_Infrastructure.Entities
         public User Recipient { get; set; }
         public Guid RecipientId { get; set; }
         public bool CC { get; set; }
-
+        public bool StatusRead { get; set; }
     }
 }

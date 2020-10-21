@@ -63,9 +63,6 @@ namespace Inlook_Infrastructure.Migrations
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("StatusRead")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Subject")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
@@ -89,6 +86,9 @@ namespace Inlook_Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("CC")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("StatusRead")
                         .HasColumnType("bit");
 
                     b.HasKey("MailId", "RecipientId");
