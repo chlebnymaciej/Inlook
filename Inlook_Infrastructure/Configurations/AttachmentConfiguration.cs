@@ -17,7 +17,7 @@ namespace Inlook_Infrastructure.Configurations
                 .WithMany(m => m.Attachments)
                 .HasForeignKey(a => a.MailId);
 
-            builder.Property(a => a.FilePath).HasMaxLength(100);
+            builder.Property(a => a.FilePath).HasMaxLength(255);
         }
     }
 }
