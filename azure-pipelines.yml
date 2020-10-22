@@ -10,9 +10,13 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+   major: 1
+   minor: 1
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+
+name: $(major).$(minor)$(Rev:.r)
 
 steps:
 - task: NuGetToolInstaller@1
