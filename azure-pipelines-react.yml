@@ -6,6 +6,12 @@
 trigger:
 - develop
 
+variables:
+  major: 1
+  minor: 1
+
+name: $(major).$(minor)$(Rev:.r)
+
 pool:
   vmImage: 'ubuntu-latest'
 
