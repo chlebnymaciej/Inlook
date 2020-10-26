@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
 
 namespace Inlook_API
 {
@@ -29,6 +30,8 @@ namespace Inlook_API
         {
             services.AddControllers();
 
+            services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAdB2C");
+
             services.AddDbContext<Inlook_Context>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
         }
@@ -45,6 +48,7 @@ namespace Inlook_API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
