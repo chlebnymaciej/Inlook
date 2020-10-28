@@ -2,6 +2,7 @@ import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { User } from "oidc-client";
 import React from "react";
+import { useHistory } from "react-router";
 import userManager from "../Authorization/userManager";
 
 

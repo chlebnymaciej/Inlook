@@ -1,26 +1,44 @@
 import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
+import { getWeather, WeatherForecast } from "../Api/weatherApi";
 import userManager from "../Authorization/userManager";
 
-const Home = () => {
-    const [name,setName] = useState<string>();
+interface HomeProps {
+    user: User | null;
+}
+
+const Home = (props: HomeProps) => {
+    const [error,setError] = useState<string>();
+    const [weather,setWeather] = useState<WeatherForecast[]>();
 
     useEffect(()=>{
-        setUserInfo();
-    },[]);
+        getWeather().then(result => {
+            if(result.isError){
+                setError(result.errorMessage);
+            }
+            else{
+                setWeather(result.data);
+            }
+        })
+    },[props.user]);
 
-    const setUserInfo = async () => {
-        
-        const user:User | null= await  userManager.getUser();
-        if(user === null){
-            setName("Nieznajomy");
-        }else{
-            setName(user.profile.given_name);
+
+
+    return <>
+        {error ? 
+            <p>{error}</p>
+            :
+            <div>
+                {weather?.map((w,index) => <div key={index}>
+                        <p>{w?.dateTime}</p>
+                        <p>{w?.summary}</p>
+                        <p>{w?.temperatureC}</p>
+                    </div>)
+                }
+            </div>
         }
-
-    }
-
-    return <div>Witaj {name}</div>
+    </>
+    
 }
 
 export default Home;
