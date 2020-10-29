@@ -9,18 +9,22 @@ import userManager from "../Authorization/userManager";
 const useStyles = makeStyles(theme => ({
     topBar: {
       width: '100%',
-      backgroundColor: "blue",
-      height: "40px",
+      backgroundColor: "#74B9FF",
+      height: "4em",
     },
     loginDiv:{
         float: 'right',
+        color: 'white',
+        padding: '1em'
     },
     loginButton:{
         backgroundColor: "white",
-    },
-    logoutButton:{
-        backgroundColor: "white",
+        marginLeft: "1em",
+        '&:hover':{
+            backgroundColor:"#DAE0E2"
+        }
     }
+    
 
   }));
 
@@ -46,7 +50,7 @@ const Topbar = (props: ToolbarProps) => {
                 props.user ? 
                     <>{props.user.profile.name} <Button className={classes.loginButton} onClick={handleLogoutClick}>Wyloguj</Button></>
                         : 
-                    <Button className={classes.logoutButton} onClick={handleLoginClick}>Zaloguj</Button>
+                    <Button className={classes.loginButton} onClick={handleLoginClick}>Zaloguj</Button>
             }
             </div>
             
