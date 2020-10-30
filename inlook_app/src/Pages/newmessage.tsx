@@ -5,6 +5,9 @@ import userManager from "../Authorization/userManager";
 import { Button, makeStyles, TextField } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import Chip from '@material-ui/core/Chip';
+import { getUsers, UserList } from "../Api/userlistApi";
 
 const useStyles = makeStyles(theme => ({
     oneliners: {
@@ -44,21 +47,24 @@ interface NewMessageProps {
 
 const NewMessage = (props: NewMessageProps) => {
     const [error,setError] = useState<string>();
-    const [weather,setWeather] = useState<WeatherForecast[]>();
+    const [users,setUsers] = useState<UserList[]>();
     const classes = useStyles();
 
     useEffect(()=>{
-        getWeather().then(result => {
+        getUsers().then(result => {
             if(result.isError){
                 setError(result.errorMessage);
             }
             else{
-                setWeather(result.data);
+                setUsers(result.data);
             }
         })
     },[props.user]);
-
-
+    let mails: string[];
+    if(!users)
+        mails = [];
+    else
+        mails = users?.map((option) => option.mail);
 
     return <>
         {error ? 
@@ -69,8 +75,20 @@ const NewMessage = (props: NewMessageProps) => {
              <TextField type="text" placeholder="From:" defaultValue="kenobi@jedi.com" required
               disabled
               className={classes.oneliners}></TextField>
-             <TextField type="text" placeholder="To:" required
-              className={classes.oneliners}></TextField>
+            <Autocomplete
+                    className={classes.oneliners}
+                    multiple
+                    id="tags-filled"
+                    options={mails}
+                    renderTags={(value: string[], getTagProps) =>
+                    value.map((option: string, index: number) => (
+                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                    ))
+                    }
+                    renderInput={(params) => (
+                    <TextField {...params} variant="filled" placeholder="To:" />
+                    )}
+                />
               <TextField type="text" placeholder="CC:"
               className={classes.oneliners}></TextField>
               <TextField type="text" placeholder="Subject" defaultValue="Hello There!"
