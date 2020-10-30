@@ -1,19 +1,22 @@
 import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
-import { getWeather, WeatherForecast } from "../Api/weatherApi";
 import userManager from "../Authorization/userManager";
+
+// API imports
+import { getUsers, UserList } from "../Api/userlistApi";
+
+// Material UI imports
 import { Button, makeStyles, TextField } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Chip from '@material-ui/core/Chip';
-import { getUsers, UserList } from "../Api/userlistApi";
+
 
 const useStyles = makeStyles(theme => ({
     oneliners: {
       position: "relative",
       width: '80%',
-      height: "3em",
       margin: "auto",
       marginTop: "1em"
     },
@@ -44,6 +47,11 @@ const useStyles = makeStyles(theme => ({
 interface NewMessageProps {
     user: User | null;
 }
+interface SelectingUsers{
+    mail: string;
+    favourite: boolean;
+    selected: boolean;
+}
 
 const NewMessage = (props: NewMessageProps) => {
     const [error,setError] = useState<string>();
@@ -60,11 +68,15 @@ const NewMessage = (props: NewMessageProps) => {
             }
         })
     },[props.user]);
-    let mails: string[];
+    let mails: SelectingUsers[];
     if(!users)
         mails = [];
     else
-        mails = users?.map((option) => option.mail);
+    {
+        mails = users?.map((option) => { return { mail:option.mail,
+             favourite:option.favourite, selected:false}});
+    }
+        
 
     return <>
         {error ? 
@@ -72,28 +84,58 @@ const NewMessage = (props: NewMessageProps) => {
             :
             <form>
             <div style={{display:"flex", flexDirection:"column", paddingTop:"2em"}}>
-             <TextField type="text" placeholder="From:" defaultValue="kenobi@jedi.com" required
+             <TextField type="text" label="From:"
+                variant="filled"
+             placeholder="From:" defaultValue="kenobi@jedi.com" required
               disabled
               className={classes.oneliners}></TextField>
             <Autocomplete
-                    className={classes.oneliners}
-                    multiple
-                    id="tags-filled"
-                    options={mails}
-                    renderTags={(value: string[], getTagProps) =>
-                    value.map((option: string, index: number) => (
-                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                    ))
-                    }
-                    renderInput={(params) => (
-                    <TextField {...params} variant="filled" placeholder="To:" />
-                    )}
-                />
-              <TextField type="text" placeholder="CC:"
+                className={classes.oneliners}
+                multiple
+                id="size-small-filled-multi"
+                size="small"
+                options={mails.filter((x)=>x.selected===false)}
+                getOptionLabel={(option) => option.mail}
+                renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                    <Chip
+                    variant="outlined"
+                    label={option.mail}
+                    size="small"
+                    {...getTagProps({ index })}
+                    />
+                ))
+                }
+                renderInput={(params) => (
+                <TextField {...params} required variant="filled" label="To:" />
+                )}
+            />
+            <Autocomplete
+                className={classes.oneliners}
+                multiple
+                inputMode="email"
+                id="size-small-filled-multi"
+                size="small"
+                options={mails.filter((x)=>x.selected===false)}
+                getOptionLabel={(option) => option.mail}
+                renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                    <Chip
+                    variant="outlined"
+                    label={option.mail}
+                    size="small"
+                    {...getTagProps({ index })}
+                    />
+                ))
+                }
+                renderInput={(params) => (
+                <TextField {...params} variant="filled" label="CC:" />
+                )}
+            />
+              <TextField type="text" label="Subject" placeholder="Subject" variant="filled" required
+              defaultValue="Hello There!"
               className={classes.oneliners}></TextField>
-              <TextField type="text" placeholder="Subject" defaultValue="Hello There!"
-              className={classes.oneliners}></TextField>
-              <TextField type="text" placeholder="Email text" rows="15"
+              <TextField type="text" label="Email text" variant="filled" rows="15"
               defaultValue={`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`}
               className={classes.new_message} multiline></TextField>
               <div className={classes.buttons}>

@@ -4,6 +4,7 @@ import { User } from "oidc-client";
 import React from "react";
 import { useHistory } from "react-router";
 import userManager from "../Authorization/userManager";
+import MenuButton from "./menu";
 
 
 const useStyles = makeStyles(theme => ({
@@ -11,6 +12,8 @@ const useStyles = makeStyles(theme => ({
       width: '100%',
       backgroundColor: "#74B9FF",
       height: "4em",
+      display:"flex",
+      justifyContent:"space-between"
     },
     loginDiv:{
         float: 'right',
@@ -43,8 +46,10 @@ const Topbar = (props: ToolbarProps) => {
         userManager.signoutRedirect();
     }
 
+
     return (
         <div className={classes.topBar}>
+            <MenuButton user={props.user}></MenuButton>
             <div className={classes.loginDiv}>
             {
                 props.user ? 
