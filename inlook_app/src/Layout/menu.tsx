@@ -1,7 +1,7 @@
-import { Button, Icon } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { User } from "oidc-client";
 import React from "react";
-import { Redirect, useHistory } from "react-router";
+import { useHistory } from "react-router";
 
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -13,7 +13,6 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SendIcon from '@material-ui/icons/Send';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
