@@ -1,11 +1,6 @@
 import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
-import userManager from "../Authorization/userManager";
-
-// API imports
 import { getUsers, UserList } from "../Api/userlistApi";
-
-// Material UI imports
 import { Button, makeStyles, TextField } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
