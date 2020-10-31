@@ -9,11 +9,11 @@ namespace Inlook_API.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize(Policy = "UserPolicy")]
-    public class UserListController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly ILogger<UserListController> _logger;
+        private readonly ILogger<UserController> _logger;
 
-        public UserListController(ILogger<UserListController> logger)
+        public UserController(ILogger<UserController> logger)
         {
             _logger = logger;
         }
@@ -21,34 +21,34 @@ namespace Inlook_API.Controllers
         [HttpGet]
         public IActionResult GetUserList()
         {
-            List<UserList> tmp = new List<UserList>();
-            tmp.Add(new UserList
+            List<User> tmp = new List<User>();
+            tmp.Add(new User
             {
                 Mail = "palpatine@sith.pis",
                 Favourite = false
             });
-            tmp.Add(new UserList
+            tmp.Add(new User
             {
                 Mail = "mariusz@pudzian.pl",
                 Favourite = true
             });
-            tmp.Add(new UserList
+            tmp.Add(new User
             {
                 Mail = "general.grivous@sith.pis",
                 Favourite = true
             });
-            tmp.Add(new UserList
+            tmp.Add(new User
             {
                 Mail = "adam_malysz102m@wp.pl",
                 Favourite = false
             });
-            tmp.Add(new UserList
+            tmp.Add(new User
             {
                 Mail = "andrzej@duda.pis",
                 Favourite = false
             });
 
-            tmp.Add(new UserList
+            tmp.Add(new User
             {
                 Mail = "ziobro@ty.ku",
                 Favourite = false

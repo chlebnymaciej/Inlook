@@ -47,7 +47,7 @@ const MenuButton = (props: MenuButtonProps) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLButtonElement>(null);
-    const useHist = useHistory();
+    const history = useHistory();
     const handleToggle = () => {
       setOpen((prevOpen) => !prevOpen);
     };
@@ -101,12 +101,12 @@ const MenuButton = (props: MenuButtonProps) => {
                     <Paper>
                       <ClickAwayListener onClickAway={handleClose}>
                         <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); useHist.push('/home');}}>
+                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/home');}}>
 
                             <div>Inbox</div>
                           <MailOutlineIcon className={classes.icon}></MailOutlineIcon>
                           </MenuItem>
-                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); useHist.push('/newmessage');}}>
+                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/newmessage');}}>
                           <div>New Mail</div>
                           <SendIcon className={classes.icon}></SendIcon>
                           </MenuItem>

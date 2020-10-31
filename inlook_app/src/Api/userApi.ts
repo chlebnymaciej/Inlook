@@ -2,15 +2,15 @@ import getUserToken from "../Authorization/getUserToken"
 import { handleError, handleResponse, IApiResponse } from "./apiUtils"
 import { BASE_URL } from "./urls"
 
-const url = BASE_URL + "userlist/"
+const url = BASE_URL + "user/"
 
-export interface  UserList {
+export interface  UserModel {
     mail: string 
     favourite: boolean 
 }
 
 export const getUsers = async () => {
-    type T = IApiResponse<UserList[]>;
+    type T = IApiResponse<UserModel[]>;
     return fetch(url ,{
         method: "GET",
         headers: new Headers({

@@ -1,11 +1,11 @@
-import { User } from "oidc-client";
-import React, { useEffect, useState } from "react";
-import { getUsers, UserList } from "../Api/userlistApi";
 import { Button, makeStyles, TextField } from '@material-ui/core';
+import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Chip from '@material-ui/core/Chip';
+import { User } from "oidc-client";
+import React, { useEffect, useState } from "react";
+import { getUsers, UserModel } from "../Api/userApi";
 
 
 const useStyles = makeStyles(theme => ({
@@ -34,6 +34,12 @@ const useStyles = makeStyles(theme => ({
     sendbutton:
     {
         margin: theme.spacing(1)
+    },
+    formClass:
+    {
+        display:"flex",
+        flexDirection:"column",
+        paddingTop:"2em"
     }
     
 
@@ -48,12 +54,13 @@ interface SelectingUsers{
     selected: boolean;
 }
 
-const NewMessage = (props: NewMessageProps) => {
+const NewMessage  = (props: NewMessageProps) => {
     const [error,setError] = useState<string>();
-    const [users,setUsers] = useState<UserList[]>();
+    const [users,setUsers] = useState<UserModel[]>([]);
+    const [toUsers, setToUsers] = useState<UserModel[]>([]);
+    const [ccUsers, setCcUsers] = useState<UserModel[]>([]);
+
     const classes = useStyles();
-    let to_users:SelectingUsers[] = [];
-    let cc_users = [];
 
     useEffect(()=>{
         getUsers().then(result => {
@@ -61,26 +68,26 @@ const NewMessage = (props: NewMessageProps) => {
                 setError(result.errorMessage);
             }
             else{
-                setUsers(result.data);
+                setUsers(result.data || []);
             }
         })
     },[props.user]);
-    let mails: SelectingUsers[];
-    if(!users)
-        mails = [];
-    else
-    {
-        mails = users?.map((option) => { return { mail:option.mail,
-             favourite:option.favourite, selected:false}});
-    }
         
+    const submitHandled = (e:any) => {
+        console.log(toUsers);
+        if(toUsers?.length===0)
+        {
+            e.preventDefault();
+            return;
+        }
+      }
 
     return <>
         {error ? 
             <p>{error}</p>
             :
-            <form>
-            <div style={{display:"flex", flexDirection:"column", paddingTop:"2em"}}>
+            <form onSubmit={submitHandled}>
+            <div className={classes.formClass}>
              <TextField type="text" label="From:"
                 variant="filled"
              placeholder="From:" defaultValue="kenobi@jedi.com" required
@@ -93,10 +100,10 @@ const NewMessage = (props: NewMessageProps) => {
                 size="small"
                 onChange={(object,values)=>
                     {
-                        to_users=values;
+                        setToUsers(values);
                     }}
-                options={mails.filter((x)=>x.selected===false)}
-                getOptionLabel={(option) => option.mail}
+                options={users}
+                getOptionLabel={(option) => option?.mail}
                 renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     <Chip
@@ -120,9 +127,9 @@ const NewMessage = (props: NewMessageProps) => {
                 size="small"
                 onChange={(object,values)=>
                     {
-                        cc_users=values;
+                        setCcUsers(values);
                     }}
-                options={mails}
+                options={users}
                 getOptionLabel={(option) => option.mail}
                 renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
@@ -146,18 +153,13 @@ const NewMessage = (props: NewMessageProps) => {
               defaultValue={`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`}
               className={classes.new_message} multiline></TextField>
               <div className={classes.buttons}>
-              <Button variant="contained" color="default" className={classes.sendbutton}
+              <Button variant="contained" disabled color="default" className={classes.sendbutton}
                 startIcon={<CloudUploadIcon />}>Upload</Button>
               <Button 
               type="submit"
-              className={classes.sendbutton} variant="contained" color="primary" 
-              onClick={(e) => {
-                if(to_users.length===0)
-                {
-                    e.preventDefault();
-                    return;
-                }  
-              }}
+              className={classes.sendbutton}
+              variant="contained"
+              color="primary" 
               endIcon={<Icon>send</Icon>}>Send </Button></div>
             </div>
             </form>
