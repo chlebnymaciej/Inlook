@@ -9,6 +9,7 @@ import userManager from "./Authorization/userManager";
 import Topbar from "./Layout/topbar";
 import CallbackPage from "./Pages/callbackPage";
 import Home from "./Pages/home";
+import Inbox from "./Pages/inbox";
 import NewMessage from "./Pages/newmessage";
 
 const Pages = () =>  {
@@ -30,8 +31,12 @@ const Pages = () =>  {
         <Route path="/newmessage">
           <NewMessage user={user}/>
         </Route>
+        <Route path="/inbox">
+        <Inbox/>
+        </Route>
         <Route path="/">
-            <Home user={user}/>
+            {/* <Home user={user}/> */}
+            <Inbox/>
         </Route>
       </Switch>
     </BrowserRouter>
