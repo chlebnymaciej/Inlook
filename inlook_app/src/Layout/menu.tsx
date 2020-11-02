@@ -92,7 +92,7 @@ const MenuButton = (props: MenuButtonProps) => {
                   <MenuIcon
                   ></MenuIcon>
               </Button>
-              <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+              <Popper style={{zIndex:2137}} open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (
                   <Grow
                     {...TransitionProps}
@@ -101,7 +101,7 @@ const MenuButton = (props: MenuButtonProps) => {
                     <Paper>
                       <ClickAwayListener onClickAway={handleClose}>
                         <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/home');}}>
+                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/inbox');}}>
 
                             <div>Inbox</div>
                           <MailOutlineIcon className={classes.icon}></MailOutlineIcon>
