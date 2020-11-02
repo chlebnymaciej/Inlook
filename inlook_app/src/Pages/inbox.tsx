@@ -119,7 +119,7 @@ export default function Inbox() {
           bgcolor="lavender "
           padding='0'
         >
-          <Box p={1}   bgcolor="ghostwhite">
+          <Box p={1}  bgcolor="ghostwhite">
           <List className={classes.root}>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
