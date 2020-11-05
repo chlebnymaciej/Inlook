@@ -1,5 +1,9 @@
 import { Button } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
+import { AccountCircle } from "@material-ui/icons";
 import { User } from "oidc-client";
 import React from "react";
 import { useHistory } from "react-router";
@@ -15,6 +19,10 @@ const useStyles = makeStyles(theme => ({
       display:"flex",
       justifyContent:"space-between"
     },
+    leftSide:{
+        display:"flex",
+        alignItems:"center"
+    },
     loginDiv:{
         float: 'right',
         color: 'white',
@@ -26,6 +34,9 @@ const useStyles = makeStyles(theme => ({
         '&:hover':{
             backgroundColor:"#DAE0E2"
         }
+    },
+    appTitle:{
+        color:"white"
     }
     
 
@@ -37,7 +48,10 @@ const useStyles = makeStyles(theme => ({
     
 const Topbar = (props: ToolbarProps) => {
     const classes  = useStyles();
-  
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const history = useHistory();
+
 
     const handleLoginClick = () => {
         userManager.signinRedirect();
@@ -46,16 +60,56 @@ const Topbar = (props: ToolbarProps) => {
         userManager.signoutRedirect();
     }
 
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+      };
+    
+      const handleClose = () => {
+        setAnchorEl(null);
+      };
 
     return (
         <div className={classes.topBar}>
+            <div className={classes.leftSide}>
             <MenuButton user={props.user}></MenuButton>
+            <h1 className={classes.appTitle}>Inlook</h1>
+            </div>
             <div className={classes.loginDiv}>
             {
                 props.user ? 
-                    <>{props.user.profile.name} <Button className={classes.loginButton} onClick={handleLogoutClick}>Wyloguj</Button></>
+                    <>{props.user.profile.name} 
+                    <IconButton
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        color="inherit"
+                    >
+                        <AccountCircle />
+                    </IconButton>
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                        }}
+                        open={open}
+                        onClose={handleClose}
+                    >
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={(e)=>{handleClose(); history.push('/myaccount');}}>My account</MenuItem>
+                        <MenuItem onClick={handleLogoutClick}>Log out</MenuItem>
+
+                    </Menu>
+                    </>
                         : 
-                    <Button className={classes.loginButton} onClick={handleLoginClick}>Zaloguj</Button>
+                    <Button className={classes.loginButton} onClick={handleLoginClick}>Log in</Button>
             }
             </div>
             

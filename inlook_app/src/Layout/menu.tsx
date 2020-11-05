@@ -13,6 +13,8 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SendIcon from '@material-ui/icons/Send';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import HomeIcon from '@material-ui/icons/Home';
+import GroupIcon from '@material-ui/icons/Group';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -101,14 +103,21 @@ const MenuButton = (props: MenuButtonProps) => {
                     <Paper>
                       <ClickAwayListener onClickAway={handleClose}>
                         <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                        <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/home');}}>
+                            <div>Home</div>
+                          <HomeIcon className={classes.icon}></HomeIcon>
+                          </MenuItem>
                           <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/inbox');}}>
-
                             <div>Inbox</div>
                           <MailOutlineIcon className={classes.icon}></MailOutlineIcon>
                           </MenuItem>
                           <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/newmessage');}}>
                           <div>New Mail</div>
                           <SendIcon className={classes.icon}></SendIcon>
+                          </MenuItem>
+                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/groups');}}>
+                            <div>Groups</div>
+                          <GroupIcon className={classes.icon}></GroupIcon>
                           </MenuItem>
                         </MenuList>
                       </ClickAwayListener>

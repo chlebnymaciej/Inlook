@@ -35,7 +35,7 @@ const Pages = () =>  {
         <Inbox/>
         </Route>
         <Route path="/">
-            <Inbox></Inbox>
+            <Home/>
         </Route>
       </Switch>
     </BrowserRouter>
