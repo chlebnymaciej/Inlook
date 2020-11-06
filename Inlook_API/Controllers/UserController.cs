@@ -1,8 +1,10 @@
-﻿using Inlook_API.Models;
+﻿using Inlook_API.Extensions;
+using Inlook_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Inlook_API.Controllers
 {
@@ -21,6 +23,7 @@ namespace Inlook_API.Controllers
         [HttpGet]
         public IActionResult GetUserList()
         {
+            var userId = this.GetUserId();
             List<User> tmp = new List<User>();
             tmp.Add(new User
             {
@@ -55,6 +58,8 @@ namespace Inlook_API.Controllers
             });
             return new JsonResult(tmp);
         }
+
+       
     }
 }
 
