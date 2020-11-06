@@ -19,7 +19,7 @@ namespace Inlook_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUserList()
+        public IActionResult GetGroups()
         {
             List<User> tmp = new List<User>();
             tmp.Add(new User
