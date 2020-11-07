@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inlook_Infrastructure.Entities
+namespace Inlook_Core.Entities
 {
-    public class MailTo
+    public class MailTo 
     {
         public Mail Mail { get; set; }
         public Guid MailId { get; set; }

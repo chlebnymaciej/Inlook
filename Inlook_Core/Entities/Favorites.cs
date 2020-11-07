@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inlook_Infrastructure.Entities
+namespace Inlook_Core.Entities
 {
-    public class Favorites
+    public class Favorites : Base
     {
         public User User { get; set; }
         public Guid UserId { get; set; }

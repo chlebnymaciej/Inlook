@@ -13,4 +13,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Inlook_Core\Inlook_Core.csproj" />
+  </ItemGroup>
+
 </Project>

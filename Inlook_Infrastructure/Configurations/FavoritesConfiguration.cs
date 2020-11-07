@@ -1,4 +1,4 @@
-﻿using Inlook_Infrastructure.Entities;
+﻿using Inlook_Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
