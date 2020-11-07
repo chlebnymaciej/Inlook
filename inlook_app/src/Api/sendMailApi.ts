@@ -7,7 +7,6 @@ import { UserModel } from "./userApi"
 const url = BASE_URL + "mail/"
 
 export interface MailModel {
-    from: UserModel;
     to: UserModel[];
     cc:UserModel[]  | null;
     subject:string | null;

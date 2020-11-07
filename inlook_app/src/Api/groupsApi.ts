@@ -6,14 +6,10 @@ import { UserModel } from "./userApi"
 
 const url = BASE_URL + "group/"
 
-export interface GroupModel {
-    name: string
-}
 
-export interface CreateGroupModel {
+export interface GroupModel {
     name: string,
-    owner: UserModel,
-    users: UserModel[],
+    users: UserModel[] | null,
 }
 
 export const getGroups = async () => {
@@ -27,7 +23,7 @@ export const getGroups = async () => {
     }).then<T>(handleResponse).catch<T>(handleError);
 }
 
-export const postGroup  = async (group: CreateGroupModel) => {
+export const postGroup  = async (group: GroupModel) => {
     type T = IApiResponse<Http2ServerResponse>;
     return fetch(url ,{
         method: "POST",

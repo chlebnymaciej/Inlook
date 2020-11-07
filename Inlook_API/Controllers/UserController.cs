@@ -24,37 +24,33 @@ namespace Inlook_API.Controllers
         public IActionResult GetGroups()
         {
             var userId = this.GetUserId();
+            
+            
             List<User> tmp = new List<User>();
             tmp.Add(new User
             {
-                Mail = "palpatine@sith.pis",
-                Favourite = false
+                Mail = "palpatine@sith.pis"   
             });
             tmp.Add(new User
             {
-                Mail = "mariusz@pudzian.pl",
-                Favourite = true
+                Mail = "mariusz@pudzian.pl"  
             });
             tmp.Add(new User
             {
-                Mail = "general.grivous@sith.pis",
-                Favourite = true
+                Mail = "general.grivous@sith.pis" 
             });
             tmp.Add(new User
             {
-                Mail = "adam_malysz102m@wp.pl",
-                Favourite = false
+                Mail = "adam_malysz102m@wp.pl" 
             });
             tmp.Add(new User
             {
-                Mail = "andrzej@duda.pis",
-                Favourite = false
+                Mail = "andrzej@duda.pis" 
             });
 
             tmp.Add(new User
             {
-                Mail = "ziobro@ty.ku",
-                Favourite = false
+                Mail = "ziobro@ty.ku"
             });
             return new JsonResult(tmp);
         }

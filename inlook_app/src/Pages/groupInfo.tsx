@@ -2,7 +2,9 @@ import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { GroupModel } from "../Api/groupsApi";
 import { User } from "oidc-client";
-import { Button } from "@material-ui/core";
+import { Button, List, ListItem } from "@material-ui/core";
+import { UserModel } from "../Api/userApi";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 
 const useStyles = makeStyles({
    root:{
@@ -39,23 +41,35 @@ const useStyles = makeStyles({
   }
 });
 
-interface GroupsProps {
-    user: User | null;
+interface GroupInfoProps {
+  user: User;
+  group: GroupModel;
 }
+
 const GroupInfo = (props: any) => {
-    const group: GroupModel =
+
+    const group: GroupInfoProps =
     (props.location && props.location.state) || {};
     const classes = useStyles();
 
   return (
     <div className={classes.root}>
         <div className={classes.firstLine}>
-          <h3>{group.name}</h3>
+          <h3>{group.group.name}</h3>
           <div>
             <Button className={classes.buttonEdit}>Edit</Button>
             <Button className={classes.buttonDelete}>Delete</Button>
           </div>
         </div>
+        <List>
+            { group.group.users?.map((x: UserModel)=>{
+              return (
+                <ListItem>
+                  <ListItemText primary={x.mail}></ListItemText> 
+                </ListItem>
+              );
+            })}
+          </List>
     </div>
   );
 };

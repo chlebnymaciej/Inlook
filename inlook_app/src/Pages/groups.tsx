@@ -50,7 +50,7 @@ const Groups = (props: GroupsProps) => {
         <ListItem button onClick={
             (e)=> history.push({
                 pathname:'/groupinfo',
-                state: x
+                state: {user: props.user, group:x}
             })}>
             <ListItemText primary={x.name} />
         </ListItem>);

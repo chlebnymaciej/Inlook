@@ -6,7 +6,6 @@ const url = BASE_URL + "user/"
 
 export interface  UserModel {
     mail: string 
-    favourite: boolean 
 }
 
 export const getUsers = async () => {

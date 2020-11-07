@@ -147,7 +147,7 @@ const CreateGroups = (props: CreateGroupsProps) => {
       return;
     }
     
-    postGroup({name:groupName, owner:{mail:"boegn@wp.pl", favourite:false},
+    postGroup({name:groupName,
     users:right});
     history.push('/');
   };

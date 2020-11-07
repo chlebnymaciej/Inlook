@@ -19,7 +19,8 @@ const CallbackPage = (props : CallbackPageProps) => {
         history.push("/");
     };
     const handleError = () => {
-        props.setUser(null)
+        console.log("wyjebalo");
+        props.setUser(null);
         history.push("/");
     };
     return(

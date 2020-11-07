@@ -89,11 +89,6 @@ const NewMessage  = (props: NewMessageProps) => {
         setHelperText('');
         postMail(
         {
-        from:
-            {
-                mail:"kenobi@jedi.po",
-                favourite:false
-            },
         to:toUsers,
         cc:ccUsers,
         subject:subject ||  null,
