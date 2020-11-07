@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inlook_Infrastructure.Entities
+namespace Inlook_Core.Entities
 {
-    public class Attachment
+    public class Attachment : Base
     {
         public Guid Id { get; set; }
         public Mail Mail { get; set; }

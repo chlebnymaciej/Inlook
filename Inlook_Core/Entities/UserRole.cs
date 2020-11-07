@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inlook_Infrastructure.Entities
+namespace Inlook_Core.Entities
 {
     public class UserRole
     {

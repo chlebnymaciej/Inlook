@@ -1,4 +1,4 @@
-﻿using Inlook_Infrastructure.Entities;
+﻿using Inlook_Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -14,7 +14,6 @@ namespace Inlook_Infrastructure.Configurations
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.PhoneNumber).HasMaxLength(15);
-
         }
     }
 }

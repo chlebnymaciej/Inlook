@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Inlook_Core.Interfaces.Services;
 using Inlook_Infrastructure;
+using Inlook_Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -73,6 +75,15 @@ namespace Inlook_API
             });
 
             services.AddCors();
+
+            services.AddDbContext<Inlook_Context>();
+
+            services.AddScoped<IAttachmentService, AttachmentService>();
+            services.AddScoped<IFavoritesService, FavoritesService>();
+            services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
