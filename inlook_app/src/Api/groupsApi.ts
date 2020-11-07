@@ -4,7 +4,7 @@ import { handleError, handleResponse, IApiResponse } from "./apiUtils"
 import { BASE_URL } from "./urls"
 import { UserModel } from "./userApi"
 
-const url = BASE_URL + "group/"
+const groupUrl = BASE_URL + "group/"
 
 
 export interface GroupModel {
@@ -13,6 +13,7 @@ export interface GroupModel {
 }
 
 export const getGroups = async () => {
+    const url = groupUrl + 'getmygroups'
     type T = IApiResponse<GroupModel[]>;
     return fetch(url ,{
         method: "GET",
@@ -25,7 +26,7 @@ export const getGroups = async () => {
 
 export const postGroup  = async (group: GroupModel) => {
     type T = IApiResponse<Http2ServerResponse>;
-    return fetch(url ,{
+    return fetch(groupUrl ,{
         method: "POST",
         headers: new Headers({
             'Accept': 'application/json',

@@ -20,8 +20,8 @@ namespace Inlook_API.Controllers
             _logger = logger;
         }
 
-        [HttpPost]
-        [Route("/getmygroups")]
+        [HttpGet]
+        [Route("getmygroups")]
         public IActionResult PostGroups()
         {
             var userId = this.GetUserId();
