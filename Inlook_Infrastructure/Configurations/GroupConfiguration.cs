@@ -11,7 +11,8 @@ namespace Inlook_Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Group> builder)
         {
-            builder.HasKey(a => a.Id);
+            builder.HasKey(g => g.Id);
+            builder.Property(g => g.Id).HasDefaultValueSql("NEWID()");
 
             builder.HasOne(g => g.GroupOwner)
                 .WithMany(u => u.GroupsOwned)

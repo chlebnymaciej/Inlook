@@ -6,7 +6,6 @@ namespace Inlook_Core.Entities
 {
     public class Mail : Base
     {
-        public Guid Id { get; set; }
         public User Sender { get; set; }
         public Guid SenderId { get; set; }
         public string Subject { get; set; }

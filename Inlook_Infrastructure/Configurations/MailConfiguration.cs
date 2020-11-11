@@ -12,6 +12,7 @@ namespace Inlook_Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Mail> builder)
         {
             builder.HasKey(m => m.Id);
+            builder.Property(m => m.Id).HasDefaultValueSql("NEWID()");
 
             builder.HasOne(m => m.Sender)
                 .WithMany(u => u.MailsSend)

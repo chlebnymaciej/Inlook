@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Infrastructure;
 using Inlook_Infrastructure.Services;
@@ -53,10 +54,35 @@ namespace Inlook_API
                     {
                         OnTokenValidated = o =>
                         {
-                            var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Role, "User")
-                        };
+
+                            Guid oid = Guid.Parse(o.Principal.FindFirstValue("http://schemas.microsoft.com/identity/claims/objectidentifier"));
+
+                            var db = o.HttpContext.RequestServices.GetRequiredService<Inlook_Context>();
+
+                            var userInDb = db.Users.Find(oid);
+                            if (userInDb == null)
+                            {
+                                var userRole = db.Roles.Where(r => r.Name == "User").FirstOrDefault();
+                                var name = o.Principal.FindFirstValue(ClaimTypes.Name);
+                                User user = new User()
+                                {
+                                    Id = oid,
+                                    Name = name,
+                                    UserRoles = new List<UserRole> { new UserRole() { RoleId = userRole.Id, UserId = oid } },
+                                };
+                                db.Users.Add(user);
+                                db.SaveChanges();
+                            }
+
+                            var userRoles = db.UserRole.Where(ur => ur.UserId == oid).Include(ur => ur.Role).ToList();
+
+                            var claims = new List<Claim>();
+
+                            foreach (var role in userRoles)
+                            {
+                                claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
+                            }
+
                             var appIdentity = new ClaimsIdentity(claims);
 
                             o.Principal.AddIdentity(appIdentity);
@@ -76,10 +102,10 @@ namespace Inlook_API
 
             services.AddCors();
 
-            services.AddDbContext<Inlook_Context>();
+            services.AddDbContext<Inlook_Context>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IAttachmentService, AttachmentService>();
-            services.AddScoped<IFavoritesService, FavoritesService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IRoleService, RoleService>();

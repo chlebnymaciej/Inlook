@@ -6,8 +6,9 @@ namespace Inlook_Core.Entities
 {
     public class User : Base
     {
-        public Guid Id { get; set; }
         public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string Name { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; } = new HashSet<UserRole>();
         public virtual ICollection<Favorites> FavoritesUsers { get; set; } = new HashSet<Favorites>();
         public virtual ICollection<Favorites> UsersThatFavorize { get; set; } = new HashSet<Favorites>();

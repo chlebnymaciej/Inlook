@@ -11,8 +11,8 @@ namespace Inlook_Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Attachment> builder)
         {
-            builder.HasKey(a => a.Id);
-
+            builder.HasKey(m => m.Id);
+            builder.Property(x => x.Id).HasDefaultValueSql("NEWID()");
             builder.HasOne(a => a.Mail)
                 .WithMany(m => m.Attachments)
                 .HasForeignKey(a => a.MailId);
@@ -20,4 +20,5 @@ namespace Inlook_Infrastructure.Configurations
             builder.Property(a => a.FilePath).HasMaxLength(255);
         }
     }
+
 }

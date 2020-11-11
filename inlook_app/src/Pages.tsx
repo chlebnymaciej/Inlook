@@ -11,6 +11,7 @@ import CallbackPage from "./Pages/callbackPage";
 import Home from "./Pages/home";
 import Inbox from "./Pages/inbox";
 import NewMessage from "./Pages/newmessage";
+import ContactList from "./Pages/contactList";
 
 const Pages = () =>  {
   const [user,setUser] = useState<User | null>(null)
@@ -30,6 +31,9 @@ const Pages = () =>  {
         </Route>
         <Route path="/newmessage">
           <NewMessage user={user}/>
+        </Route>
+        <Route path="/contacts">
+          <ContactList />
         </Route>
         <Route path="/inbox">
         <Inbox/>

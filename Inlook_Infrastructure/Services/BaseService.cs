@@ -21,6 +21,7 @@ namespace Inlook_Infrastructure.Services
         }
         public void Create(T entity)
         {
+            entity.LastModifiedDate = entity.CreatedDate = DateTime.Now;
             this.dbSet.Add(entity);
             this.context.SaveChanges();
         }
@@ -40,6 +41,7 @@ namespace Inlook_Infrastructure.Services
 
         public void Update(T entity)
         {
+            entity.LastModifiedDate = DateTime.Now;
             this.dbSet.Update(entity);
             this.context.SaveChanges();
         }
