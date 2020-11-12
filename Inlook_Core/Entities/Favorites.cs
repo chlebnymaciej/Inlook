@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Inlook_Core.Entities
 {
-    public class Favorites : Base
+    public class Favorites
     {
         public User User { get; set; }
         public Guid UserId { get; set; }

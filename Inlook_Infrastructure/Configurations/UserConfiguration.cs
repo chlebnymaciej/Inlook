@@ -12,7 +12,6 @@ namespace Inlook_Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(u => u.Id);
-
             builder.Property(u => u.PhoneNumber).HasMaxLength(15);
         }
     }

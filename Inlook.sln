@@ -4,12 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inlook_API", "Inlook_API\Inlook_API.csproj", "{C90B59A9-B247-4A99-B2AD-9842AC5E5184}"
+	ProjectSection(ProjectDependencies) = postProject
+		{58BAA2D7-1809-4395-9F04-1FA1E556FD84} = {58BAA2D7-1809-4395-9F04-1FA1E556FD84}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inlook_Core", "Inlook_Core\Inlook_Core.csproj", "{58BAA2D7-1809-4395-9F04-1FA1E556FD84}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inlook_Infrastructure", "Inlook_Infrastructure\Inlook_Infrastructure.csproj", "{4CEFCBFD-27D0-4ED2-A3C7-9EC735423A60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{799F820C-03D1-4ED4-B666-477E0DEBB8BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{799F820C-03D1-4ED4-B666-477E0DEBB8BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

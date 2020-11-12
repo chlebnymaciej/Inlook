@@ -8,8 +8,16 @@ namespace Inlook_Infrastructure.Services
 {
     public class UserService : BaseService<User>, IUserService
     {
+        private readonly Inlook_Context context;
+
         public UserService(Inlook_Context context) : base(context)
         {
+            this.context = context;
+        }
+
+        public IEnumerable<User> ReadAllUsers()
+        {
+            return this.context.Users;
         }
     }
 }
