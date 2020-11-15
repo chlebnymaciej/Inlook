@@ -38,7 +38,7 @@ namespace Inlook_API.Controllers
 
 
         [HttpPost]
-        [Route("/create")]
+        [Route("create")]
         public IActionResult PostGroup([FromBody] Group createGroupModel)
         {
             var userId = this.GetUserId();
