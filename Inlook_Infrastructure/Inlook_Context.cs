@@ -29,6 +29,8 @@ namespace Inlook_Infrastructure
         {
             base.OnModelCreating(builder);
 
+            builder.AddMockData();
+
             builder.ApplyConfiguration(new AttachmentConfiguration());
             builder.ApplyConfiguration(new FavoritesConfiguration());
             builder.ApplyConfiguration(new GroupConfiguration());

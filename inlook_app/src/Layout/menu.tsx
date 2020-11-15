@@ -115,9 +115,9 @@ const MenuButton = (props: MenuButtonProps) => {
                           <div>New Mail</div>
                           <SendIcon className={classes.icon}></SendIcon>
                           </MenuItem>
-                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/groups');}}>
-                            <div>Groups</div>
-                          <GroupIcon className={classes.icon}></GroupIcon>
+                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/contacts');}}>
+                          <div>Contacts</div>
+                          <SendIcon className={classes.icon}></SendIcon>
                           </MenuItem>
                         </MenuList>
                       </ClickAwayListener>

@@ -7,5 +7,6 @@ namespace Inlook_Core.Interfaces.Services
 {
     public interface IUserService : IBaseService<User>
     {
+        IEnumerable<User> ReadAllUsers();
     }
 }

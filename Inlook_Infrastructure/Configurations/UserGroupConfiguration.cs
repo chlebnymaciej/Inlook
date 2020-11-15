@@ -15,7 +15,8 @@ namespace Inlook_Infrastructure.Configurations
 
             builder.HasOne(ug => ug.User)
                 .WithMany(u => u.UserGroups)
-                .HasForeignKey(ug => ug.UserId);
+                .HasForeignKey(ug => ug.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(ug => ug.Group)
                 .WithMany(g => g.UserGroups)
