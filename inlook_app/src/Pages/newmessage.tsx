@@ -54,8 +54,6 @@ interface ValidationErrors {
     to: string | null;
 }
 
-
-
 const NewMessage  = (props: NewMessageProps) => {
     const [error,setError] = useState<string>();
     const [users,setUsers] = useState<UserModel[]>([]);
@@ -75,6 +73,7 @@ const NewMessage  = (props: NewMessageProps) => {
             }
             else{
                 setUsers(result.data || []);
+                console.log(result.data);
             }
         })
     },[props.user]);
@@ -89,8 +88,8 @@ const NewMessage  = (props: NewMessageProps) => {
         setHelperText('');
         postMail(
         {
-        to:toUsers,
-        cc:ccUsers,
+        to:toUsers.map(x => x.id),
+        cc:toUsers.map(x => x.id),
         subject:subject ||  null,
         text:mailValue || null
         });
@@ -121,12 +120,12 @@ const NewMessage  = (props: NewMessageProps) => {
                         setToUsers(values);
                     }}
                 options={users}
-                getOptionLabel={(option) => option?.mail}
+                getOptionLabel={(option) => option?.email}
                 renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     <Chip
                     variant="outlined"
-                    label={option.mail}
+                    label={option.email}
                     size="small"
                     {...getTagProps({ index })}
                     />
@@ -149,12 +148,12 @@ const NewMessage  = (props: NewMessageProps) => {
                         setCcUsers(values);
                     }}
                 options={users}
-                getOptionLabel={(option) => option.mail}
+                getOptionLabel={(option) => option.email}
                 renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     <Chip
                     variant="outlined"
-                    label={option.mail}
+                    label={option.email}
                     size="small"
                     {...getTagProps({ index })}
                     />

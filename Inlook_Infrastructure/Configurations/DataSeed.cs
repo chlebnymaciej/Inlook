@@ -20,7 +20,8 @@ namespace Inlook_Infrastructure.Configurations
               new User() { Name = "Stuart Burton" , PhoneNumber = " + 48696969696" , Email="polski@pingwin.pl", Id = Guid.NewGuid() },
               new User() { Name = "Mariusz Pudzianowski", Email = "mariusz.pudzian@transport.pl", Id = Guid.NewGuid() },
               new User() { Name = "Pan Paweł", Email = "mrpathix@elo.pl", Id = Guid.NewGuid() },
-              new User() { Name = "Janne Ahonen", Email = "nastepne@zawody.fi", Id = Guid.NewGuid() }
+              new User() { Name = "Janne Ahonen", Email = "nastepne@zawody.fi", Id = Guid.NewGuid() },
+              new User() { Name = "Jan Paweł", Email="papiez_polak@vatican.vc", Id = Guid.NewGuid()}
               );
         }
     }

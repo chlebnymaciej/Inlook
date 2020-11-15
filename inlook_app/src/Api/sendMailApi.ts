@@ -4,17 +4,17 @@ import { handleError, IApiResponse } from "./apiUtils"
 import { BASE_URL } from "./urls"
 import { UserModel } from "./userApi"
 
-const url = BASE_URL + "mail/"
+const target_url = BASE_URL + "mail/"
 
 export interface MailModel {
-    to: UserModel[];
-    cc:UserModel[]  | null;
+    to: string[];
+    cc:string[]  | null;
     subject:string | null;
     text:string | null;
 }
 
 export const postMail = async (mail: MailModel) => {
-    
+    let url = target_url+"sendMail";
     type T = IApiResponse<Http2ServerResponse>;
     return fetch(url ,{
         method: "POST",

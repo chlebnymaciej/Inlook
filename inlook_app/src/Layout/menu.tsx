@@ -119,6 +119,10 @@ const MenuButton = (props: MenuButtonProps) => {
                           <div>Contacts</div>
                           <SendIcon className={classes.icon}></SendIcon>
                           </MenuItem>
+                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/groups');}}>
+                          <div>Groups</div>
+                          <GroupIcon className={classes.icon}></GroupIcon>
+                          </MenuItem>
                         </MenuList>
                       </ClickAwayListener>
                     </Paper>

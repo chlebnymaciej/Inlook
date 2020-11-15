@@ -94,7 +94,7 @@ const CreateGroups = (props: CreateGroupsProps) => {
     <Paper className={classes.paper}>
       <List dense component="div" role="list">
         {users.map((x: UserModel) => {
-          const labelId = `transfer-list-item-${x.mail}-label`;
+          const labelId = `transfer-list-item-${x.email}-label`;
           return (
             <ListItem key={users.indexOf(x)} role="listitem" button onClick={handleToggle(x)}>
               <ListItemIcon>
@@ -105,7 +105,7 @@ const CreateGroups = (props: CreateGroupsProps) => {
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={x.mail} />
+              <ListItemText id={labelId} primary={x.name.concat(" ").concat(x.email)} />
             </ListItem>
           );
         })}
@@ -148,7 +148,8 @@ const CreateGroups = (props: CreateGroupsProps) => {
     }
     
     postGroup({name:groupName,
-    users:right});
+    users:right.map(x => x.id)
+    });
     history.push('/');
   };
   return (

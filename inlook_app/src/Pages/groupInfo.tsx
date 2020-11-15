@@ -65,7 +65,7 @@ const GroupInfo = (props: any) => {
             { group.group.users?.map((x: UserModel)=>{
               return (
                 <ListItem>
-                  <ListItemText primary={x.mail}></ListItemText> 
+                  <ListItemText primary={x.email}></ListItemText> 
                 </ListItem>
               );
             })}
