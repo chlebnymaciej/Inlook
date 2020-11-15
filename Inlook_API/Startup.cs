@@ -63,11 +63,14 @@ namespace Inlook_API
                             if (userInDb == null)
                             {
                                 var userRole = db.Roles.Where(r => r.Name == "User").FirstOrDefault();
-                                var name = o.Principal.FindFirstValue(ClaimTypes.Name);
+                                var givenName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+                                var surName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname");
+                                var email = o.Principal.FindFirstValue(ClaimTypes.Email);
                                 User user = new User()
                                 {
                                     Id = oid,
-                                    Name = name,
+                                    Name = givenName + " " + surName,
+                                    Email = email,
                                     UserRoles = new List<UserRole> { new UserRole() { RoleId = userRole.Id, UserId = oid } },
                                 };
                                 db.Users.Add(user);

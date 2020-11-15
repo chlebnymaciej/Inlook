@@ -63,7 +63,7 @@ namespace Inlook_API.Controllers
         }
 
         [HttpGet("GetContactList")]
-        public IActionResult GetContactList(int page, int pageSize, string searchText)
+        public IActionResult GetContactList(int page, int pageSize, string searchText, string orderBy, string orderType)
         {
             var users = this.userService.ReadAllUsers();
             searchText = searchText?.ToLower();
@@ -75,9 +75,30 @@ namespace Inlook_API.Controllers
                             (u.Email?.ToLower().Contains(searchText)).GetValueOrDefault() ||
                             (u.Name?.ToLower().Contains(searchText)).GetValueOrDefault());
             }
-            int totalPages = (int)Math.Ceiling(((float)users.Count()) / pageSize);
+            int totalCount = users.Count();
 
-            users = users.Skip((page - 1) * pageSize);
+            if(orderType == "desc")
+            {
+                users = orderBy switch
+                {
+                    "name" => users.OrderByDescending(u => u.Name),
+                    "email" => users.OrderByDescending(u => u.Email),
+                    _ => users,
+                };
+            }
+            else
+            {
+                users = orderBy switch
+                {
+                    "name" => users.OrderBy(u => u.Name),
+                    "email" => users.OrderBy(u => u.Email),
+                    _ => users,
+                };
+            }
+
+           
+
+            users = users.Skip(page * pageSize);
             users = users.Take(pageSize);
 
             var contacts = users.Select(u => new GetUserModel()
@@ -87,7 +108,7 @@ namespace Inlook_API.Controllers
                 PhoneNumber = u.PhoneNumber,
             });
 
-            return new JsonResult(new { contacts, totalPages });
+            return new JsonResult(new { contacts, totalCount });
         }
 
        
