@@ -42,7 +42,7 @@ interface HeadCell {
 }
 
 const headCells: HeadCell[] = [
-  { id: 'name', label: 'Nazwa' },
+  { id: 'name', label: 'Name' },
   { id: 'email', label: 'Email' },
 ];
 
