@@ -20,69 +20,69 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
-      margin:"1em",
+      margin: "1em",
     },
     paper: {
       marginRight: theme.spacing(2),
     },
-    button:{
-        backgroundColor: "white",
-        '&:hover':{
-            backgroundColor:"#DAE0E2"
-        }
+    button: {
+      backgroundColor: "white",
+      '&:hover': {
+        backgroundColor: "#DAE0E2"
+      }
     },
-    icon:{
-        marginLeft:"1em"
+    icon: {
+      marginLeft: "1em"
     },
-    mitem:{
-        display:"flex",
-        justifyContent:"space-between"
+    mitem: {
+      display: "flex",
+      justifyContent: "space-between"
     }
   }),
 );
 
-  interface MenuButtonProps {
-      user: User | null;
-  }
-    
+interface MenuButtonProps {
+  user: User | null;
+}
+
 const MenuButton = (props: MenuButtonProps) => {
-    const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef<HTMLButtonElement>(null);
-    const history = useHistory();
-    const handleToggle = () => {
-      setOpen((prevOpen) => !prevOpen);
-    };
-  
-    const handleClose = (event: React.MouseEvent<EventTarget>) => {
-      if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
-        return;
-      }
-  
-      setOpen(false);
-    };
-  
-    function handleListKeyDown(event: React.KeyboardEvent) {
-      if (event.key === 'Tab') {
-        event.preventDefault();
-        setOpen(false);
-      }
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const history = useHistory();
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event: React.MouseEvent<EventTarget>) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+      return;
     }
 
-    const prevOpen = React.useRef(open);
-    React.useEffect(() => {
-      if (prevOpen.current === true && open === false) {
-        anchorRef.current!.focus();
-      }
-  
-      prevOpen.current = open;
-    }, [open]);
+    setOpen(false);
+  };
 
-    return (
-        <>
-        {
-            props.user ? 
-            <div className={classes.root}>
+  function handleListKeyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    }
+  }
+
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current!.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+
+  return (
+    <>
+      {
+        props.user ?
+          <div className={classes.root}>
             <div>
               <Button
                 className={classes.button}
@@ -91,10 +91,10 @@ const MenuButton = (props: MenuButtonProps) => {
                 aria-haspopup="true"
                 onClick={handleToggle}
               >
-                  <MenuIcon
-                  ></MenuIcon>
+                <MenuIcon
+                ></MenuIcon>
               </Button>
-              <Popper style={{zIndex:2137}} open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+              <Popper style={{ zIndex: 2137 }} open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (
                   <Grow
                     {...TransitionProps}
@@ -109,15 +109,15 @@ const MenuButton = (props: MenuButtonProps) => {
                           </MenuItem>
                           <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/inbox');}}>
                             <div>Inbox</div>
-                          <MailOutlineIcon className={classes.icon}></MailOutlineIcon>
+                            <MailOutlineIcon className={classes.icon}></MailOutlineIcon>
                           </MenuItem>
-                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/newmessage');}}>
-                          <div>New Mail</div>
-                          <SendIcon className={classes.icon}></SendIcon>
+                          <MenuItem className={classes.mitem} onClick={(e) => { handleClose(e); history.push('/newmessage'); }}>
+                            <div>New Mail</div>
+                            <SendIcon className={classes.icon}></SendIcon>
                           </MenuItem>
-                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/contacts');}}>
-                          <div>Contacts</div>
-                          <SendIcon className={classes.icon}></SendIcon>
+                          <MenuItem className={classes.mitem} onClick={(e) => { handleClose(e); history.push('/contacts'); }}>
+                            <div>Contacts</div>
+                            <SendIcon className={classes.icon}></SendIcon>
                           </MenuItem>
                           <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/groups');}}>
                           <div>Groups</div>
@@ -133,11 +133,11 @@ const MenuButton = (props: MenuButtonProps) => {
           </div>
 
 
-            :<></>
-        }
-        </>
-            
-    )
+          : <></>
+      }
+    </>
+
+  )
 }
 
 export default MenuButton;
