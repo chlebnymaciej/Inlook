@@ -8,7 +8,7 @@ import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
 import { getGroups, GroupModel } from '../Api/groupsApi';
 import { postMail } from '../Api/sendMailApi';
-import { getUserMail, getUsers, UserModel } from "../Api/userApi";
+import { getUsers, UserModel } from "../Api/userApi";
 
 
 const useStyles = makeStyles(theme => ({
