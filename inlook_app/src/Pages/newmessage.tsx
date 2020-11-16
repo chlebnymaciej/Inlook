@@ -64,7 +64,6 @@ const NewMessage  = (props: NewMessageProps) => {
     const [ccUsers, setCcUsers] = useState<UserModel[]>([]);
     const [toGroups, setToGroups] = useState<GroupModel[]>([]);
     const [ccGroups, setCcGroups] = useState<GroupModel[]>([]);
-    const [userMail, setUserMail] = useState<string>();
     const [subject, setSubject] = useState<string>("Hello There!");
     const [mailValue, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
     
@@ -89,7 +88,6 @@ const NewMessage  = (props: NewMessageProps) => {
 
             }
         });
-        setUserMail(props.user?.profile.email);
     },[props.user]);
         
     const submitHandled = (e:any) => {
@@ -132,7 +130,7 @@ const NewMessage  = (props: NewMessageProps) => {
             <div className={classes.formClass}>
              <TextField type="text" label="From:"
              variant="filled"
-             placeholder="From:" value={userMail} defaultValue='test' required
+             placeholder="From:" value={props.user?.profile.email} defaultValue='test' required
              disabled
              className={classes.oneliners}></TextField>
             <Autocomplete
