@@ -1,5 +1,4 @@
 ﻿using Inlook_API.Extensions;
-using Inlook_API.Models;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -23,43 +22,21 @@ namespace Inlook_API.Controllers
             this.userService = userService;
         }
 
-        [HttpGet]
-        public IActionResult GetUserList()
+        [HttpGet("GetUsersList")]
+        public IActionResult GetUsers()
         {
             var userId = this.GetUserId();
-            List<User> tmp = new List<User>();
-            tmp.Add(new User
+            var users = this.userService.ReadAllUsers();
+            var contacts = users.Select(u => new GetUserWithIdModel()
             {
-                Mail = "palpatine@sith.pis",
-                Favourite = false
-            });
-            tmp.Add(new User
-            {
-                Mail = "mariusz@pudzian.pl",
-                Favourite = true
-            });
-            tmp.Add(new User
-            {
-                Mail = "general.grivous@sith.pis",
-                Favourite = true
-            });
-            tmp.Add(new User
-            {
-                Mail = "adam_malysz102m@wp.pl",
-                Favourite = false
-            });
-            tmp.Add(new User
-            {
-                Mail = "andrzej@duda.pis",
-                Favourite = false
+                Email = u.Email,
+                Name = u.Name,
+                Id = u.Id
             });
 
-            tmp.Add(new User
-            {
-                Mail = "ziobro@ty.ku",
-                Favourite = false
-            });
-            return new JsonResult(tmp);
+            
+            // nullowe user mail
+            return new JsonResult(contacts.Where(u => u.Email != null));
         }
 
         [HttpGet("GetContactList")]
@@ -114,4 +91,3 @@ namespace Inlook_API.Controllers
        
     }
 }
-

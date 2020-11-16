@@ -7,13 +7,15 @@ const targetUrl = BASE_URL + "user/"
 
 
 export interface  UserModel {
-    mail: string 
-    favourite: boolean 
+    email: string;
+    name:string;
+    id: string;
 }
 
 export const getUsers = async () => {
     type T = IApiResponse<UserModel[]>;
-    return fetch(targetUrl ,{
+    let url = targetUrl+"getUsersList";
+    return fetch(url ,{
         method: "GET",
         headers: new Headers({
             'Accept': 'application/json',

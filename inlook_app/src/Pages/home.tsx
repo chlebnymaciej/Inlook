@@ -1,43 +1,24 @@
-import { User } from "oidc-client";
-import React, { useEffect, useState } from "react";
-import { getWeather, WeatherForecast } from "../Api/weatherApi";
-import userManager from "../Authorization/userManager";
+import { makeStyles } from "@material-ui/core";
+import React from "react";
+import inlookLogo from "./../Resources/logo_duze.png";
+const useStyles = makeStyles(theme => ({
+    header_my:{
+        margin:"auto",
+        display:"flex",
+        flexDirection:"column",
+        alignItems:"center",
+        justifyContent:"center"
+    }
+  }));
 
-interface HomeProps {
-    user: User | null;
-}
+const Home = () => {
+    const classes = useStyles();
 
-const Home = (props: HomeProps) => {
-    const [error,setError] = useState<string>();
-    const [weather,setWeather] = useState<WeatherForecast[]>();
-
-    useEffect(()=>{
-        getWeather().then(result => {
-            if(result.isError){
-                setError(result.errorMessage);
-            }
-            else{
-                setWeather(result.data);
-            }
-        })
-    },[props.user]);
-
-
-
-    return <>
-        {error ? 
-            <p>{error}</p>
-            :
-            <div>
-                {weather?.map((w,index) => <div key={index}>
-                        <p>{w?.dateTime}</p>
-                        <p>{w?.summary}</p>
-                        <p>{w?.temperatureC}</p>
-                    </div>)
-                }
-            </div>
-        }
-    </>
+    return <div className={classes.header_my} >
+        <img src={inlookLogo} alt="Inlook logo"/>
+        <h1>Inlook!</h1>
+        <h3>We make Outlook look retarded</h3>
+    </div>
     
 }
 

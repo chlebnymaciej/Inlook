@@ -1,10 +1,12 @@
 import { Button, makeStyles, TextField } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
+import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
 import Icon from '@material-ui/core/Icon';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
+import { postMail } from '../Api/sendMailApi';
 import { getUsers, UserModel } from "../Api/userApi";
 
 
@@ -48,10 +50,8 @@ const useStyles = makeStyles(theme => ({
 interface NewMessageProps {
     user: User | null;
 }
-interface SelectingUsers{
-    mail: string;
-    favourite: boolean;
-    selected: boolean;
+interface ValidationErrors {
+    to: string | null;
 }
 
 const NewMessage  = (props: NewMessageProps) => {
@@ -59,7 +59,11 @@ const NewMessage  = (props: NewMessageProps) => {
     const [users,setUsers] = useState<UserModel[]>([]);
     const [toUsers, setToUsers] = useState<UserModel[]>([]);
     const [ccUsers, setCcUsers] = useState<UserModel[]>([]);
+    const [subject, setSubject] = useState<string>("Hello There!");
+    const [mailValue, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
 
+    const [helperText, setHelperText] = useState<string>();
+    
     const classes = useStyles();
 
     useEffect(()=>{
@@ -69,19 +73,32 @@ const NewMessage  = (props: NewMessageProps) => {
             }
             else{
                 setUsers(result.data || []);
+                console.log(result.data);
             }
         })
     },[props.user]);
         
     const submitHandled = (e:any) => {
-        console.log(toUsers);
+        e.preventDefault();
         if(toUsers?.length===0)
         {
-            e.preventDefault();
+            setHelperText('Field "To" cannot be empty');
             return;
         }
+        setHelperText('');
+        postMail(
+        {
+        to:toUsers.map(x => x.id),
+        cc:toUsers.map(x => x.id),
+        subject:subject ||  null,
+        text:mailValue || null
+        });
       }
 
+    const handleSubjectChanged = (event: any) =>
+    {
+        setSubject(event.target.value);
+    }
     return <>
         {error ? 
             <p>{error}</p>
@@ -103,12 +120,12 @@ const NewMessage  = (props: NewMessageProps) => {
                         setToUsers(values);
                     }}
                 options={users}
-                getOptionLabel={(option) => option?.mail}
+                getOptionLabel={(option) => option?.email}
                 renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     <Chip
                     variant="outlined"
-                    label={option.mail}
+                    label={option.email}
                     size="small"
                     {...getTagProps({ index })}
                     />
@@ -119,6 +136,7 @@ const NewMessage  = (props: NewMessageProps) => {
                 <TextField {...params} InputLabelProps={{required:true}} variant="filled" label="To:" />
                 )}
             />
+           {helperText ? <FormHelperText className={classes.oneliners}>{helperText}</FormHelperText>:<></> }
             <Autocomplete
                 className={classes.oneliners}
                 multiple
@@ -130,12 +148,12 @@ const NewMessage  = (props: NewMessageProps) => {
                         setCcUsers(values);
                     }}
                 options={users}
-                getOptionLabel={(option) => option.mail}
+                getOptionLabel={(option) => option.email}
                 renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     <Chip
                     variant="outlined"
-                    label={option.mail}
+                    label={option.email}
                     size="small"
                     {...getTagProps({ index })}
                     />
@@ -146,12 +164,16 @@ const NewMessage  = (props: NewMessageProps) => {
                 )}
                 
             />
-              <TextField type="text" label="Subject" placeholder="Subject" variant="filled" required
+              <TextField type="text" label="Subject" placeholder="Subject" variant="filled"
               defaultValue="Hello There!"
-              className={classes.oneliners}></TextField>
+              className={classes.oneliners}
+              onChange={handleSubjectChanged}
+              ></TextField>
               <TextField type="text" label="Email text" variant="filled" rows="15"
               defaultValue={`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`}
-              className={classes.new_message} multiline></TextField>
+              className={classes.new_message} multiline
+              onChange={(event)=> setMail(event.target.value)}
+              ></TextField>
               <div className={classes.buttons}>
               <Button variant="contained" disabled color="default" className={classes.sendbutton}
                 startIcon={<CloudUploadIcon />}>Upload</Button>

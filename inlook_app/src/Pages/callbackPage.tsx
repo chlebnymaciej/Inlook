@@ -19,7 +19,7 @@ const CallbackPage = (props : CallbackPageProps) => {
         history.push("/");
     };
     const handleError = () => {
-        props.setUser(null)
+        props.setUser(null);
         history.push("/");
     };
     return(

@@ -7,5 +7,6 @@ namespace Inlook_Core.Interfaces.Services
 {
     public interface IGroupService : IBaseService<Group>
     {
+        IEnumerable<Group> GetAllGroups(Guid UserId);
     }
 }

@@ -165,7 +165,7 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ac24d94f-9232-4cd5-b9e1-60227f7515b6"),
+                            Id = new Guid("52140de9-21ce-4f21-8938-e315a56676a3"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
@@ -173,7 +173,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e8a6bc0d-4b7c-4ce3-be0e-8c408cd1b134"),
+                            Id = new Guid("9f5cfb74-e134-4051-ac02-480b9a7063ac"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
@@ -210,7 +210,7 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2c57652f-edea-4648-bbba-130049f47228"),
+                            Id = new Guid("bd2d1453-534d-4224-abf3-333cc618e465"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "polski@pingwin.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -219,7 +219,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5393d49e-9b66-404c-b962-fa2456e40a25"),
+                            Id = new Guid("e5ad9021-aa89-4d3a-98ba-dfaca1965446"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mariusz.pudzian@transport.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -227,7 +227,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a54d8181-da67-45b7-8202-e1b172f0b366"),
+                            Id = new Guid("8261ebee-5c7a-4c71-8743-46c10dbfe009"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mrpathix@elo.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -235,11 +235,43 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("24dcbe92-4975-4d39-b2a6-764c2873d6b5"),
+                            Id = new Guid("b61fe5a1-ab23-4090-a9f0-7617f8da0848"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nastepne@zawody.fi",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Janne Ahonen"
+                        },
+                        new
+                        {
+                            Id = new Guid("54234cda-98bc-41a0-a162-d15d8e20cab6"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "papiez_polak@vatican.vc",
+                            LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Jan Paweł"
+                        },
+                        new
+                        {
+                            Id = new Guid("404ce8ee-14be-4490-b5a4-7db489852aeb"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "kenobi@jedi.order",
+                            LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Obi-Wan Kenobi"
+                        },
+                        new
+                        {
+                            Id = new Guid("34931ceb-c487-461a-83d2-a48865e7c4e6"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "senat@sith.com",
+                            LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Palpatine"
+                        },
+                        new
+                        {
+                            Id = new Guid("971e065d-1877-4f60-be1a-3af198164391"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "plusydodatnie@soli.darnosc",
+                            LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Lech Wałęsa"
                         });
                 });
 
