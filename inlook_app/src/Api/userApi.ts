@@ -24,6 +24,18 @@ export const getUsers = async () => {
     }).then<T>(handleResponse).catch<T>(handleError);
 }
 
+export const getUserMail = async() => {
+    type T = IApiResponse<string>;
+    let url = targetUrl+"getMyMail";
+    return fetch(url ,{
+        method: "GET",
+        headers: new Headers({
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + await getUserToken(),
+        }),
+    }).then<T>(handleResponse).catch<T>(handleError);
+}
+
 export interface Contact {
     email: string;
     name: boolean;
