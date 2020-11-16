@@ -33,11 +33,9 @@ namespace Inlook_API.Controllers
                 Name = u.Name,
                 Id = u.Id
             });
-
-            
-            // nullowe user mail
             return new JsonResult(contacts.Where(u => u.Email != null));
-        }
+        }   
+
 
         [HttpGet("GetContactList")]
         public IActionResult GetContactList(int page, int pageSize, string searchText, string orderBy, string orderType)

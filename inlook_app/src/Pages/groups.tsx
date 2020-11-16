@@ -57,18 +57,22 @@ const Groups = (props: GroupsProps) => {
     }
   return (
     <div className={classes.root}>
-        <Button variant="contained" color="primary" endIcon={<GroupAddIcon />}
-         onClick={()=> history.push('/creategroup')}
-        >Create group</Button>
-        <div>
-            <h3> Groups list</h3>
-        { groups.length===0 ? <h3> No groups</h3>
-            :
-        <List className={classes.listClass}>
-            {groups.map(itemFunction)}
-        </List>
+        {error ? error : 
+        <>
+            <Button variant="contained" color="primary" endIcon={<GroupAddIcon />}
+            onClick={()=> history.push('/creategroup')}
+            >Create group</Button>
+            <div>
+                <h3> Groups list</h3>
+            { groups.length===0 ? <h3> No groups</h3>
+                :
+            <List className={classes.listClass}>
+                {groups.map(itemFunction)}
+            </List>
+            }
+            </div>
+        </>
         }
-        </div>
     </div>
   );
 };

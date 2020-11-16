@@ -2,7 +2,6 @@ import { Http2ServerResponse } from "http2"
 import getUserToken from "../Authorization/getUserToken"
 import { handleError, IApiResponse } from "./apiUtils"
 import { BASE_URL } from "./urls"
-import { UserModel } from "./userApi"
 
 const target_url = BASE_URL + "mail/"
 
