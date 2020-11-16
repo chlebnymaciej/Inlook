@@ -30,16 +30,21 @@ export interface Contact {
 
 export interface  ContactPageModel {
     contacts: Contact[];
-    totalPages: number;
+    totalCount: number;
     
 }
 
-export const getContactList = async (page :number= 1, pageSize: number= 10, searchText: string) => {
+
+export type OrderType = 'asc' | 'desc';
+
+export const getContactList = async (page :number= 0, pageSize: number= 10, searchText?: string, orderBy?: keyof Contact, orderType?: OrderType ) => {
     type T = IApiResponse<ContactPageModel>;
     let url = targetUrl + "getContactList";
     url += `?page=${page}`;
     url += `&pageSize=${pageSize}`;
-    url += `&searchText=${searchText}`;
+    if(searchText) url += `&searchText=${searchText}`;
+    if(orderBy) url += `&orderBy=${orderBy}`;
+    if(orderType) url += `&orderType=${orderType}`;
     return fetch(url ,{
         method: "GET",
         headers: new Headers({
