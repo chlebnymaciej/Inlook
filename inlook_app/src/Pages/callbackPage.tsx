@@ -20,7 +20,7 @@ const CallbackPage = (props : CallbackPageProps) => {
     };
     const handleError = () => {
         props.setUser(null);
-        //history.push("/");
+        history.push("/");
     };
     return(
         <Callback userManager={userManager} onSuccess={handleSuccess} onError={handleError}/>

@@ -24,28 +24,6 @@ namespace Inlook_API.Controllers
         public IActionResult PostMail([FromBody] PostMailModel mail)
         {
             var userId = this.GetUserId();
-
-            List<Guid> ToList = new List<Guid>();
-            foreach (string item in mail.To)
-            {
-                ToList.Add(Guid.Parse(item));
-            }
-            List<Guid> CCList = new List<Guid>();
-            foreach (string item in mail.CC)
-            {
-                CCList.Add(Guid.Parse(item));
-            }
-
-
-            var postMail = new PostMailEntityModel()
-            {
-                Sender = userId,
-                To = ToList.ToArray(),
-                CC = CCList.ToArray(),
-                Subject = mail.Subject,
-                Text = mail.Text
-            };
-            // send mail with userId as sender
             return NoContent();
         }
     }
