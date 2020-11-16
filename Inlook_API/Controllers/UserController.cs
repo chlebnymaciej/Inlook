@@ -33,20 +33,8 @@ namespace Inlook_API.Controllers
                 Name = u.Name,
                 Id = u.Id
             });
-
-            
-            // nullowe user mail
             return new JsonResult(contacts.Where(u => u.Email != null));
         }   
-        [HttpGet("GetMyMail")]
-        public IActionResult GetMyMail()
-        {
-            var userId = this.GetUserId();
-            var users = this.userService.ReadAllUsers();
-            string contacts = users.FirstOrDefault(u => u.Id==userId).Email;
-
-           return new JsonResult(contacts);
-        }
 
 
         [HttpGet("GetContactList")]

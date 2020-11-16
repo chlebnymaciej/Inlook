@@ -89,15 +89,7 @@ const NewMessage  = (props: NewMessageProps) => {
 
             }
         });
-        getUserMail().then(result => {
-            if(result.isError)
-                setError(result.errorMessage);
-            else
-            {
-                console.log(result.data);
-                setUserMail(result.data);
-            }
-        });
+        setUserMail(props.user?.profile.email);
     },[props.user]);
         
     const submitHandled = (e:any) => {
