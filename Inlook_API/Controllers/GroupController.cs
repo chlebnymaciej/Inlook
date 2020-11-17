@@ -5,6 +5,7 @@ using Inlook_Core.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace Inlook_API.Controllers
@@ -21,7 +22,7 @@ namespace Inlook_API.Controllers
             this.groupService = groupService;
         }
 
-        [HttpGet("getMyGroups")]
+        [HttpGet("GetMyGroups")]
         public IActionResult GetGroups()
         {
             var userId = this.GetUserId();
@@ -43,6 +44,7 @@ namespace Inlook_API.Controllers
                 }
                 resultsList.Add(new GetUserGroupModel()
                 {
+                    Id = item.Id,
                     Name = item.Name,
                     Users = listusers.ToArray()
                 });
@@ -52,10 +54,28 @@ namespace Inlook_API.Controllers
         }
 
 
-        [HttpPost("postGroup")]
+        [HttpPost("PostGroup")]
         public IActionResult PostGroup([FromBody] PostGroupModel createGroupModel)
         {
             var userId = this.GetUserId();
+            this.groupService.AddGroup(createGroupModel, userId);
+            return NoContent();
+        }
+
+        [HttpDelete("DeleteGroup")]
+        public IActionResult DeleteGroup([FromBody] string id)
+        {
+            var userId = this.GetUserId();
+            Guid group = Guid.Parse(id);
+            this.groupService.Delete(group);
+            return NoContent();
+        }
+
+        [HttpPut("UpdateGroup")]
+        public IActionResult UpdateGroup([FromBody] UpdateGroupModel model)
+        {
+            var userId = this.GetUserId();
+            this.groupService.UpdateGroup(model, userId);
             return NoContent();
         }
     }

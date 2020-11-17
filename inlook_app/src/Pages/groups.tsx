@@ -51,7 +51,9 @@ const Groups = (props: GroupsProps) => {
             (e)=> history.push({
                 pathname:'/groupinfo',
                 state: {user: props.user, group:x}
-            })}>
+            })}
+            key={x.id}
+            >
             <ListItemText primary={x.name} />
         </ListItem>);
     }

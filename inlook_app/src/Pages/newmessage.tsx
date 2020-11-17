@@ -6,6 +6,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
+import { useHistory } from 'react-router';
 import { getGroups, GroupModel } from '../Api/groupsApi';
 import { postMail } from '../Api/sendMailApi';
 import { getUsers, UserModel } from "../Api/userApi";
@@ -68,7 +69,7 @@ const NewMessage  = (props: NewMessageProps) => {
     const [mailValue, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
     
     const classes = useStyles();
-
+    const history = useHistory();
     useEffect(()=>{
         getUsers().then(result => {
             if(result.isError){
@@ -116,6 +117,7 @@ const NewMessage  = (props: NewMessageProps) => {
         subject:subject ||  null,
         text:mailValue || null
         });
+        history.push('/')
       }
 
     const handleSubjectChanged = (event: any) =>
