@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { postGroup } from "../Api/groupsApi";
+import { GroupModel, updateGroup } from "../Api/groupsApi";
 import { getUsers, UserModel } from "../Api/userApi";
 
 const useStyles = makeStyles({
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
       width:"50em",
       margin:"auto"
     },
-    errorClass:{
+    error:{
       margin:"auto",
       color:"red"
     },
@@ -48,20 +48,23 @@ const useStyles = makeStyles({
     }
 });
 
-interface CreateGroupsProps {
-    user: User | null;
-}
+interface GroupEditProps {
+    user: User;
+    group: GroupModel;
+  }
 
-const CreateGroups = (props: CreateGroupsProps) => {
+const EditGroup = (props: any) => {
+
+  const group: GroupEditProps =
+    (props.location && props.location.state) || {};
+  const classes = useStyles();
+  const history = useHistory();
   const [error,setError] = useState<string>();
   const [checked, setChecked] = useState<UserModel[]>([]);
   const [left, setLeft] = useState<UserModel[]>([]);
-  const [right, setRight] = useState<UserModel[]>([]);
+  const [right, setRight] = useState<UserModel[]>(group.group.users || []);
   const [errorText, setErrorText] = useState<string>('');
-  const [groupName, setGroupName] = useState<string>('');
-
-  const history = useHistory();
-  const classes = useStyles();
+  const [groupName, setGroupName] = useState<string>(group.group.name);
 
   const leftChecked:UserModel[] = checked.filter((x:UserModel)=> left.includes(x));
   const rightChecked:UserModel[] = checked.filter((x:UserModel)=> right.includes(x));
@@ -72,7 +75,13 @@ const CreateGroups = (props: CreateGroupsProps) => {
             setError(result.errorMessage);
         }
         else{
-            setLeft(result.data || []);
+            let users=group.group.users.map(z=> z.id);
+            let leftTmp = result.data?.filter(x =>
+                {
+                   return users.includes(x.id)===false
+                });
+
+            setLeft(leftTmp || []);
         }
     })
   },[props.user]);
@@ -147,10 +156,13 @@ const CreateGroups = (props: CreateGroupsProps) => {
       return;
     }
     
-    postGroup({name:groupName,
-    users:right.map(x => x.id)
-    });
-    history.push('/');
+    updateGroup(
+        {
+            id: group.group.id,
+            name:groupName,
+            users:right.map(x => x.id),
+        });
+    history.push('/groups');
   };
   return (
     <div>
@@ -158,10 +170,11 @@ const CreateGroups = (props: CreateGroupsProps) => {
       <TextField 
         label="Group Name"
         required
+        defaultValue={group.group.name}
         className={classes.nameField}
         onChange={(e)=> setGroupName(e.target.value)}
         ></TextField>
-      {errorText ? <FormHelperText className={classes.errorClass}>{errorText}</FormHelperText>:<></> }
+      {errorText ? <FormHelperText className={classes.error}>{errorText}</FormHelperText>:<></> }
 
       <Grid container spacing={2} justify="center" alignItems="center" className={classes.grid}>
       <Grid item>{customList(left)}</Grid>
@@ -208,10 +221,10 @@ const CreateGroups = (props: CreateGroupsProps) => {
       </Grid>
       <Grid item>{customList(right)}</Grid>
     </Grid>
-    <Button className={classes.button} type="submit">Create group</Button>
+    <Button className={classes.button} type="submit">Update group</Button>
     </form>
     </div>
   );
 };
 
-export default CreateGroups;
+export default EditGroup;

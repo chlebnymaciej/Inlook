@@ -8,8 +8,9 @@ const targetUrl = BASE_URL + "group/"
 
 
 export interface GroupModel {
+    id: string,
     name: string,
-    users: UserModel[] | null,
+    users: UserModel[],
 }
 
 export const getGroups = async () => {
@@ -42,4 +43,38 @@ export const postGroup  = async (group: CreateGroupModel) => {
     }).then<T>(handleResponse).catch<T>(handleError);
 }
 
+export const deleteGroup = async(groupId:string) =>
+{
+    let url = targetUrl+"deleteGroup";
+    type T = IApiResponse<Http2ServerResponse>;
+    return fetch(url ,{
+        method: "DELETE",
+        headers: new Headers({
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + await getUserToken(),
+            "Content-Type": "application/json"
+        }),
+        body: JSON.stringify(groupId)
+    }).then<T>(handleResponse).catch<T>(handleError);
+}
+
+export interface UpdateGroupModel{
+    id: string,
+    name: string,
+    users: string[],
+}
+export const updateGroup = async(group: UpdateGroupModel) =>
+{
+    let url = targetUrl+"updateGroup";
+    type T = IApiResponse<Http2ServerResponse>;
+    return fetch(url ,{
+        method: "PUT",
+        headers: new Headers({
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + await getUserToken(),
+            "Content-Type": "application/json"
+        }),
+        body: JSON.stringify(group)
+    }).then<T>(handleResponse).catch<T>(handleError);
+}
  
