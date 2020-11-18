@@ -148,8 +148,13 @@ const CreateGroups = (props: CreateGroupsProps) => {
     postGroup({
       name: groupName,
       users: right.map(x => x.id)
-    }).then(() => {
-      history.push('/groups');
+    }).then(r => {
+      if (r.isError) {
+        setErrorText("Something went wrong");
+      }
+      else {
+        history.push('/groups');
+      }
     });
 
   };
