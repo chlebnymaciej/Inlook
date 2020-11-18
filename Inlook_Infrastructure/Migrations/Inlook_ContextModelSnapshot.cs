@@ -125,7 +125,7 @@ namespace Inlook_Infrastructure.Migrations
                     b.Property<Guid>("RecipientId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("CC")
+                    b.Property<bool?>("CC")
                         .HasColumnType("bit");
 
                     b.Property<bool>("StatusRead")
@@ -165,7 +165,7 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("52140de9-21ce-4f21-8938-e315a56676a3"),
+                            Id = new Guid("32f2df14-63e8-4bb7-b34e-526d9456a406"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
@@ -173,7 +173,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9f5cfb74-e134-4051-ac02-480b9a7063ac"),
+                            Id = new Guid("4092c467-5f46-4611-b6e9-66b31c8dec36"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
@@ -210,7 +210,7 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bd2d1453-534d-4224-abf3-333cc618e465"),
+                            Id = new Guid("9a06a3ef-af7d-4676-8f3e-ba0cc19e3ffa"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "polski@pingwin.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -219,7 +219,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e5ad9021-aa89-4d3a-98ba-dfaca1965446"),
+                            Id = new Guid("48e9d25e-e397-4dbd-89fa-3a754bd857ea"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mariusz.pudzian@transport.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -227,7 +227,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8261ebee-5c7a-4c71-8743-46c10dbfe009"),
+                            Id = new Guid("d18c174a-3818-49a9-be0e-4e7f70ceb22f"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mrpathix@elo.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -235,7 +235,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b61fe5a1-ab23-4090-a9f0-7617f8da0848"),
+                            Id = new Guid("7c513bc2-d20c-4824-89ab-633205820a69"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nastepne@zawody.fi",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -243,7 +243,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("54234cda-98bc-41a0-a162-d15d8e20cab6"),
+                            Id = new Guid("4ec0bd1a-44b7-40ab-960a-a92fba662649"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "papiez_polak@vatican.vc",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -251,7 +251,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("404ce8ee-14be-4490-b5a4-7db489852aeb"),
+                            Id = new Guid("b6077114-2532-412d-a457-6f411c3b14d2"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kenobi@jedi.order",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -259,7 +259,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("34931ceb-c487-461a-83d2-a48865e7c4e6"),
+                            Id = new Guid("120ccc29-f9f9-41f9-83fc-5c34c58cca9b"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "senat@sith.com",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -267,7 +267,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("971e065d-1877-4f60-be1a-3af198164391"),
+                            Id = new Guid("c85a460e-d830-40db-b140-a44b4913a9a0"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "plusydodatnie@soli.darnosc",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),

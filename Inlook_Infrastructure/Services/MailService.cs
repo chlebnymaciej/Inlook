@@ -17,15 +17,14 @@ namespace Inlook_Infrastructure.Services
         {
             Guid id = Guid.NewGuid();
             ICollection<MailTo> recipients = new HashSet<MailTo>();
-            Guid groupId = Guid.NewGuid();
 
             foreach (string item in mail.To)
             {
                 recipients.Add(new MailTo()
                 { 
                     RecipientId = Guid.Parse(item),
-                    MailId = groupId,
-                    CC = false,
+                    MailId = id,
+                    CC = null,
                     StatusRead= false
                 });
             }
@@ -34,8 +33,18 @@ namespace Inlook_Infrastructure.Services
                 recipients.Add(new MailTo()
                 {
                     RecipientId = Guid.Parse(item),
-                    MailId = groupId,
+                    MailId = id,
                     CC = true,
+                    StatusRead = false
+                });
+            }
+            foreach (string item in mail.BCC)
+            {
+                recipients.Add(new MailTo()
+                {
+                    RecipientId = Guid.Parse(item),
+                    MailId = id,
+                    CC = false,
                     StatusRead = false
                 });
             }

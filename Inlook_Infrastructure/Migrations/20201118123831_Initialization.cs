@@ -180,7 +180,7 @@ namespace Inlook_Infrastructure.Migrations
                 {
                     MailId = table.Column<Guid>(nullable: false),
                     RecipientId = table.Column<Guid>(nullable: false),
-                    CC = table.Column<bool>(nullable: false),
+                    CC = table.Column<bool>(nullable: true),
                     StatusRead = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -205,8 +205,8 @@ namespace Inlook_Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedDate", "LastModifiedDate", "Name", "Priority" },
                 values: new object[,]
                 {
-                    { new Guid("52140de9-21ce-4f21-8938-e315a56676a3"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", 0 },
-                    { new Guid("9f5cfb74-e134-4051-ac02-480b9a7063ac"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", 0 }
+                    { new Guid("32f2df14-63e8-4bb7-b34e-526d9456a406"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", 0 },
+                    { new Guid("4092c467-5f46-4611-b6e9-66b31c8dec36"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -214,14 +214,14 @@ namespace Inlook_Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedDate", "Email", "LastModifiedDate", "Name", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("bd2d1453-534d-4224-abf3-333cc618e465"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "polski@pingwin.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Stuart Burton", " + 48696969696" },
-                    { new Guid("e5ad9021-aa89-4d3a-98ba-dfaca1965446"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mariusz.pudzian@transport.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mariusz Pudzianowski", null },
-                    { new Guid("8261ebee-5c7a-4c71-8743-46c10dbfe009"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mrpathix@elo.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pan Paweł", null },
-                    { new Guid("b61fe5a1-ab23-4090-a9f0-7617f8da0848"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nastepne@zawody.fi", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Janne Ahonen", null },
-                    { new Guid("54234cda-98bc-41a0-a162-d15d8e20cab6"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "papiez_polak@vatican.vc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jan Paweł", null },
-                    { new Guid("404ce8ee-14be-4490-b5a4-7db489852aeb"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kenobi@jedi.order", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Obi-Wan Kenobi", null },
-                    { new Guid("34931ceb-c487-461a-83d2-a48865e7c4e6"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "senat@sith.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Palpatine", null },
-                    { new Guid("971e065d-1877-4f60-be1a-3af198164391"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null }
+                    { new Guid("9a06a3ef-af7d-4676-8f3e-ba0cc19e3ffa"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "polski@pingwin.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Stuart Burton", " + 48696969696" },
+                    { new Guid("48e9d25e-e397-4dbd-89fa-3a754bd857ea"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mariusz.pudzian@transport.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mariusz Pudzianowski", null },
+                    { new Guid("d18c174a-3818-49a9-be0e-4e7f70ceb22f"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mrpathix@elo.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pan Paweł", null },
+                    { new Guid("7c513bc2-d20c-4824-89ab-633205820a69"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nastepne@zawody.fi", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Janne Ahonen", null },
+                    { new Guid("4ec0bd1a-44b7-40ab-960a-a92fba662649"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "papiez_polak@vatican.vc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jan Paweł", null },
+                    { new Guid("b6077114-2532-412d-a457-6f411c3b14d2"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kenobi@jedi.order", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Obi-Wan Kenobi", null },
+                    { new Guid("120ccc29-f9f9-41f9-83fc-5c34c58cca9b"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "senat@sith.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Palpatine", null },
+                    { new Guid("c85a460e-d830-40db-b140-a44b4913a9a0"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null }
                 });
 
             migrationBuilder.CreateIndex(
