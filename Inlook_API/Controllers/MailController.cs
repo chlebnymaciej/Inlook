@@ -3,9 +3,6 @@ using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace Inlook_API.Controllers
 {
