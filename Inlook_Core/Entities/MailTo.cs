@@ -10,7 +10,12 @@ namespace Inlook_Core.Entities
         public Guid MailId { get; set; }
         public User Recipient { get; set; }
         public Guid RecipientId { get; set; }
-        public bool CC { get; set; }
+   /// <summary>
+///    True - CC
+///    False - BCC
+///    NULL - normal message
+/// </summary>
+        public bool? CC { get; set; }
         public bool StatusRead { get; set; }
     }
 }
