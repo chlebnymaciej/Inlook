@@ -17,6 +17,10 @@ namespace Inlook_Infrastructure.Configurations
             builder.HasOne(g => g.GroupOwner)
                 .WithMany(u => u.GroupsOwned)
                 .HasForeignKey(g => g.GroupOwnerId);
+
+            builder.Property(g => g.Name)
+                .IsRequired()
+                .HasMaxLength(40);
         }
     }
 }
