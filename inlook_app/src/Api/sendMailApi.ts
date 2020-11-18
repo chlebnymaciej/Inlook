@@ -8,6 +8,7 @@ const target_url = BASE_URL + "mail/"
 export interface MailModel {
     to: string[];
     cc:string[]  | null;
+    bcc:string[] | null;
     subject:string | null;
     text:string | null;
 }
