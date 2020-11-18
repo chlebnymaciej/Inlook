@@ -12,46 +12,46 @@ import { GroupModel, updateGroup } from "../Api/groupsApi";
 import { getUsers, UserModel } from "../Api/userApi";
 
 const useStyles = makeStyles({
-    root:{
-       display:"flex",
-       flexDirection:"column",
-       width:"80%",
-       margin:"1em auto auto auto",
-       color:"black"
-    },
-    grid:{
-      width:"80%",
-      margin:"1em auto auto auto",
-      color:"black"
-    },
-    paper: {
-      width:"25em",
-      overflow: 'auto',
-    },
-    nameField:{
-      width:"50em",
-      margin:"auto"
-    },
-    error:{
-      margin:"auto",
-      color:"red"
-    },
-    button:{
-      background:"#487EB0",
-      color:"white",
-      width:"15em",
-      margin:"auto",
-      '&:hover':{
-        backgroundColor:"#DAE0E2",
-        color:"black"
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    width: "80%",
+    margin: "1em auto auto auto",
+    color: "black"
+  },
+  grid: {
+    width: "80%",
+    margin: "1em auto auto auto",
+    color: "black"
+  },
+  paper: {
+    width: "25em",
+    overflow: 'auto',
+  },
+  nameField: {
+    width: "50em",
+    margin: "auto"
+  },
+  error: {
+    margin: "auto",
+    color: "red"
+  },
+  button: {
+    background: "#487EB0",
+    color: "white",
+    width: "15em",
+    margin: "auto",
+    '&:hover': {
+      backgroundColor: "#DAE0E2",
+      color: "black"
     }
-    }
+  }
 });
 
 interface GroupEditProps {
-    user: User;
-    group: GroupModel;
-  }
+  user: User;
+  group: GroupModel;
+}
 
 const EditGroup = (props: any) => {
 
@@ -59,32 +59,31 @@ const EditGroup = (props: any) => {
     (props.location && props.location.state) || {};
   const classes = useStyles();
   const history = useHistory();
-  const [error,setError] = useState<string>();
+  const [error, setError] = useState<string>();
   const [checked, setChecked] = useState<UserModel[]>([]);
   const [left, setLeft] = useState<UserModel[]>([]);
   const [right, setRight] = useState<UserModel[]>(group.group.users || []);
   const [errorText, setErrorText] = useState<string>('');
   const [groupName, setGroupName] = useState<string>(group.group.name);
 
-  const leftChecked:UserModel[] = checked.filter((x:UserModel)=> left.includes(x));
-  const rightChecked:UserModel[] = checked.filter((x:UserModel)=> right.includes(x));
+  const leftChecked: UserModel[] = checked.filter((x: UserModel) => left.includes(x));
+  const rightChecked: UserModel[] = checked.filter((x: UserModel) => right.includes(x));
 
-  useEffect(()=>{
+  useEffect(() => {
     getUsers().then(result => {
-        if(result.isError){
-            setError(result.errorMessage);
-        }
-        else{
-            let users=group.group.users.map(z=> z.id);
-            let leftTmp = result.data?.filter(x =>
-                {
-                   return users.includes(x.id)===false
-                });
+      if (result.isError) {
+        setError(result.errorMessage);
+      }
+      else {
+        let users = group.group.users.map(z => z.id);
+        let leftTmp = result.data?.filter(x => {
+          return users.includes(x.id) === false
+        });
 
-            setLeft(leftTmp || []);
-        }
+        setLeft(leftTmp || []);
+      }
     })
-  },[props.user]);
+  }, [props.user]);
 
   const handleToggle = (value: UserModel) => () => {
     const currentIndex = checked.indexOf(value);
@@ -134,95 +133,95 @@ const EditGroup = (props: any) => {
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
-    setLeft(left.filter((x:UserModel)=> !leftChecked.includes(x)));
+    setLeft(left.filter((x: UserModel) => !leftChecked.includes(x)));
     setChecked([]);
   };
 
   const handleCheckedLeft = () => {
     setLeft(left.concat(rightChecked));
-    setRight(right.filter((x:UserModel)=> !rightChecked.includes(x)));
+    setRight(right.filter((x: UserModel) => !rightChecked.includes(x)));
     setChecked([]);
   };
-  const handleSubmit = (e:any)=>{
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    if(right.length===0)
-    {
+    if (right.length === 0) {
       setErrorText('List of user in group cannot be empty.');
       return;
     }
-    if(!groupName)
-    {
+    if (!groupName) {
       setErrorText('Group name cannot be empty.');
       return;
     }
-    
+
     updateGroup(
-        {
-            id: group.group.id,
-            name:groupName,
-            users:right.map(x => x.id),
-        });
-    history.push('/groups');
+      {
+        id: group.group.id,
+        name: groupName,
+        users: right.map(x => x.id),
+      }).then(() => {
+        history.push('/groups');
+      });
+
   };
   return (
     <div>
       <form className={classes.root} onSubmit={handleSubmit}>
-      <TextField 
-        label="Group Name"
-        required
-        defaultValue={group.group.name}
-        className={classes.nameField}
-        onChange={(e)=> setGroupName(e.target.value)}
+        <TextField
+          label="Group Name"
+          required
+          defaultValue={group.group.name}
+          className={classes.nameField}
+          onChange={(e) => setGroupName(e.target.value)}
         ></TextField>
-      {errorText ? <FormHelperText className={classes.error}>{errorText}</FormHelperText>:<></> }
+        {errorText ? <FormHelperText className={classes.error}>{errorText}</FormHelperText> : <></>}
 
-      <Grid container spacing={2} justify="center" alignItems="center" className={classes.grid}>
-      <Grid item>{customList(left)}</Grid>
-      <Grid item>
-        <Grid container direction="column" alignItems="center">
-          <Button
-            variant="outlined"
-            size="small"
-            disabled={left.length === 0}
-            onClick={handleAllRight}
-            aria-label="move all right"
-          >
-            ≫
+        <Grid container spacing={2} justify="center" alignItems="center" className={classes.grid}>
+          <Grid item>{customList(left)}</Grid>
+          <Grid item>
+            <Grid container direction="column" alignItems="center">
+              <Button
+                variant="outlined"
+                size="small"
+                disabled={left.length === 0}
+                onClick={handleAllRight}
+                aria-label="move all right"
+              >
+                ≫
           </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            aria-label="move selected right"
-            onClick={handleCheckedRight}
-            disabled={leftChecked.length===0}
-          >
-            &gt;
+              <Button
+                variant="outlined"
+                size="small"
+                aria-label="move selected right"
+                onClick={handleCheckedRight}
+                disabled={leftChecked.length === 0}
+              >
+                &gt;
           </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            aria-label="move selected left"
-            onClick={handleCheckedLeft}
-            disabled={rightChecked.length===0}
-            
-          >
-            &lt;
+              <Button
+                variant="outlined"
+                size="small"
+                aria-label="move selected left"
+                onClick={handleCheckedLeft}
+                disabled={rightChecked.length === 0}
+
+              >
+                &lt;
           </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            disabled={right.length === 0}
-            aria-label="move all left"
-            onClick={handleAllLeft}
-          >
-            ≪
+              <Button
+                variant="outlined"
+                size="small"
+                disabled={right.length === 0}
+                aria-label="move all left"
+                onClick={handleAllLeft}
+              >
+                ≪
           </Button>
+            </Grid>
+          </Grid>
+          <Grid item>{customList(right)}</Grid>
         </Grid>
-      </Grid>
-      <Grid item>{customList(right)}</Grid>
-    </Grid>
-    <Button className={classes.button} type="submit">Update group</Button>
-    </form>
+        <Button className={classes.button} type="submit">Update group</Button>
+      </form>
     </div>
   );
 };
