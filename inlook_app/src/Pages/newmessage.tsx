@@ -1,5 +1,7 @@
-import { Button, makeStyles, TextField } from '@material-ui/core';
+import { Button, DialogActions, DialogContent, DialogContentText, makeStyles, TextField } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
+import Dialog from '@material-ui/core/Dialog/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
 import Icon from '@material-ui/core/Icon';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -10,6 +12,8 @@ import { useHistory } from 'react-router';
 import { getGroups, GroupModel } from '../Api/groupsApi';
 import { postMail } from '../Api/sendMailApi';
 import { getUsers, UserModel } from "../Api/userApi";
+import { TransitionProps } from "@material-ui/core/transitions";
+import Slide from '@material-ui/core/Slide/Slide';
 
 
 const useStyles = makeStyles(theme => ({
@@ -66,7 +70,13 @@ interface NewMessageProps {
 interface ValidationErrors {
     to: string | null;
 }
-
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & { children?: React.ReactElement<any, any> },
+    ref: React.Ref<unknown>,
+  ) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+  
 const NewMessage = (props: NewMessageProps) => {
     const [error, setError] = useState<string>();
     const [groups, setGroups] = useState<GroupModel[]>([]);
@@ -80,43 +90,17 @@ const NewMessage = (props: NewMessageProps) => {
     const [bccGroups, setBccGroups] = useState<GroupModel[]>([]);
     const [subject, setSubject] = useState<string>("Hello There!");
     const [mailValue, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
-
-    const classes = useStyles();
-    const history = useHistory();
-    useEffect(() => {
-        getUsers().then(result => {
-            if (result.isError) {
-                setError(result.errorMessage);
-            }
-            else {
-                setUsers(result.data || []);
-            }
-        });
-        getGroups().then(result => {
-            if (result.isError) {
-                setError(result.errorMessage);
-            }
-            else {
-                setGroups(result.data || []);
-
-            }
-        });
-    }, [props.user]);
-
-    const submitHandled = (e: any) => {
-        e.preventDefault();
-        if (toUsers?.length === 0 && toGroups?.length === 0) {
-            setHelperText('Field "To" or "To groups" cannot be empty');
-            return;
-        }
-
+    const [open, setOpen] = useState<boolean>(false);
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const sendMail = () => {
         setHelperText('');
         let bccuser = new Set<UserModel>();
         bccUsers.forEach(x => bccuser.add(x));
         bccGroups.forEach(x => {
             x.users?.forEach(y => bccuser.add(y));
         });
-
         let ccuser = new Set<UserModel>();
         ccUsers.forEach(x => {
             if (!(bccuser.has(x)))
@@ -157,18 +141,62 @@ const NewMessage = (props: NewMessageProps) => {
                     history.push('/')
                 }
             });
+        setOpen(false);
+    };
+  
+    const classes = useStyles();
+    const history = useHistory();
+    useEffect(() => {
+        getUsers().then(result => {
+            if (result.isError) {
+                setError(result.errorMessage);
+            }
+            else {
+                setUsers(result.data || []);
+            }
+        });
+        getGroups().then(result => {
+            if (result.isError) {
+                setError(result.errorMessage);
+            }
+            else {
+                setGroups(result.data || []);
+
+            }
+        });
+    }, [props.user]);
+
+    const submitHandled = (e: any) => {
+        e.preventDefault();
+        if (toUsers?.length === 0 && toGroups?.length === 0) {
+            setHelperText('Field "To" or "To groups" cannot be empty');
+            return;
+        }
+        if(subject.length<1 || mailValue.length<1)
+        {
+            setOpen(true);
+            return;
+        }
+        sendMail();
     }
 
-    const handleSubjectChanged = (event: any) => {
-        setSubject(event.target.value);
+    const sendEmptyHandler = () =>{
+        if(subject.length<1)
+        {
+            setSubject('(empty)');
+        }
+        if(mailValue.length<1)
+        {
+            setMail('(empty)');
+        }   
+        sendMail();
     }
-
-
 
     return <>
         {error ?
             <p>{error}</p>
             :
+            <div>
             <form onSubmit={submitHandled}>
                 <div className={classes.formClass}>
                     <TextField type="text" label="From:"
@@ -322,7 +350,7 @@ const NewMessage = (props: NewMessageProps) => {
                         variant="filled"
                         defaultValue={subject}
                         className={classes.oneliners}
-                        onChange={handleSubjectChanged}
+                        onChange={(event: any) => setSubject(event.target.value)}
                     ></TextField>
                     <TextField
                         type="text"
@@ -345,6 +373,30 @@ const NewMessage = (props: NewMessageProps) => {
                             endIcon={<Icon>send</Icon>}>Send </Button></div>
                 </div>
             </form>
+            <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+                >
+                <DialogTitle id="alert-dialog-slide-title">{"Tell me want you want?"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    Do you really want to send message witohut subject or text?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                    No
+                    </Button>
+                <Button onClick={sendEmptyHandler} color="primary">
+                    Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            </div>
         }
     </>
 
