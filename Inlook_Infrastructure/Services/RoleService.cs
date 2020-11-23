@@ -8,11 +8,9 @@ namespace Inlook_Infrastructure.Services
 {
     public class RoleService : BaseService<Role>, IRoleService
     {
-        private readonly Inlook_Context context;
 
         public RoleService(Inlook_Context context) : base(context)
         {
-            this.context = context;
         }
     }
 }

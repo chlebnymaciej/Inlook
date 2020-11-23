@@ -12,50 +12,50 @@ import CreateGroups from "./Pages/groupCreate";
 import GroupInfo from "./Pages/groupInfo";
 import Groups from "./Pages/groups";
 import Home from "./Pages/home";
-import Inbox from "./Pages/inbox";
+import Inbox from "./Pages/Inbox/inbox";
 import NewMessage from "./Pages/newmessage";
 import ContactList from "./Pages/contactList";
 import EditGroup from "./Pages/groupEdit";
 
-const Pages = () =>  {
-  const [user,setUser] = useState<User | null>(null)
+const Pages = () => {
+  const [user, setUser] = useState<User | null>(null)
 
-  useEffect(()=>{
+  useEffect(() => {
     (async () => {
       setUser(await userManager.getUser())
     })();
-  },[])
+  }, [])
 
-    return (<div style={{height:"100vh", display:"flex", flexDirection:"column"}}>
-      <BrowserRouter>
-        <Topbar user={user} />
-        <Switch>
+  return (<div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <BrowserRouter>
+      <Topbar user={user} />
+      <Switch>
         <Route path="/callback">
-          <CallbackPage setUser={setUser}/>
+          <CallbackPage setUser={setUser} />
         </Route>
         <Route path="/newmessage">
-          <NewMessage user={user}/>
+          <NewMessage user={user} />
         </Route>
         <Route path="/contacts">
           <ContactList />
         </Route>
         <Route path="/inbox">
-          <Inbox/>
+          <Inbox />
         </Route>
         <Route path="/groups">
-          <Groups user={user}/>
+          <Groups user={user} />
         </Route>
-        <Route path="/groupinfo" component={GroupInfo}/>
+        <Route path="/groupinfo" component={GroupInfo} />
         <Route path="/groupEdit" component={EditGroup} />
         <Route path="/creategroup">
-          <CreateGroups user={user}/>
-          </Route>
+          <CreateGroups user={user} />
+        </Route>
         <Route path="/">
-          <Home/>
+          <Home />
         </Route>
       </Switch>
     </BrowserRouter>
-    </div>
-    );
-  };
-  export default Pages;
+  </div>
+  );
+};
+export default Pages;

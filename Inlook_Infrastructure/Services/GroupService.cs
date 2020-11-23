@@ -11,11 +11,9 @@ namespace Inlook_Infrastructure.Services
 {
     public class GroupService : BaseService<Group>, IGroupService
     {
-        private readonly Inlook_Context context;
 
         public GroupService(Inlook_Context context) : base(context)
         {
-            this.context = context;
         }
 
         public void AddGroup(PostGroupModel model, Guid ownerId)

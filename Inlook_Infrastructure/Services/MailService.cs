@@ -1,8 +1,10 @@
 ﻿using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Inlook_Infrastructure.Services
@@ -13,6 +15,7 @@ namespace Inlook_Infrastructure.Services
         {
         }
 
+
         public void SendMail(PostMailModel mail, Guid ownerId)
         {
             Guid id = Guid.NewGuid();
@@ -21,11 +24,11 @@ namespace Inlook_Infrastructure.Services
             foreach (string item in mail.To)
             {
                 recipients.Add(new MailTo()
-                { 
+                {
                     RecipientId = Guid.Parse(item),
                     MailId = id,
                     CC = null,
-                    StatusRead= false
+                    StatusRead = false
                 });
             }
             foreach (string item in mail.CC)
@@ -58,6 +61,14 @@ namespace Inlook_Infrastructure.Services
             };
 
             Create(mailEnt);
+        }
+
+        public void SetRead(Guid mailId, Guid recipmentId, bool read)
+        {
+            var recipients = this.context.Mails.Where(m => m.Id == mailId).Include(m => m.Recipients).FirstOrDefault().Recipients;
+            var mailto = recipients.Where(x => x.RecipientId == recipmentId).FirstOrDefault();
+            mailto.StatusRead = read;
+            this.context.SaveChanges();
         }
     }
 }
