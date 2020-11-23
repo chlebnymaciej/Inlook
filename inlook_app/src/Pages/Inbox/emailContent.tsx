@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ReplyIcon from '@material-ui/icons/Reply';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { EmailProps } from '../../Api/mailApi';
 
 export interface EmailContentProps {
@@ -11,12 +11,22 @@ export interface EmailContentProps {
 }
 
 const EmailContent = (props: EmailContentProps) => {
+    const [to,setTo] = useState<string>('');
+    const [cc,setCC] = useState<string>('');
+    useEffect(()=>{
+        setTo(props.email.to.map(x=> x.email).join("; "));
+        setCC(props.email.cc.map(x=> x.email).join("; "))
+    },[props.email]);
+    props.email.to.map(x => x.email);
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <header style={{ alignSelf: 'center', fontWeight: 'bold', fontSize: '1.5rem', marginLeft: '5%', marginBottom: '2%' }}>
                 {props.email.subject}
             </header>
             <div style={{ display: 'flex', height: '90%', justifyContent: 'felxstart', }}>
+                <div>From: {props.email.from.email}</div>
+                <div>To: {to}</div>
+                <div>CC: {cc}</div>
                 <ListItemAvatar >
                     <Avatar alt={props.email.from.name} src="/static/images/avatar/1.jpg" />
                 </ListItemAvatar>
