@@ -28,8 +28,8 @@ namespace Inlook_API.Controllers
             return NoContent();
         }
 
-        [HttpGet("GetMail")]
-        public IActionResult GetMail()
+        [HttpGet("GetMails")]
+        public IActionResult GetMails()
         {
             var userId = this.GetUserId();
             var mails = _userService.GetMails(userId);
@@ -37,20 +37,10 @@ namespace Inlook_API.Controllers
         }
 
         [HttpPut("ReadMailStatus")]
-        public IActionResult ReadMailStatus([FromBody] string MailId)
+        public IActionResult ReadMailStatus([FromBody] PutMailStatusModel mailStatus)
         {
             var userId = this.GetUserId();
-            Guid mailId = Guid.Parse(MailId);
-            this._mailService.SetRead(mailId, userId);
-            return NoContent();
-        }
-
-        [HttpPut("UnreadMailStatus")]
-        public IActionResult UnreadMailStatus([FromBody] string MailId)
-        {
-            var userId = this.GetUserId();
-            Guid mailId = Guid.Parse(MailId);
-            this._mailService.SetRead(mailId, userId);
+            this._mailService.SetRead(mailStatus.MailId, userId, mailStatus.Read);
             return NoContent();
         }
     }

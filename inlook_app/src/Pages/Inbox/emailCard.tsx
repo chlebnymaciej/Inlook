@@ -5,7 +5,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { EmailProps } from './inbox';
+import { EmailProps } from '../../Api/mailApi';
 
 export interface EmailCardProps {
     email: EmailProps;

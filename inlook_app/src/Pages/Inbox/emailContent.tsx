@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import { Divider, IconButton, ListItem } from '@material-ui/core';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import ReplyIcon from '@material-ui/icons/Reply';
 import Button from '@material-ui/core/Button';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import List from '@material-ui/core/List';
-import DateRangeIcon from '@material-ui/icons/DateRange';
-import { EmailProps } from './inbox';
+import ReplyIcon from '@material-ui/icons/Reply';
+import React from 'react';
+import { EmailProps } from '../../Api/mailApi';
 
 export interface EmailContentProps {
     email: EmailProps;

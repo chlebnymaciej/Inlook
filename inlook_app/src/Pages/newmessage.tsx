@@ -10,7 +10,7 @@ import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router';
 import { getGroups, GroupModel } from '../Api/groupsApi';
-import { postMail } from '../Api/sendMailApi';
+import { postMail } from '../Api/mailApi';
 import { getUsers, UserModel } from "../Api/userApi";
 import { TransitionProps } from "@material-ui/core/transitions";
 import Slide from '@material-ui/core/Slide/Slide';
@@ -73,10 +73,10 @@ interface ValidationErrors {
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement<any, any> },
     ref: React.Ref<unknown>,
-  ) {
+) {
     return <Slide direction="up" ref={ref} {...props} />;
-  });
-  
+});
+
 const NewMessage = (props: NewMessageProps) => {
     const [error, setError] = useState<string>();
     const [groups, setGroups] = useState<GroupModel[]>([]);
@@ -92,7 +92,7 @@ const NewMessage = (props: NewMessageProps) => {
     const [mailValue, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
     const [open, setOpen] = useState<boolean>(false);
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
     const sendMail = () => {
         setHelperText('');
@@ -143,7 +143,7 @@ const NewMessage = (props: NewMessageProps) => {
             });
         setOpen(false);
     };
-  
+
     const classes = useStyles();
     const history = useHistory();
     useEffect(() => {
@@ -172,23 +172,20 @@ const NewMessage = (props: NewMessageProps) => {
             setHelperText('Field "To" or "To groups" cannot be empty');
             return;
         }
-        if(subject.length<1 || mailValue.length<1)
-        {
+        if (subject.length < 1 || mailValue.length < 1) {
             setOpen(true);
             return;
         }
         sendMail();
     }
 
-    const sendEmptyHandler = () =>{
-        if(subject.length<1)
-        {
+    const sendEmptyHandler = () => {
+        if (subject.length < 1) {
             setSubject('(empty)');
         }
-        if(mailValue.length<1)
-        {
+        if (mailValue.length < 1) {
             setMail('(empty)');
-        }   
+        }
         sendMail();
     }
 
@@ -197,205 +194,205 @@ const NewMessage = (props: NewMessageProps) => {
             <p>{error}</p>
             :
             <div>
-            <form onSubmit={submitHandled}>
-                <div className={classes.formClass}>
-                    <TextField type="text" label="From:"
-                        variant="filled"
-                        placeholder="From:" value={props.user?.profile.email} defaultValue='test' required
-                        disabled
-                        className={classes.oneliners}></TextField>
-                    <div className={classes.inputGetters}>
-                        <Autocomplete
-                            className={classes.halfliners}
-                            id="to_field"
-                            multiple
-                            size="small"
-                            onChange={(object, values) => setToUsers(values)}
-                            options={users}
-                            getOptionLabel={(option) => option?.email}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip
-                                        variant="outlined"
-                                        label={option.email}
-                                        size="small"
-                                        {...getTagProps({ index })}
-                                    />
-                                ))
-                            }
-                            renderInput={(params) => (
-                                <TextField {...params} InputLabelProps={{ required: true }} variant="filled" label="To:" />
-                            )}
-                        />
-                        <Autocomplete
-                            className={classes.halfliners}
-                            id="to_group_field"
-                            multiple
-                            size="small"
-                            onChange={(object, values) => setToGroups(values)}
-                            options={groups}
-                            getOptionLabel={(option) => option?.name}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip
-                                        variant="outlined"
-                                        label={option.name}
-                                        size="small"
-                                        {...getTagProps({ index })}
-                                    />
-                                ))
-                            }
-                            renderInput={(params) => (
-                                <TextField {...params} InputLabelProps={{ required: true }} variant="filled" label="To groups:" />
-                            )}
-                        />
+                <form onSubmit={submitHandled}>
+                    <div className={classes.formClass}>
+                        <TextField type="text" label="From:"
+                            variant="filled"
+                            placeholder="From:" value={props.user?.profile.email} defaultValue='test' required
+                            disabled
+                            className={classes.oneliners}></TextField>
+                        <div className={classes.inputGetters}>
+                            <Autocomplete
+                                className={classes.halfliners}
+                                id="to_field"
+                                multiple
+                                size="small"
+                                onChange={(object, values) => setToUsers(values)}
+                                options={users}
+                                getOptionLabel={(option) => option?.email}
+                                renderTags={(value, getTagProps) =>
+                                    value.map((option, index) => (
+                                        <Chip
+                                            variant="outlined"
+                                            label={option.email}
+                                            size="small"
+                                            {...getTagProps({ index })}
+                                        />
+                                    ))
+                                }
+                                renderInput={(params) => (
+                                    <TextField {...params} InputLabelProps={{ required: true }} variant="filled" label="To:" />
+                                )}
+                            />
+                            <Autocomplete
+                                className={classes.halfliners}
+                                id="to_group_field"
+                                multiple
+                                size="small"
+                                onChange={(object, values) => setToGroups(values)}
+                                options={groups}
+                                getOptionLabel={(option) => option?.name}
+                                renderTags={(value, getTagProps) =>
+                                    value.map((option, index) => (
+                                        <Chip
+                                            variant="outlined"
+                                            label={option.name}
+                                            size="small"
+                                            {...getTagProps({ index })}
+                                        />
+                                    ))
+                                }
+                                renderInput={(params) => (
+                                    <TextField {...params} InputLabelProps={{ required: true }} variant="filled" label="To groups:" />
+                                )}
+                            />
+                        </div>
+                        {helperText ? <FormHelperText className={classes.oneliners}>{helperText}</FormHelperText> : <></>}
+                        <div className={classes.inputGetters}>
+                            <Autocomplete
+                                className={classes.halfliners}
+                                multiple
+                                size="small"
+                                onChange={(object, values) => setCcUsers(values)}
+                                options={users}
+                                getOptionLabel={(option) => option.email}
+                                renderTags={(value, getTagProps) =>
+                                    value.map((option, index) => (
+                                        <Chip
+                                            variant="outlined"
+                                            label={option.email}
+                                            size="small"
+                                            {...getTagProps({ index })}
+                                        />
+                                    ))
+                                }
+                                renderInput={(params) => (
+                                    <TextField {...params} variant="filled" label="CC:" />
+                                )}
+
+                            />
+                            <Autocomplete
+                                className={classes.halfliners}
+                                multiple
+                                size="small"
+                                onChange={(object, values) => setCcGroups(values)}
+                                options={groups}
+                                getOptionLabel={(option) => option?.name}
+                                renderTags={(value, getTagProps) =>
+                                    value.map((option, index) => (
+                                        <Chip
+                                            variant="outlined"
+                                            label={option.name}
+                                            size="small"
+                                            {...getTagProps({ index })}
+                                        />
+                                    ))
+                                }
+                                renderInput={(params) => (
+                                    <TextField {...params} variant="filled" label="CC groups:" />
+                                )}
+
+                            />
+                        </div>
+                        <div className={classes.inputGetters}>
+                            <Autocomplete
+                                className={classes.halfliners}
+                                multiple
+                                size="small"
+                                onChange={(object, values) => setBccUsers(values)}
+                                options={users}
+                                getOptionLabel={(option) => option.email}
+                                renderTags={(value, getTagProps) =>
+                                    value.map((option, index) => (
+                                        <Chip
+                                            variant="outlined"
+                                            label={option.email}
+                                            size="small"
+                                            {...getTagProps({ index })}
+                                        />
+                                    ))
+                                }
+                                renderInput={(params) => (
+                                    <TextField {...params} variant="filled" label="BCC:" />
+                                )}
+
+                            />
+                            <Autocomplete
+                                className={classes.halfliners}
+                                multiple
+                                size="small"
+                                onChange={(object, values) => setBccGroups(values)}
+                                options={groups}
+                                getOptionLabel={(option) => option?.name}
+                                renderTags={(value, getTagProps) =>
+                                    value.map((option, index) => (
+                                        <Chip
+                                            variant="outlined"
+                                            label={option.name}
+                                            size="small"
+                                            {...getTagProps({ index })}
+                                        />
+                                    ))
+                                }
+                                renderInput={(params) => (
+                                    <TextField {...params} variant="filled" label="BCC groups:" />
+                                )}
+
+                            />
+                        </div>
+                        <TextField
+                            type="text"
+                            label="Subject"
+                            placeholder="Subject"
+                            variant="filled"
+                            defaultValue={subject}
+                            className={classes.oneliners}
+                            onChange={(event: any) => setSubject(event.target.value)}
+                        ></TextField>
+                        <TextField
+                            type="text"
+                            label="Email text"
+                            variant="filled"
+                            rows="15"
+                            defaultValue={mailValue}
+                            className={classes.new_message}
+                            multiline
+                            onChange={(event) => setMail(event.target.value)}
+                        ></TextField>
+                        <div className={classes.buttons}>
+                            <Button variant="contained" disabled color="default" className={classes.sendbutton}
+                                startIcon={<CloudUploadIcon />}>Upload</Button>
+                            <Button
+                                type="submit"
+                                className={classes.sendbutton}
+                                variant="contained"
+                                color="primary"
+                                endIcon={<Icon>send</Icon>}>Send </Button></div>
                     </div>
-                    {helperText ? <FormHelperText className={classes.oneliners}>{helperText}</FormHelperText> : <></>}
-                    <div className={classes.inputGetters}>
-                        <Autocomplete
-                            className={classes.halfliners}
-                            multiple
-                            size="small"
-                            onChange={(object, values) => setCcUsers(values)}
-                            options={users}
-                            getOptionLabel={(option) => option.email}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip
-                                        variant="outlined"
-                                        label={option.email}
-                                        size="small"
-                                        {...getTagProps({ index })}
-                                    />
-                                ))
-                            }
-                            renderInput={(params) => (
-                                <TextField {...params} variant="filled" label="CC:" />
-                            )}
-
-                        />
-                        <Autocomplete
-                            className={classes.halfliners}
-                            multiple
-                            size="small"
-                            onChange={(object, values) => setCcGroups(values)}
-                            options={groups}
-                            getOptionLabel={(option) => option?.name}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip
-                                        variant="outlined"
-                                        label={option.name}
-                                        size="small"
-                                        {...getTagProps({ index })}
-                                    />
-                                ))
-                            }
-                            renderInput={(params) => (
-                                <TextField {...params} variant="filled" label="CC groups:" />
-                            )}
-
-                        />
-                    </div>
-                    <div className={classes.inputGetters}>
-                        <Autocomplete
-                            className={classes.halfliners}
-                            multiple
-                            size="small"
-                            onChange={(object, values) => setBccUsers(values)}
-                            options={users}
-                            getOptionLabel={(option) => option.email}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip
-                                        variant="outlined"
-                                        label={option.email}
-                                        size="small"
-                                        {...getTagProps({ index })}
-                                    />
-                                ))
-                            }
-                            renderInput={(params) => (
-                                <TextField {...params} variant="filled" label="BCC:" />
-                            )}
-
-                        />
-                        <Autocomplete
-                            className={classes.halfliners}
-                            multiple
-                            size="small"
-                            onChange={(object, values) => setBccGroups(values)}
-                            options={groups}
-                            getOptionLabel={(option) => option?.name}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip
-                                        variant="outlined"
-                                        label={option.name}
-                                        size="small"
-                                        {...getTagProps({ index })}
-                                    />
-                                ))
-                            }
-                            renderInput={(params) => (
-                                <TextField {...params} variant="filled" label="BCC groups:" />
-                            )}
-
-                        />
-                    </div>
-                    <TextField
-                        type="text"
-                        label="Subject"
-                        placeholder="Subject"
-                        variant="filled"
-                        defaultValue={subject}
-                        className={classes.oneliners}
-                        onChange={(event: any) => setSubject(event.target.value)}
-                    ></TextField>
-                    <TextField
-                        type="text"
-                        label="Email text"
-                        variant="filled"
-                        rows="15"
-                        defaultValue={mailValue}
-                        className={classes.new_message}
-                        multiline
-                        onChange={(event) => setMail(event.target.value)}
-                    ></TextField>
-                    <div className={classes.buttons}>
-                        <Button variant="contained" disabled color="default" className={classes.sendbutton}
-                            startIcon={<CloudUploadIcon />}>Upload</Button>
-                        <Button
-                            type="submit"
-                            className={classes.sendbutton}
-                            variant="contained"
-                            color="primary"
-                            endIcon={<Icon>send</Icon>}>Send </Button></div>
-                </div>
-            </form>
-            <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-slide-title"
-            aria-describedby="alert-dialog-slide-description"
+                </form>
+                <Dialog
+                    open={open}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
                 >
-                <DialogTitle id="alert-dialog-slide-title">{"Tell me want you want?"}</DialogTitle>
-                <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                    Do you really want to send message witohut subject or text?
+                    <DialogTitle id="alert-dialog-slide-title">{"Tell me want you want?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            Do you really want to send message witohut subject or text?
                     </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    No
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            No
                     </Button>
-                <Button onClick={sendEmptyHandler} color="primary">
-                    Yes
+                        <Button onClick={sendEmptyHandler} color="primary">
+                            Yes
                     </Button>
-                </DialogActions>
-            </Dialog>
+                    </DialogActions>
+                </Dialog>
             </div>
         }
     </>

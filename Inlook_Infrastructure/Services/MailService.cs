@@ -1,8 +1,10 @@
 ﻿using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Inlook_Infrastructure.Services
@@ -61,19 +63,11 @@ namespace Inlook_Infrastructure.Services
             Create(mailEnt);
         }
 
-        public void SetRead(Guid mail, Guid recipment)
+        public void SetRead(Guid mailId, Guid recipmentId, bool read)
         {
-            var recipients = this.Read(mail).Recipients as List<MailTo>;
-            var mailto = recipients.Find(x => x.RecipientId == recipment);
-            mailto.StatusRead = true;
-            this.context.SaveChanges();
-        }
-
-        public void SetUnread(Guid mail, Guid recipment)
-        {
-            var recipients = this.Read(mail).Recipients as List<MailTo>;
-            var mailto = recipients.Find(x => x.RecipientId == recipment);
-            mailto.StatusRead = false;
+            var recipients = this.context.Mails.Where(m => m.Id == mailId).Include(m => m.Recipients).FirstOrDefault().Recipients;
+            var mailto = recipients.Where(x => x.RecipientId == recipmentId).FirstOrDefault();
+            mailto.StatusRead = read;
             this.context.SaveChanges();
         }
     }
