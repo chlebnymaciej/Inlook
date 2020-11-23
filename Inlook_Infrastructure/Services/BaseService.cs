@@ -10,7 +10,7 @@ namespace Inlook_Infrastructure.Services
     public class BaseService<T> : IBaseService<T>
         where T : Base
     {
-        private readonly Inlook_Context context;
+        protected readonly Inlook_Context context;
         private readonly DbSet<T> dbSet;
 
         public BaseService(Inlook_Context context)
