@@ -1,316 +1,235 @@
-import React from 'react';
-import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import React ,{useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      backgroundColor: theme.palette.background.paper,
-      overflow: 'auto',
-      maxHeight: 650,
-    },
-    myListBox:{
+import { Divider, IconButton, ListItem } from '@material-ui/core';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';  
+import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
+import ReplyIcon from '@material-ui/icons/Reply';
+import Button from '@material-ui/core/Button';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import List from '@material-ui/core/List';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+type EmailProps ={
+  title?: string,
+  author?: string,
+  date?: string,
+  text?: string,
+  alreadyRead?: boolean;
+}
+const TestData: EmailProps[] = [
+  {title: "Brunch this weekend?", author: "Ali Connors", date: "19.11.2020 18:26:46", text: "naszym celem jest opanowanie swiataaaaaaaaaaaaaaaaaaaaaaaaaa",alreadyRead: true},
+  {title: "Halo Halo budowa wjezdza", author: "Shmittke", date: "22.11.2020 18:26:46", text: "naszym celem jest opanowanie swiata" ,alreadyRead: true},
+  {title: "Piekny kodzik", author: "Piekny koder", date: "15.11.2020 18:26:46", text: "naszym celem jest opanowanie swiata" ,alreadyRead: false},
+  {title: "Flanki gramy dzisiaj", author: "Akademik", date: "10.10.2020 19:26:46", text: "naszym celem jest opanowanie swiata" ,alreadyRead: true},
+  {title: "Kurczaki", author: "Lasy", date: "19.11.2019 18:26:46", text: "naszym celem jest opanowanie swiata",alreadyRead: false },
+  {title: "Ziemniaki", author: "Lasy", date: "19.11.2020 19:26:46", text: "naszym celem jest opanowanie swiata" ,alreadyRead: true},
+  {title: "Klaun fiesta", author: "Lasy", date: "19.12.2020 19:26:46", text: "naszym celem jest opanowanie swiata",alreadyRead: true },
+  {title: "Stoooo", author: "Lasy", date: "01.11.2020 19:26:46", text: "naszym celem jest opanowanie swiata",alreadyRead: true },
+  {title: "JEdziemy", author: "Lasy", date: "19.11.2020 21:37:00", text: "naszym celem jest opanowanie swiata" ,alreadyRead: true}
+]
+let message: EmailProps = {title: "Brunch this weekend?", author: "Ali Connors", date: "19.11.2020 18:26:46", text: "naszym celem jest opanowanie swiataaaaaaaaaaaaaaaaaaaaaaaaaa",alreadyRead: true};
+const getText = (text?: string  ) =>{
+  if(text==undefined || text ==null) return "0";
+  else return text.toString();
+}
+const sortAscendingDate = (obj1: EmailProps, obj2:EmailProps)=>{
+  if(getText(obj1.date)=="0") return -1;
+  if(getText(obj2.date)=="0") return 1;
+  //years
+  if(parseInt(getText(obj2.date).substring(6,10))>parseInt(getText(obj1.date).substring(6,10))) return 1;
+  else if(parseInt(getText(obj2.date).substring(6,10))<parseInt(getText(obj1.date).substring(6,10))) return -1;
+  //months
+  if(parseInt(getText(obj2.date).substring(3,5))>parseInt(getText(obj1.date).substring(3,5))) return 1;
+  else if(parseInt(getText(obj2.date).substring(3,5))<parseInt(getText(obj1.date).substring(3,5))) return -1;
+  //days
+  if(parseInt(getText(obj2.date).substring(0,2))>parseInt(getText(obj1.date).substring(0,2))) return 1;
+  else if(parseInt(getText(obj2.date).substring(0,2))<parseInt(getText(obj1.date).substring(0,2))) return -1;
+  //hours
+  if(parseInt(getText(obj2.date).substring(11,13))>parseInt(getText(obj1.date).substring(11,13))) return 1;
+  else if(parseInt(getText(obj2.date).substring(11,13))<parseInt(getText(obj1.date).substring(11,13))) return -1;
+  //minutes
+  if(parseInt(getText(obj2.date).substring(14,16))>parseInt(getText(obj1.date).substring(14,16))) return 1;
+  else if(parseInt(getText(obj2.date).substring(14,16))<parseInt(getText(obj1.date).substring(14,16))) return -1;
+  //seconds
+  if(parseInt(getText(obj2.date).substring(17,19))>parseInt(getText(obj1.date).substring(17,19))) return 1;
+  else if(parseInt(getText(obj2.date).substring(17,19))<parseInt(getText(obj1.date).substring(17,19))) return -1;
+  return 0;
+}
+const sortDescendingDate = (obj1: EmailProps, obj2:EmailProps)=>{
+  if(getText(obj1.date)=="0") return -1;
+  if(getText(obj2.date)=="0") return 1;
+  //years
+  if(parseInt(getText(obj2.date).substring(6,10))>parseInt(getText(obj1.date).substring(6,10))) return -1;
+  else if(parseInt(getText(obj2.date).substring(6,10))<parseInt(getText(obj1.date).substring(6,10))) return 1;
+  //months
+  if(parseInt(getText(obj2.date).substring(3,5))>parseInt(getText(obj1.date).substring(3,5))) return -1;
+  else if(parseInt(getText(obj2.date).substring(3,5))<parseInt(getText(obj1.date).substring(3,5))) return 1;
+  //days
+  if(parseInt(getText(obj2.date).substring(0,2))>parseInt(getText(obj1.date).substring(0,2))) return -1;
+  else if(parseInt(getText(obj2.date).substring(0,2))<parseInt(getText(obj1.date).substring(0,2))) return 1;
+  //hours
+  if(parseInt(getText(obj2.date).substring(11,13))>parseInt(getText(obj1.date).substring(11,13))) return -1;
+  else if(parseInt(getText(obj2.date).substring(11,13))<parseInt(getText(obj1.date).substring(11,13))) return 1;
+  //minutes
+  if(parseInt(getText(obj2.date).substring(14,16))>parseInt(getText(obj1.date).substring(14,16))) return -1;
+  else if(parseInt(getText(obj2.date).substring(14,16))<parseInt(getText(obj1.date).substring(14,16))) return 1;
+  //seconds
+  if(parseInt(getText(obj2.date).substring(17,19))>parseInt(getText(obj1.date).substring(17,19))) return -1;
+  else if(parseInt(getText(obj2.date).substring(17,19))<parseInt(getText(obj1.date).substring(17,19))) return 1;
+  return 0;
+}
+interface IState
+{
+  count: number;
+  index: number
+}
+const changeRead = (email: EmailProps) => {
+  let i:number;
+  for(i=0;i<TestData.length;i+=1)
+  {
+    if(email==TestData[i])
+    {
+      TestData[i].alreadyRead = !TestData[i].alreadyRead;
+    }
+  }
+}
+let myIndex = 1
+let myEmaillll: EmailProps ={};
+const changeEmail = (email:EmailProps) => {
+  let i:number;
+  for(i=0;i<TestData.length;i+=1)
+  {
+    if(email.date===TestData[i].date)
+    {
+      myIndex=i;
+      myEmaillll=TestData[myIndex];
+    }
+  }
+  
+}
+
+class EmailCard extends React.Component<EmailProps,IState>
+{
+  constructor(props:EmailProps) {
+    super(props);
+    this.state = {
+      count: props.alreadyRead? 0:1,
+      index: 1
+    };
+  }
+  render(){ 
+    const email:EmailProps = this.props;
+    let eRead = email.alreadyRead;
+    return(
+      <div >
+        <ListItem button onClick={()=>{this.setState({index: myIndex});changeEmail(email)}} style={{display: 'flex ', flexWrap: 'wrap',backgroundColor: this.state.count%2==0 ? 'lightgrey' : 'white',}}  >
+          <div style={{display: 'flex '}}>
+            <ListItemAvatar>
+              <Avatar alt={getText(email.author)} src="/static/images/avatar/1.jpg" />
+            </ListItemAvatar>
+            <Button onClick={() => {this.setState({ count: this.state.count+1 }); changeRead(email)} }  style={{backgroundColor: this.state.count%2==0 ? 'white' : 'lightgrey'} }>
+              {this.state.count%2==0? "seen" : "not seen"}
+            </Button>
+          </div>
+         
+          <ListItemText
+            primary={getText(email.title)}
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="span"
+                  variant="body2"
+                  style={{display: 'inline', }}
+                  color="textPrimary"
+                >
+                {getText(email.author)}
+                </Typography>
+                :  {getText(email.text).substring(0,40)+"..."}
+              </React.Fragment>              
+            }
+          />
+          <div style={{alignSelf: 'center' ,fontSize: '12px'}}>
+          {getText(email.date)}
+          </div>
+       </ListItem>
+       <Divider />
+      </div>
       
-    },
-    inline: {
-      display: 'inline',
-    },
-    grow: {
-      flexGrow: 1,
-      background: 'lavender',
-      
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-    },
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-      },
-    },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    inputRoot: {
-      color: 'inherit',
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: '20ch',
-      },
-    },
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
-    },
-  }),
-);
+    )
+  }
+}
+class EmailContent extends React.Component<EmailProps>
+{
+  constructor(props:EmailProps ) { 
+    super(props)
+  }
+  render()
+  {
+    const email:EmailProps = this.props;//{title: "Brunch this weekend?", author: "Ali Connors", date: d, text: "Witam  prosze poprawic mi ocene na 5 \n pozdrawiam" };
+    return(
+      <div style={{ height: '100%',width: '100%'}}>
+        <header style={{alignSelf: 'center',fontWeight: 'bold', fontSize: '1.5rem',marginLeft: '5%',marginBottom: '2%'}}>
+          {email.title}
+        </header>
+        <div style={{display: 'flex', height: '90%',justifyContent: 'felxstart',}}>          
+          <ListItemAvatar >
+              <Avatar alt={email.author} src="/static/images/avatar/1.jpg" />
+          </ListItemAvatar>
+          <div className="TextSections" style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+            <div style={{fontWeight: 'bold', fontSize: '1 rem',height: '10%'}}>
+              {email.author}
+            </div>
+            <div style={{height: '85%', width: '100%', overflowY: 'scroll'}}>
+              {email.text}
+            </div>   
+            <div style={{height: '5%'}}>
+              <Button startIcon={<ReplyIcon/>} style={{border: 'solid',marginRight: '3%',borderWidth: '2px', borderColor: 'lightgrey'}}>
+                Odpowiedz
+              </Button>
+              <Button startIcon={<ArrowForwardIcon/>} style={{border: 'solid',borderWidth: '2px',borderColor: 'lightgrey'}}>
+               Przekaż dalej
+              </Button>
+            </div>         
+          </div>
+        </div>
+        
+      </div>
+    )
+  }
+}
 
 export default function Inbox() {
-  const classes = useStyles();
-  
-
+  const [counter, SetCounter] = React.useState(0);
+  const iCounter = ()=>SetCounter(counter+1);
+  // const [message,SetMessage] = useState<EmailProps>();
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const handleListItemClick = (
+    index: number,
+  ) => {
+    setSelectedIndex(index);
+  };
+  let myEmails: EmailProps[] = TestData;
   return (
-    <div className="calosc">           
-     <div style={{ width: '100%', background: 'lavender' }}>
-        <Box
-          display="flex"
-          flexWrap="nowrap"
-          p={1}
-          m={1}
-          bgcolor="lavender "
-          padding='0'
-        >
-          <Box p={1}  bgcolor="ghostwhite">
-          <List className={classes.root}>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Brunch this weekend?"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Summer BBQ"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    to Scott, Alex, Jennifer
-                  </Typography>
-                  {" — Wish I could come, but I'm out of town this…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Oui Oui"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    Sandra Adams
-                  </Typography>
-                  {' — Do you have Paris recommendations? Have you ever…'}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Jakob Rabbit" src="/static/images/avatar/4.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Very good ocena for creating poczta app"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    to ludzkosc
-                  </Typography>
-                  {" —Raz pod wozem, raz pod wozem…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Jakob Rabbit" src="/static/images/avatar/4.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Very good ocena for creating poczta app"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    to ludzkosc
-                  </Typography>
-                  {" —Raz pod wozem, raz pod wozem…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Jakob Rabbit" src="/static/images/avatar/4.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Very good ocena for creating poczta app"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    to ludzkosc
-                  </Typography>
-                  {" —Raz pod wozem, raz pod wozem…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Brunch this weekend?"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Brunch this weekend?"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Brunch this weekend?"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        </List>
-          </Box>
-          <Box p={1} bgcolor="lavender">
-            
-          </Box>
-          <Box p={1} width="100%"  bgcolor="ghostwhite">
-           //Miejsce na maile
-          </Box>
-          
-        </Box>
-      </div>
+    <div style={{display: 'flex', height: '87%'}}>
+     <div style={{width: '28%'}} >
+       <div className="buttony na sortowanie" style={{backgroundColor: 'lightgrey'}}>
+            Date sorting:
+         <Button onClick={iCounter} style={{width: '50%'}}>
+           {counter%2==0 ? "descending" : "ascending"}
+         </Button>
+         <IconButton>
+           <DateRangeIcon aria-label="choose date"/>
+         </IconButton>
+       </div>    
+       <List style={{ overflowY: 'scroll',height: '94%', width: '100%'}} onClick={() => handleListItemClick(myIndex)}>
+        {counter%2==0 ?TestData.sort(sortDescendingDate).map(email => <EmailCard {...email}/>):TestData.sort(sortAscendingDate).map(email => <EmailCard {...email}/>)}
+       </List>       
+     </div>
+     <div style={{width: '2%', backgroundColor: 'white'}}>
+     </div>
+     <div style={{width: '70%', marginTop: '2%'}}>      
+       <EmailContent {...myEmaillll}/>
+     </div>
     </div>
-    
-  );
+  )
 }
