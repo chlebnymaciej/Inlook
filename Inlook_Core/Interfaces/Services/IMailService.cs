@@ -9,5 +9,8 @@ namespace Inlook_Core.Interfaces.Services
     public interface IMailService : IBaseService<Mail>
     {
         void SendMail(PostMailModel mail, Guid ownerId);
+
+        void SetRead(Guid mail, Guid recipment);
+        void SetUnread(Guid mail, Guid recipment);
     }
 }

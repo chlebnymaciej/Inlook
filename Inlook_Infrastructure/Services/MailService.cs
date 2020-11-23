@@ -13,6 +13,7 @@ namespace Inlook_Infrastructure.Services
         {
         }
 
+
         public void SendMail(PostMailModel mail, Guid ownerId)
         {
             Guid id = Guid.NewGuid();
@@ -21,11 +22,11 @@ namespace Inlook_Infrastructure.Services
             foreach (string item in mail.To)
             {
                 recipients.Add(new MailTo()
-                { 
+                {
                     RecipientId = Guid.Parse(item),
                     MailId = id,
                     CC = null,
-                    StatusRead= false
+                    StatusRead = false
                 });
             }
             foreach (string item in mail.CC)
@@ -58,6 +59,22 @@ namespace Inlook_Infrastructure.Services
             };
 
             Create(mailEnt);
+        }
+
+        public void SetRead(Guid mail, Guid recipment)
+        {
+            var recipients = this.Read(mail).Recipients as List<MailTo>;
+            var mailto = recipients.Find(x => x.RecipientId == recipment);
+            mailto.StatusRead = true;
+            this.context.SaveChanges();
+        }
+
+        public void SetUnread(Guid mail, Guid recipment)
+        {
+            var recipients = this.Read(mail).Recipients as List<MailTo>;
+            var mailto = recipients.Find(x => x.RecipientId == recipment);
+            mailto.StatusRead = false;
+            this.context.SaveChanges();
         }
     }
 }
