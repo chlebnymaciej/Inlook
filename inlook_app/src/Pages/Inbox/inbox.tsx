@@ -1,4 +1,4 @@
-import { IconButton } from '@material-ui/core';
+import { IconButton, TextField, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import DateRangeIcon from '@material-ui/icons/DateRange';
@@ -14,6 +14,7 @@ const Inbox = () => {
   const iCounter = () => SetCounter(counter + 1);
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const [selectedEmail, setSelectedEmail] = React.useState<EmailProps>();
+  const [allEmails, setAllEmails] = useState<EmailProps[]>([]);
   const [emails, setEmails] = useState<EmailProps[]>([]);
   const handleListItemClick = (
     index: number,
@@ -24,11 +25,23 @@ const Inbox = () => {
   useEffect(() => {
     const emails = getEmails()
     mailApi.getMails().then(r => {
-      setEmails(r.data || []);
+      const emails: EmailProps[] = r.data || [];
+      setAllEmails(emails.sort((a, b) => {
+        if (a.read === b.read) {
+          if (a.sendTime <= b.sendTime) return -1;
+          else return 1;
+        }
+        if (a.read) return 1;
+        return -1;
+      }));
       setSelectedEmail(r.data ? r.data.length > 0 ? r.data[0] : undefined : undefined);
       setSelectedIndex(r.data ? r.data.length > 0 ? 0 : -1 : -1);
     })
   }, [])
+
+  useEffect(() => {
+    setEmails(allEmails);
+  }, [allEmails])
 
   const getEmails = () => {
     return mailApi.getMails(); //TODO: zmiana na API
@@ -47,14 +60,14 @@ const Inbox = () => {
   }
 
   const handleSort = () => {
-    let sortedEmails = counter % 2 == 0 ? emails.sort(sortDateAscending) : emails.sort(sortDateDescending);
+    let sortedEmails = counter % 2 == 0 ? allEmails.sort(sortDateAscending) : allEmails.sort(sortDateDescending);
     iCounter();
-    setEmails(sortedEmails);
+    setAllEmails(sortedEmails);
   }
 
   const changeRead = (index: number) => {
-    const email = emails[index];
-    setEmails(emails.map(m => {
+    const email = allEmails[index];
+    setAllEmails(allEmails.map(m => {
       if (m.mailId === email.mailId) {
         return {
           ...m,
@@ -78,6 +91,15 @@ const Inbox = () => {
     }
   }
 
+  const handleFilterChange = (event: any) => {
+    const value: string = event.target.value;
+    setEmails(allEmails.filter(e => {
+      return (e.from.name.toLowerCase().includes(value.toLowerCase()) ||
+        e.from.email.toLowerCase().includes(value.toLowerCase()) ||
+        e.subject.toLowerCase().includes(value.toLowerCase()))
+    }))
+  }
+
   return (
     <div style={{ display: 'flex', height: '87%' }}>
       <div style={{ width: '28%' }} >
@@ -90,6 +112,7 @@ const Inbox = () => {
             <DateRangeIcon aria-label="choose date" />
           </IconButton>
         </div>
+        <TextField onChange={handleFilterChange} label={"Search"} style={{ marginLeft: '0.3em', marginRight: "0.7em", width: "90%" }} />
         <List style={{ overflowY: 'scroll', height: '94%', width: '100%' }}>
           {emails.map((email, index) =>
             <EmailCard
