@@ -27,10 +27,26 @@ steps:
   workingDirectory: $(Build.SourcesDirectory)/inlook_app
   displayName: 'npm install and build'
 
-- task: AzureRmWebAppDeployment@4
+- task: CopyFiles@2
+  displayName: 'Copy files'
   inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure dla studentów (80a1d7ce-101f-4397-80d8-632541f4a513)'
-    appType: 'webAppLinux'
-    WebAppName: 'Inlook23'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    sourceFolder: '$(directory)/build' 
+    Contents: '**/*'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    cleanTargetFolder: true
+ 
+- task: ArchiveFiles@2
+  displayName: 'Archive files'
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+    includeRootFolder: false
+    archiveType: zip
+    archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    replaceExistingArchive: true
+ 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts'
+  inputs: 
+    pathtoPublish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    ArtifactName: '_react'
+    publishLocation: 'Container'
