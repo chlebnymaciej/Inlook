@@ -9,6 +9,8 @@ trigger:
 variables:
   major: 1
   minor: 1
+  directory: react-azure-files
+
 
 name: $(major).$(minor)$(Rev:.r)
 
@@ -21,16 +23,18 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
+
 - script: |
     npm install
     npm run build
   workingDirectory: $(Build.SourcesDirectory)/inlook_app
   displayName: 'npm install and build'
 
+
 - task: CopyFiles@2
   displayName: 'Copy files'
   inputs:
-    sourceFolder: '*/build' 
+    sourceFolder: '$(Build.SourcesDirectory)/inlook_app/build' 
     Contents: '**/*'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
     cleanTargetFolder: true
