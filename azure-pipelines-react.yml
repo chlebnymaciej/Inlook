@@ -27,8 +27,10 @@ steps:
   workingDirectory: $(Build.SourcesDirectory)/inlook_app
   displayName: 'npm install and build'
 
-- task: PublishBuildArtifacts@1
+- task: AzureRmWebAppDeployment@4
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'react'
-    publishLocation: 'Container'
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure dla studentów (80a1d7ce-101f-4397-80d8-632541f4a513)'
+    appType: 'webAppLinux'
+    WebAppName: 'Inlook23'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
