@@ -1,11 +1,4 @@
 # ASP.NET Core (.NET Framework)
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure dla studentów (80a1d7ce-101f-4397-80d8-632541f4a513)'
-    appType: 'apiApp'
-    WebAppName: 'InlookAPI'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 # Build and test ASP.NET Core projects targeting the full .NET Framework.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
@@ -49,3 +42,12 @@ steps:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
+
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure dla studentów (80a1d7ce-101f-4397-80d8-632541f4a513)'
+    appType: 'apiApp'
+    WebAppName: 'InlookAPI'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
