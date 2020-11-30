@@ -47,17 +47,22 @@ steps:
     zipAfterPublish: true
 
 - script: |
-    
     cd $(Build.ArtifactStagingDirectory)
     pwd
-    rm -r WebApp.zip
     ls -lah
-
-- task: AzureWebApp@1
-  displayName: Deploy
+ 
+- task: ArchiveFiles@2
+  displayName: 'Archive files'
   inputs:
-    azureSubscription: 'InlookAPI'
-    appType: 'webApp'
-    appName: 'InlookAPI'
-    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
-    deploymentMethod: 'auto'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+    includeRootFolder: false
+    archiveType: zip
+    archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    replaceExistingArchive: true
+ 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts'
+  inputs: 
+    pathtoPublish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    ArtifactName: '_api'
+    publishLocation: 'Container'
