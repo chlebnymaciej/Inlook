@@ -52,9 +52,9 @@ steps:
     zipAfterPublish: true
 
 - script: |
-  cd $(Build.ArtifactStagingDirectory)
-  pwd
-  ls -lah
+    cd $(Build.ArtifactStagingDirectory)
+    pwd
+    ls -lah
 
 - task: AzureWebApp@1
   displayName: Deploy
