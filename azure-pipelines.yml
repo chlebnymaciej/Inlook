@@ -41,28 +41,13 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'publish'
+    command: publish
     publishWebProjects: true
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
 
-- script: |
-    cd $(Build.ArtifactStagingDirectory)
-    pwd
-    ls -lah
- 
-- task: ArchiveFiles@2
-  displayName: 'Archive files'
-  inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    replaceExistingArchive: true
- 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifacts'
   inputs: 
-    pathtoPublish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    pathtoPublish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)
     ArtifactName: '_api'
-    publishLocation: 'Container'
