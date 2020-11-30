@@ -62,5 +62,5 @@ steps:
     azureSubscription: 'InlookAPI'
     appType: 'webApp'
     appName: 'InlookAPI'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
