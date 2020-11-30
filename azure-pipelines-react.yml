@@ -28,21 +28,13 @@ steps:
     npm install
     npm run build
   workingDirectory: $(Build.SourcesDirectory)/inlook_app
-  displayName: 'npm install and build'
+  displayName: 'Building'
 
 
-- task: CopyFiles@2
-  displayName: 'Copy files'
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/inlook_app/build' 
-    Contents: '**/*'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    cleanTargetFolder: true
- 
 - task: ArchiveFiles@2
   displayName: 'Archive files'
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+    rootFolderOrFile: 'build'
     includeRootFolder: false
     archiveType: zip
     archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
@@ -52,5 +44,5 @@ steps:
   displayName: 'Publish Build Artifacts'
   inputs: 
     pathtoPublish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    ArtifactName: '_react'
+    ArtifactName: '_frontend'
     publishLocation: 'Container'
