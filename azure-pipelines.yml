@@ -47,8 +47,10 @@ steps:
     zipAfterPublish: true
 
 - script: |
+    
     cd $(Build.ArtifactStagingDirectory)
     pwd
+    rm -r WebApp.zip
     ls -lah
 
 - task: AzureWebApp@1
