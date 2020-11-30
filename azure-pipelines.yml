@@ -26,19 +26,14 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: 'Build'
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  displayName: 'Testing v0'
-  inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Tests'
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
@@ -62,5 +57,5 @@ steps:
     azureSubscription: 'InlookAPI'
     appType: 'webApp'
     appName: 'InlookAPI'
-    package: '$(Build.ArtifactStagingDirectory)/**/WebApp.zip'
+    package: '$(Build.ArtifactStagingDirectory)/**/Inlook_API.zip'
     deploymentMethod: 'auto'
