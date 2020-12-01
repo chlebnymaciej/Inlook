@@ -10,5 +10,6 @@ namespace Inlook_Core.Models.Attachments
         public string ClientFileName { get; set; }
 
         public Stream FileStream { get; set; }
+        public string ContentType { get; set; }
     }
 }

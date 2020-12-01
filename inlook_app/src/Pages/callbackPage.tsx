@@ -9,11 +9,11 @@ interface CallbackPageProps {
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
-const CallbackPage = (props : CallbackPageProps) => {
+const CallbackPage = (props: CallbackPageProps) => {
     const history = useHistory();
-    useEffect(()=>{
-        sessionStorage.clear();
-      },[])
+    // useEffect(()=>{
+    //     sessionStorage.clear();
+    //   },[])
     const handleSuccess = async () => {
         props.setUser(await userManager.getUser())
         history.push("/");
@@ -22,8 +22,8 @@ const CallbackPage = (props : CallbackPageProps) => {
         props.setUser(null);
         history.push("/");
     };
-    return(
-        <Callback userManager={userManager} onSuccess={handleSuccess} onError={handleError}/>
+    return (
+        <Callback userManager={userManager} onSuccess={handleSuccess} onError={handleError} />
     );
 }
 

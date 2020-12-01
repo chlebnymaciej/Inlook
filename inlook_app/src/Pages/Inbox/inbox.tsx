@@ -45,7 +45,7 @@ const Inbox = () => {
   }, [allEmails])
 
   const getEmails = () => {
-    return mailApi.getMails(); //TODO: zmiana na API
+    return mailApi.getMails();
   }
 
   const sortDateDescending = (a: EmailProps, b: EmailProps) => {

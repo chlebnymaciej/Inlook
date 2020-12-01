@@ -51,6 +51,9 @@ namespace Inlook_Infrastructure.Services
                     StatusRead = false
                 });
             }
+
+          
+
             Mail mailEnt = new Mail()
             {
                 Id = id,
@@ -59,6 +62,13 @@ namespace Inlook_Infrastructure.Services
                 Text = mail.Text,
                 Recipients = recipients
             };
+
+            var attachmentsIds = mail.Attachments.Select(a => Guid.Parse(a));
+            var attachments = this.context.Attachments.Where(a => attachmentsIds.Contains(a.Id));
+            foreach (var attachment in attachments)
+            {
+                mailEnt.Attachments.Add(attachment);
+            }
 
             Create(mailEnt);
         }

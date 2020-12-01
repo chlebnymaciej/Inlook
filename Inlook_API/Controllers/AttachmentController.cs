@@ -26,23 +26,25 @@ namespace Inlook_API.Controllers
             this.attachmentService = attachmentService;
         }
 
-        [HttpGet("GetAttachment")]
-        public IActionResult GetAttachment(Guid id)
+        [HttpGet("GetFile")]
+        public async Task<IActionResult> GetFile(Guid id)
         {
-            var file = attachmentService.GetFile(id);
+            var file = await attachmentService.GetFile(id);
 
-            return new JsonResult(file);
+            if (file == null) return NotFound();
+
+            return File(file.FileStream, file.ContentType);
         }
 
 
         [HttpPost("UploadAttachment")]
         public async Task<IActionResult> UploadAttachment(IFormFile file)
         {
-            var fileInfo = await attachmentService.UploadFile(file.OpenReadStream(), file.FileName);
-            return new JsonResult(fileInfo);
+            var attachmentModel = await attachmentService.UploadFile(file.OpenReadStream(), file.FileName);
+            return new JsonResult(attachmentModel);
         }
 
-        [HttpPost("DeleteAttachment")]
+        [HttpDelete("DeleteAttachment")]
         public async Task<IActionResult> DeleteAttachment(Guid id)
         {
             await attachmentService.DeleteAttachment(id);
