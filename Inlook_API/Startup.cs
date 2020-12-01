@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Infrastructure;
@@ -107,6 +108,9 @@ namespace Inlook_API
 
             services.AddDbContext<Inlook_Context>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSingleton(x =>
+                new BlobServiceClient(Configuration.GetValue<string>("AzureStorageBlobConnectionString")));
 
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<IGroupService, GroupService>();
