@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inlook_Core.Entities
+namespace Inlook_Core.Models.Attachments
 {
-    public class Attachment : Base
+    public class GetAttachmentModel
     {
-        public Mail Mail { get; set; }
-        public Guid? MailId { get; set; }
+        public Guid Id { get; set; }
         public string ClientFileName { get; set; }
         public string AzureFileName { get; set; }
     }

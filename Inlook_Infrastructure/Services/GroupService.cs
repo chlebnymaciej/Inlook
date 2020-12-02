@@ -67,9 +67,9 @@ namespace Inlook_Infrastructure.Services
             var groups = this.context.Groups.Where(x => x.GroupOwnerId == ownerId && x.Id == groupId)
                                             .Include(g => g.UserGroups);
 
-            var g = groups.FirstOrDefault();
-            g.Name = model.Name;
-            g.UserGroups = userGroups;
+            var groupToUpdate = groups.FirstOrDefault();
+            groupToUpdate.Name = model.Name;
+            groupToUpdate.UserGroups = userGroups;
             this.context.SaveChanges();
         }
     }

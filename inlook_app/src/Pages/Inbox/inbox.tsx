@@ -25,7 +25,8 @@ const Inbox = () => {
   useEffect(() => {
     const emails = getEmails()
     mailApi.getMails().then(r => {
-      const emails: EmailProps[] = r.data || [];
+      let emails: EmailProps[] = r.data || [];
+      emails = emails.map(e => { return { ...e, sendTime: new Date(e.sendTime) } });
       setAllEmails(emails.sort((a, b) => {
         if (a.read === b.read) {
           if (a.sendTime <= b.sendTime) return -1;
@@ -44,7 +45,7 @@ const Inbox = () => {
   }, [allEmails])
 
   const getEmails = () => {
-    return mailApi.getMails(); //TODO: zmiana na API
+    return mailApi.getMails();
   }
 
   const sortDateDescending = (a: EmailProps, b: EmailProps) => {
@@ -114,13 +115,26 @@ const Inbox = () => {
         </div>
         <TextField onChange={handleFilterChange} label={"Search"} style={{ marginLeft: '0.3em', marginRight: "0.7em", width: "90%" }} />
         <List style={{ overflowY: 'scroll', height: '94%', width: '100%' }}>
-          {emails.map((email, index) =>
-            <EmailCard
+          {emails.map((email, index) => {
+            if (index === 0 || email.sendTime.getDay() !== emails[index - 1].sendTime.getDay()) {
+              return (<>
+                <div>{email.sendTime.getDay() + "." + email.sendTime.getMonth()}</div>
+
+                <EmailCard
+                  email={email}
+                  handleClick={(email) => handleEmailCardClick(email, index)}
+                  handleChangeRead={changeRead}
+                  index={index} />
+              </>)
+            }
+            return <EmailCard
               email={email}
               handleClick={(email) => handleEmailCardClick(email, index)}
               handleChangeRead={changeRead}
               index={index} />
+          }
           )}
+
         </List>
       </div>
       <div style={{ width: '2%', backgroundColor: 'white' }}>

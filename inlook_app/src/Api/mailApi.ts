@@ -1,6 +1,7 @@
 import { Http2ServerResponse } from "http2"
 import getUserToken from "../Authorization/getUserToken"
 import { handleError, handleResponse, IApiResponse } from "./apiUtils"
+import { AttachmentInfo } from "./attachmentsApi"
 import { BASE_URL } from "./urls"
 import { UserModel } from "./userApi"
 
@@ -12,6 +13,7 @@ export interface MailModel {
     bcc: string[] | null;
     subject: string | null;
     text: string | null;
+    attachments: string[] | null;
 }
 
 export const postMail = async (mail: MailModel) => {
@@ -38,6 +40,7 @@ export interface EmailProps {
     text: string;
     read: boolean;
     mailId: string;
+    attachments: AttachmentInfo[];
 }
 
 export const getMails = async () => {
