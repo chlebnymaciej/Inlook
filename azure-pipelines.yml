@@ -46,6 +46,21 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
 
+- task: efcore-migration-script-generator-task@0
+  displayName: 'EF migration artifact'
+  inputs:
+    installdependencies: true
+    projectpath: '$(Build.SourcesDirectory)/Inlook_Infrastructure/Inlook_Infrastructure.csproj' 
+    databasecontexts: 'Inlook_Context'
+    startupprojectpath: '$(Build.SourcesDirectory)/Inlook_API/Inlook_API.csproj'
+    targetfolder: '$(build.artifactstagingdirectory)/migrations'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish migrations'
+  inputs:
+    targetPath: '$(build.artifactstagingdirectory)/migrations'
+    artifact: 'migrations'
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifacts'
   inputs: 
