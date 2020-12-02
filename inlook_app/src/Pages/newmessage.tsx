@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogContentText, makeStyles, TextField } from '@material-ui/core';
+import { Button, DialogActions, DialogContent, DialogContentText, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, makeStyles, TextField, Typography } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
@@ -14,6 +14,9 @@ import { postMail } from '../Api/mailApi';
 import { getUsers, UserModel } from "../Api/userApi";
 import { TransitionProps } from "@material-ui/core/transitions";
 import Slide from '@material-ui/core/Slide/Slide';
+import { AttachmentInfo } from '../Api/attachmentsApi';
+import * as attachmentsApi from "../Api/attachmentsApi";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles(theme => ({
@@ -52,13 +55,25 @@ const useStyles = makeStyles(theme => ({
     },
     sendbutton:
     {
-        margin: theme.spacing(1)
+        margin: theme.spacing(1),
+    },
+    uploadButton:
+    {
+        margin: theme.spacing(1),
     },
     formClass:
     {
         display: "flex",
         flexDirection: "column",
         paddingTop: "2em"
+    },
+    attachments:
+    {
+        position: "relative",
+        width: '80%',
+        display: "flex",
+        marginTop: "1em",
+        margin: "auto",
     }
 
 
@@ -78,6 +93,10 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const NewMessage = (props: NewMessageProps) => {
+
+    const classes = useStyles();
+    const history = useHistory();
+
     const [error, setError] = useState<string>();
     const [groups, setGroups] = useState<GroupModel[]>([]);
     const [helperText, setHelperText] = useState<string>();
@@ -91,9 +110,12 @@ const NewMessage = (props: NewMessageProps) => {
     const [subject, setSubject] = useState<string>("Hello There!");
     const [mailValue, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
     const [open, setOpen] = useState<boolean>(false);
+    const [attachments, setAttachments] = useState<AttachmentInfo[]>([]);
+
     const handleClose = () => {
         setOpen(false);
     };
+
     const sendMail = () => {
         setHelperText('');
         let bccuser = new Set<UserModel>();
@@ -132,7 +154,8 @@ const NewMessage = (props: NewMessageProps) => {
                 cc: Array.from(ccuser).map(x => x.id),
                 bcc: Array.from(bccuser).map(x => x.id),
                 subject: subject || null,
-                text: mailValue || null
+                text: mailValue || null,
+                attachments: attachments.map(a => a.id),
             }).then(r => {
                 if (r.isError) {
                     setError("Something went wrong");
@@ -144,8 +167,6 @@ const NewMessage = (props: NewMessageProps) => {
         setOpen(false);
     };
 
-    const classes = useStyles();
-    const history = useHistory();
     useEffect(() => {
         getUsers().then(result => {
             if (result.isError) {
@@ -187,6 +208,40 @@ const NewMessage = (props: NewMessageProps) => {
             setMail('(empty)');
         }
         sendMail();
+    }
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (!files) return;
+        for (let i = 0; i < files.length; ++i) {
+            attachmentsApi.uploadAttachment(files[i])
+                .then(r => {
+                    if (r.isError) {
+
+                    }
+                    else {
+                        setAttachments(prev => r.data ? [...prev, r.data] : prev)
+                    }
+                });
+            console.log(files[i]);
+        }
+    };
+
+    const downloadAttachment = (id: string, fileName: string) => {
+        attachmentsApi.getFile(id, fileName).catch(err => {
+            setError(err);
+        })
+    }
+
+    const deleteAttachment = (id: string) => {
+        attachmentsApi.deleteAttachment(id).then(r => {
+            if (r.isError) {
+
+            }
+            else {
+                setAttachments(prev => prev.filter(att => att.id !== id));
+            }
+        });
     }
 
     return <>
@@ -360,14 +415,48 @@ const NewMessage = (props: NewMessageProps) => {
                             onChange={(event) => setMail(event.target.value)}
                         ></TextField>
                         <div className={classes.buttons}>
-                            <Button variant="contained" disabled color="default" className={classes.sendbutton}
-                                startIcon={<CloudUploadIcon />}>Upload</Button>
+                            <input
+                                type="file"
+                                onChange={handleFileChange}
+                                style={{ display: 'none' }}
+                                id="upload_input"
+                                multiple
+                            />
+                            <label htmlFor="upload_input">
+                                <Button variant="contained" color="default" className={classes.uploadButton} component="span"
+                                    startIcon={<CloudUploadIcon />}>Upload</Button>
+                            </label>
                             <Button
                                 type="submit"
                                 className={classes.sendbutton}
                                 variant="contained"
                                 color="primary"
-                                endIcon={<Icon>send</Icon>}>Send </Button></div>
+                                endIcon={<Icon>send</Icon>}>
+                                Send
+                            </Button>
+
+                        </div>
+                        <div className={classes.attachments}>
+
+                            <List dense>
+                                {attachments.map(att =>
+                                    <ListItem
+                                        button
+                                        onClick={() => downloadAttachment(att.id, att.clientFileName)}
+                                    >
+                                        <ListItemText
+                                            primary={att.clientFileName}
+                                        />
+                                        <ListItemSecondaryAction>
+                                            <IconButton edge="end" aria-label="delete" onClick={() => deleteAttachment(att.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>)
+                                }
+                            </List>
+                        </div>
+
                     </div>
                 </form>
                 <Dialog

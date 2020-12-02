@@ -1,6 +1,7 @@
 ﻿using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
+using Inlook_Core.Models.Attachments;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,16 @@ namespace Inlook_Infrastructure.Services
 
             User user = (users.Where(x => x.Id == toId)
                 .Include(mt => mt.MailsReceived)
-                .ThenInclude(mr => mr.Mail)
-                .ThenInclude(m => m.Sender)
+                    .ThenInclude(mr => mr.Mail)
+                    .ThenInclude(m => m.Sender)
                 .Include(mt => mt.MailsReceived)
-                .ThenInclude(mr => mr.Mail)
-                .ThenInclude(m => m.Recipients)
-                .ThenInclude(mt => mt.Recipient)).FirstOrDefault();
+                    .ThenInclude(mr => mr.Mail)
+                    .ThenInclude(m => m.Recipients)
+                    .ThenInclude(mt => mt.Recipient)
+                .Include(mt => mt.MailsReceived)
+                    .ThenInclude(mr => mr.Mail)
+                    .ThenInclude(m => m.Attachments))
+            .FirstOrDefault();
 
             List<GetMailModel> mails = new List<GetMailModel>();
             var mailsTo = user.MailsReceived;
@@ -67,7 +72,8 @@ namespace Inlook_Infrastructure.Services
                     Text = item.Mail.Text,
                     SendTime = item.Mail.CreatedDate,
                     To = toTmp.ToArray(),
-                    MailId = item.MailId
+                    MailId = item.MailId,
+                    Attachments = item.Mail.Attachments.Select(a => new GetAttachmentModel() { Id = a.Id, AzureFileName = a.AzureFileName, ClientFileName = a.ClientFileName }).ToArray(),
                 };
                 mails.Add(tmp);
             }
@@ -116,11 +122,14 @@ namespace Inlook_Infrastructure.Services
                     Text = item.Mail.Text,
                     SendTime = item.Mail.CreatedDate,
                     To = toTmp.ToArray(),
-                    MailId = item.MailId
+                    MailId = item.MailId,
+                    Attachments = item.Mail.Attachments.Select(a => new GetAttachmentModel() { Id = a.Id, AzureFileName = a.AzureFileName, ClientFileName = a.ClientFileName }).ToArray(),
                 };
                 mails.Add(tmp);
 
             }
+
+
             return mails;
         }
 

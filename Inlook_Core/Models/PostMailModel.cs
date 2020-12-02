@@ -12,5 +12,7 @@ namespace Inlook_Core.Models
 
         public string Subject { get; set; }
         public string Text { get; set; }
+        public string[] Attachments { get; set; }
+
     }
 }
