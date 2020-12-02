@@ -42,7 +42,6 @@ export const uploadAttachment = async (file: File) => {
         headers: new Headers({
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + await getUserToken(),
-            //"Content-Type": "*/*"
         }),
         body: formData,
     }).then<T>(handleResponse).catch<T>(handleError);

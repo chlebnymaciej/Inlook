@@ -11,9 +11,7 @@ interface CallbackPageProps {
 
 const CallbackPage = (props: CallbackPageProps) => {
     const history = useHistory();
-    // useEffect(()=>{
-    //     sessionStorage.clear();
-    //   },[])
+
     const handleSuccess = async () => {
         props.setUser(await userManager.getUser())
         history.push("/");

@@ -110,7 +110,6 @@ const NewMessage = (props: NewMessageProps) => {
     const [subject, setSubject] = useState<string>("Hello There!");
     const [mailValue, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
     const [open, setOpen] = useState<boolean>(false);
-    const hiddenFileInput = React.useRef<any>(null);
     const [attachments, setAttachments] = useState<AttachmentInfo[]>([]);
 
     const handleClose = () => {
@@ -418,7 +417,6 @@ const NewMessage = (props: NewMessageProps) => {
                         <div className={classes.buttons}>
                             <input
                                 type="file"
-                                ref={hiddenFileInput}
                                 onChange={handleFileChange}
                                 style={{ display: 'none' }}
                                 id="upload_input"
