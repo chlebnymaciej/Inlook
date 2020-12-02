@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Pages from './Pages';
+import { SnackbarProvider } from 'notistack';
 
 ReactDOM.render(
   <React.StrictMode>
-     <Pages/>
+    <SnackbarProvider maxSnack={3}>
+      <Pages />
+    </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

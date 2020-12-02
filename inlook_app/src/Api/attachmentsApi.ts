@@ -7,6 +7,7 @@ const targetUrl = BASE_URL + "attachment/"
 
 export const getFile = async (id: string, fileName?: string) => {
     let url = targetUrl + "GetFile?id=" + id;
+    type T = IApiResponse<null>;
     return fetch(url, {
         method: "GET",
         headers: new Headers({
@@ -14,7 +15,7 @@ export const getFile = async (id: string, fileName?: string) => {
             'Authorization': 'Bearer ' + await getUserToken(),
         }),
     })
-        .then(async (response) => {
+        .then<T>(async (response) => {
             if (response.ok) {
                 response.blob()
                     .then((blob) => {
@@ -40,7 +41,7 @@ export const getFile = async (id: string, fileName?: string) => {
             }
 
         })
-        .catch(handleError);
+        .catch<T>(handleError);
 
 }
 

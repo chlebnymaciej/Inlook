@@ -17,6 +17,7 @@ import Slide from '@material-ui/core/Slide/Slide';
 import { AttachmentInfo } from '../Api/attachmentsApi';
 import * as attachmentsApi from "../Api/attachmentsApi";
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useSnackbar } from 'notistack';
 
 
 const useStyles = makeStyles(theme => ({
@@ -93,7 +94,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const NewMessage = (props: NewMessageProps) => {
-
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const classes = useStyles();
     const history = useHistory();
 
@@ -158,10 +159,11 @@ const NewMessage = (props: NewMessageProps) => {
                 attachments: attachments.map(a => a.id),
             }).then(r => {
                 if (r.isError) {
-                    setError("Something went wrong");
+                    enqueueSnackbar("Something went wrong", { variant: "error" });
                 }
                 else {
-                    history.push('/')
+                    enqueueSnackbar("Email send", { variant: "success" });
+                    history.push('/inbox');
                 }
             });
         setOpen(false);
@@ -170,7 +172,7 @@ const NewMessage = (props: NewMessageProps) => {
     useEffect(() => {
         getUsers().then(result => {
             if (result.isError) {
-                setError(result.errorMessage);
+                enqueueSnackbar("Could not load users", { variant: "error" });
             }
             else {
                 setUsers(result.data || []);
@@ -178,7 +180,7 @@ const NewMessage = (props: NewMessageProps) => {
         });
         getGroups().then(result => {
             if (result.isError) {
-                setError(result.errorMessage);
+                enqueueSnackbar("Could not load groups", { variant: "error" });
             }
             else {
                 setGroups(result.data || []);
@@ -217,7 +219,7 @@ const NewMessage = (props: NewMessageProps) => {
             attachmentsApi.uploadAttachment(files[i])
                 .then(r => {
                     if (r.isError) {
-
+                        enqueueSnackbar("Could not upload attachment", { variant: "error" });
                     }
                     else {
                         setAttachments(prev => r.data ? [...prev, r.data] : prev)
@@ -228,15 +230,17 @@ const NewMessage = (props: NewMessageProps) => {
     };
 
     const downloadAttachment = (id: string, fileName: string) => {
-        attachmentsApi.getFile(id, fileName).catch(err => {
-            setError(err);
-        })
+        attachmentsApi.getFile(id, fileName).then(r => {
+            if (r.isError) {
+                enqueueSnackbar("Could not download attachment", { variant: "error" });
+            }
+        });
     }
 
     const deleteAttachment = (id: string) => {
         attachmentsApi.deleteAttachment(id).then(r => {
             if (r.isError) {
-
+                enqueueSnackbar("Could not delete attachment", { variant: "error" });
             }
             else {
                 setAttachments(prev => prev.filter(att => att.id !== id));
