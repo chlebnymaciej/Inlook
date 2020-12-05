@@ -2,6 +2,7 @@ import { IconButton, TextField, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import * as mailApi from '../../Api/mailApi';
 import { EmailProps } from '../../Api/mailApi';
@@ -10,6 +11,7 @@ import EmailContent from './emailContent';
 
 
 const Inbox = () => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [counter, SetCounter] = React.useState(0);
   const iCounter = () => SetCounter(counter + 1);
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
@@ -23,8 +25,11 @@ const Inbox = () => {
   };
 
   useEffect(() => {
-    const emails = getEmails()
     mailApi.getMails().then(r => {
+      if (r.isError) {
+        enqueueSnackbar("Could not retrive emails", { variant: "error" });
+        return;
+      }
       let emails: EmailProps[] = r.data || [];
       emails = emails.map(e => { return { ...e, sendTime: new Date(e.sendTime) } });
       setAllEmails(emails.sort((a, b) => {
@@ -42,11 +47,7 @@ const Inbox = () => {
 
   useEffect(() => {
     setEmails(allEmails);
-  }, [allEmails])
-
-  const getEmails = () => {
-    return mailApi.getMails();
-  }
+  }, [allEmails]);
 
   const sortDateDescending = (a: EmailProps, b: EmailProps) => {
     if (a.sendTime < b.sendTime) return -1;

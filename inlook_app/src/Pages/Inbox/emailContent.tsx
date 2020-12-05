@@ -7,6 +7,7 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import React, { useEffect, useState } from 'react';
 import { EmailProps } from '../../Api/mailApi';
 import * as attachmentsApi from "../../Api/attachmentsApi";
+import { useSnackbar } from 'notistack';
 
 export interface EmailContentProps {
     email: EmailProps;
@@ -51,6 +52,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const EmailContent = (props: EmailContentProps) => {
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const [to, setTo] = useState<string>('');
     const [cc, setCC] = useState<string>('');
     const [error, setError] = useState<string>();
@@ -68,7 +70,7 @@ const EmailContent = (props: EmailContentProps) => {
 
     const downloadAttachment = (id: string, fileName: string) => {
         attachmentsApi.getFile(id, fileName).catch(err => {
-            setError(err);
+            enqueueSnackbar("Attachment is inaccesable", { variant: "error" });
         })
     }
 

@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid/Grid";
 import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import { makeStyles } from '@material-ui/core/styles';
+import { useSnackbar } from "notistack";
 import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
@@ -53,6 +54,7 @@ interface CreateGroupsProps {
 }
 
 const CreateGroups = (props: CreateGroupsProps) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [error, setError] = useState<string>();
   const [checked, setChecked] = useState<UserModel[]>([]);
   const [left, setLeft] = useState<UserModel[]>([]);
@@ -69,7 +71,7 @@ const CreateGroups = (props: CreateGroupsProps) => {
   useEffect(() => {
     getUsers().then(result => {
       if (result.isError) {
-        setError(result.errorMessage);
+        enqueueSnackbar("Could not load contacts", { variant: "error" });
       }
       else {
         setLeft(result.data || []);
@@ -150,7 +152,7 @@ const CreateGroups = (props: CreateGroupsProps) => {
       users: right.map(x => x.id)
     }).then(r => {
       if (r.isError) {
-        setErrorText("Something went wrong");
+        enqueueSnackbar("Something went wrong", { variant: "error" });
       }
       else {
         history.push('/groups');
