@@ -1,4 +1,5 @@
-﻿using Inlook_Core.Entities;
+﻿using Inlook_Core;
+using Inlook_Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,34 @@ namespace Inlook_Infrastructure.Configurations
     {
         public static void AddMockData(this ModelBuilder builder)
         {
+            Role adminRole = new Role() { Name = Roles.Admin, Id = Guid.NewGuid() };
+            Role userRole = new Role() { Name = Roles.User, Id = Guid.NewGuid() };
+            Role pendingRole = new Role() { Name = Roles.Pending, Id = Guid.NewGuid() };
+
+
+
+            builder.Entity<Role>().HasData(
+                adminRole,
+                userRole,
+                pendingRole
+                );
+
             IList<User> users = new List<User>();
             users.Add(new User() { Name = "Stuart Burton",
                 PhoneNumber = " + 48696969696", 
                 Email = "polski@pingwin.pl", 
                 Id = Guid.NewGuid() });
+
+            users.Add(new User()
+            {
+                Name = "Artur Chmura",
+                PhoneNumber = " + 48696969696",
+                Email = "01142158@pw.edu.pl",
+                Id = new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991"),
+                Accepted = true,
+            });
+
+
             users.Add(new User() { Name = "Mariusz Pudzianowski",
                 Email = "mariusz.pudzian@transport.pl",
                 Id = Guid.NewGuid() });
@@ -40,12 +64,27 @@ namespace Inlook_Infrastructure.Configurations
                 Id = Guid.NewGuid()
             });
 
-            builder.Entity<Role>().HasData(
-                new Role() { Name = "User", Id = Guid.NewGuid() },
-                new Role() { Name = "Admin", Id = Guid.NewGuid() }
-                );
+
+          
 
             builder.Entity<User>().HasData(users);
+
+            IList<UserRole> userRoles = new List<UserRole>();
+
+            userRoles.Add(new UserRole()
+            {
+                RoleId = adminRole.Id,
+                UserId = new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991"),
+            });
+
+            userRoles.Add(new UserRole()
+            {
+                RoleId = userRole.Id,
+                UserId = new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991"),
+            });
+
+            builder.Entity<UserRole>().HasData(userRoles);
+
         }
     }
 }

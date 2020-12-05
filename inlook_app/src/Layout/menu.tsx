@@ -1,6 +1,6 @@
-import { Button } from "@material-ui/core";
+import { Button, useRadioGroup } from "@material-ui/core";
 import { User } from "oidc-client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -15,6 +15,10 @@ import SendIcon from '@material-ui/icons/Send';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import HomeIcon from '@material-ui/icons/Home';
 import GroupIcon from '@material-ui/icons/Group';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
+import * as userApi from "../Api/userApi";
+import { useSnackbar } from "notistack";
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,13 +50,27 @@ interface MenuButtonProps {
 }
 
 const MenuButton = (props: MenuButtonProps) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [roles, setRoles] = React.useState<string[]>([]);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const history = useHistory();
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
+
+  useEffect(() => {
+    userApi.getUserRoles()
+      .then(r => {
+        if (r.isError) {
+          enqueueSnackbar("Could not load user roles", { variant: "warning" });
+        }
+        else {
+          setRoles(r.data || []);
+        }
+      })
+  }, []);
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
     if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
@@ -103,11 +121,11 @@ const MenuButton = (props: MenuButtonProps) => {
                     <Paper>
                       <ClickAwayListener onClickAway={handleClose}>
                         <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                        <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/home');}}>
+                          <MenuItem className={classes.mitem} onClick={(e) => { handleClose(e); history.push('/home'); }}>
                             <div>Home</div>
-                          <HomeIcon className={classes.icon}></HomeIcon>
+                            <HomeIcon className={classes.icon}></HomeIcon>
                           </MenuItem>
-                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/inbox');}}>
+                          <MenuItem className={classes.mitem} onClick={(e) => { handleClose(e); history.push('/inbox'); }}>
                             <div>Inbox</div>
                             <MailOutlineIcon className={classes.icon}></MailOutlineIcon>
                           </MenuItem>
@@ -117,12 +135,19 @@ const MenuButton = (props: MenuButtonProps) => {
                           </MenuItem>
                           <MenuItem className={classes.mitem} onClick={(e) => { handleClose(e); history.push('/contacts'); }}>
                             <div>Contacts</div>
-                            <SendIcon className={classes.icon}></SendIcon>
+                            <ContactMailIcon className={classes.icon} />
                           </MenuItem>
-                          <MenuItem className={classes.mitem} onClick={(e)=>{handleClose(e); history.push('/groups');}}>
-                          <div>Groups</div>
-                          <GroupIcon className={classes.icon}></GroupIcon>
+                          <MenuItem className={classes.mitem} onClick={(e) => { handleClose(e); history.push('/groups'); }}>
+                            <div>Groups</div>
+                            <GroupIcon className={classes.icon}></GroupIcon>
                           </MenuItem>
+                          {roles.includes("Admin") &&
+                            <MenuItem className={classes.mitem} onClick={(e) => { handleClose(e); history.push('/accounts'); }}>
+                              <div>Accounts</div>
+                              <SupervisorAccountIcon className={classes.icon} />
+                            </MenuItem>
+
+                          }
                         </MenuList>
                       </ClickAwayListener>
                     </Paper>

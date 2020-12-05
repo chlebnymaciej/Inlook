@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Inlook_Core;
 using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Infrastructure;
@@ -63,7 +64,7 @@ namespace Inlook_API
                             var userInDb = db.Users.Find(oid);
                             if (userInDb == null)
                             {
-                                var userRole = db.Roles.Where(r => r.Name == "User").FirstOrDefault();
+                                var userRole = db.Roles.Where(r => r.Name == Roles.Pending).FirstOrDefault();
                                 var givenName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
                                 var surName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname");
                                 var email = o.Principal.FindFirstValue(ClaimTypes.Email);
@@ -100,8 +101,14 @@ namespace Inlook_API
                 o.AddPolicy("UserPolicy", p =>
                {
                    p.AuthenticationSchemes.Add(AzureADDefaults.AuthenticationScheme);
-                   p.RequireRole("User");
+                   p.RequireRole(Roles.User);
                });
+
+                o.AddPolicy("AdminPolicy", p =>
+                {
+                    p.AuthenticationSchemes.Add(AzureADDefaults.AuthenticationScheme);
+                    p.RequireRole(Roles.Admin);
+                });
             });
 
             services.AddCors();
