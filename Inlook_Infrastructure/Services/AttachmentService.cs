@@ -48,6 +48,11 @@ namespace Inlook_Infrastructure.Services
             }
             var containerClient = blobServiceClient.GetBlobContainerClient("attachments");
             var blobClient = containerClient.GetBlobClient(attachment.AzureFileName);
+            var exists =  blobClient.Exists().Value;
+            if(!exists)
+            {
+                return null;
+            }
             var blobDownloadInfo = await blobClient.DownloadAsync();
 
             return new GetFileModel() { ClientFileName = attachment.AzureFileName, FileStream = blobDownloadInfo.Value.Content, ContentType = blobDownloadInfo.Value.ContentType };

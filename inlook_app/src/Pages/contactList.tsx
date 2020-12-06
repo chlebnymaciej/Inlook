@@ -1,5 +1,6 @@
 import { Checkbox, createStyles, IconButton, makeStyles, Paper, Table, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, TextField, Theme } from '@material-ui/core';
 import CommentIcon from '@material-ui/icons/Comment';
+import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import * as userApi from '../Api/userApi';
 import { Contact, OrderType } from '../Api/userApi';
@@ -45,6 +46,7 @@ const headCells: HeadCell[] = [
 ];
 
 const ContactList = (props: ContactListProps) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const classes = useStyles();
 
   const [contacts, setContacts] = useState<Contact[]>();
@@ -77,7 +79,7 @@ const ContactList = (props: ContactListProps) => {
     userApi.getContactList(pageNumber, pageSize, searchText, orderBy, orderType)
       .then(r => {
         if (r.isError) {
-          setError(r.errorMessage);
+          enqueueSnackbar("Could not load contact list", { variant: "error" });
           return;
         }
         setContacts(r.data?.contacts);

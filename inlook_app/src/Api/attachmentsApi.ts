@@ -7,6 +7,7 @@ const targetUrl = BASE_URL + "attachment/"
 
 export const getFile = async (id: string, fileName?: string) => {
     let url = targetUrl + "GetFile?id=" + id;
+    type T = IApiResponse<null>;
     return fetch(url, {
         method: "GET",
         headers: new Headers({
@@ -14,16 +15,34 @@ export const getFile = async (id: string, fileName?: string) => {
             'Authorization': 'Bearer ' + await getUserToken(),
         }),
     })
-        .then((response) => response.blob())
-        .then((blob) => {
-            const url = window.URL.createObjectURL(new Blob([blob]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', fileName || "attachment.bin");
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode?.removeChild(link);
-        });
+        .then<T>(async (response) => {
+            if (response.ok) {
+                response.blob()
+                    .then((blob) => {
+                        const url = window.URL.createObjectURL(new Blob([blob]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', fileName || "attachment.bin");
+                        document.body.appendChild(link);
+                        link.click();
+                        link.parentNode?.removeChild(link);
+                    });
+                return {
+                    isError: false,
+                    responseCode: response.status,
+                }
+            }
+            else {
+                return {
+                    isError: true,
+                    responseCode: response.status,
+                    errorMessage: await response.text(),
+                }
+            }
+
+        })
+        .catch<T>(handleError);
+
 }
 
 export interface AttachmentInfo {

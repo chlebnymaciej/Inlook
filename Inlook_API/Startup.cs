@@ -37,6 +37,8 @@ namespace Inlook_API
         {
             services.AddControllers();
 
+            services.AddApplicationInsightsTelemetry();
+
             services.AddAuthentication(sharedOptions =>
             {
                 sharedOptions.DefaultScheme = AzureADDefaults.AuthenticationScheme;

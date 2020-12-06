@@ -6,6 +6,7 @@ using Inlook_Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -17,11 +18,12 @@ namespace Inlook_API.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize(Policy = "UserPolicy")]
-    public class AttachmentController : ControllerBase
+    public class AttachmentController : BaseController
     {
         private readonly IAttachmentService attachmentService;
 
-        public AttachmentController(IAttachmentService attachmentService)
+
+        public AttachmentController(ILogger logger, IAttachmentService attachmentService):base(logger)
         {
             this.attachmentService = attachmentService;
         }

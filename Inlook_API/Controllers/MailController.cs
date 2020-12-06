@@ -3,6 +3,7 @@ using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace Inlook_API.Controllers
@@ -10,11 +11,11 @@ namespace Inlook_API.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize(Policy = "UserPolicy")]
-    public class MailController : ControllerBase
+    public class MailController : BaseController
     {
         private readonly IMailService _mailService;
         private readonly IUserService _userService;
-        public MailController(IMailService mailService, IUserService userService)
+        public MailController(ILogger logger, IMailService mailService, IUserService userService) : base(logger)
         {
             _mailService = mailService;
             _userService = userService;
