@@ -14,7 +14,7 @@ namespace Inlook_API.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService userService;
-        public UserController(ILogger logger, IUserService userService):base(logger)
+        public UserController(ILogger<IUserService> logger, IUserService userService):base(logger)
         {
             this.userService = userService;
         }

@@ -15,7 +15,7 @@ namespace Inlook_API.Controllers
     {
         private readonly IMailService _mailService;
         private readonly IUserService _userService;
-        public MailController(ILogger logger, IMailService mailService, IUserService userService) : base(logger)
+        public MailController(ILogger<IMailService> logger, IMailService mailService, IUserService userService) : base(logger)
         {
             _mailService = mailService;
             _userService = userService;

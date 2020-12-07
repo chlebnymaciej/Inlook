@@ -23,7 +23,7 @@ namespace Inlook_API.Controllers
         private readonly IAttachmentService attachmentService;
 
 
-        public AttachmentController(ILogger logger, IAttachmentService attachmentService):base(logger)
+        public AttachmentController(ILogger<IAttachmentService> logger, IAttachmentService attachmentService):base(logger)
         {
             this.attachmentService = attachmentService;
         }

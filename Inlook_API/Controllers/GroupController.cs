@@ -17,7 +17,7 @@ namespace Inlook_API.Controllers
     public class GroupController : BaseController
     {
         private readonly IGroupService groupService;
-        public GroupController(ILogger logger, IGroupService groupService):base(logger)
+        public GroupController(ILogger<IGroupService> logger, IGroupService groupService):base(logger)
         {
             this.groupService = groupService;
         }

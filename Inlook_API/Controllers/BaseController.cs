@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Inlook_API.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -6,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Inlook_API.Controllers
 {
-
     public class BaseController : Controller
     {
         protected readonly ILogger _logger;
@@ -20,9 +20,9 @@ namespace Inlook_API.Controllers
 
             StringBuilder sb = new StringBuilder();
             sb.Append("REQUEST: ");
-            sb.Append(context.HttpContext.Request.ToString());
-            sb.Append("RESPONSE: ");
-            sb.Append(context.HttpContext.Response.ToString());
+            sb.Append(context.HttpContext.Request.GetDetails());
+            sb.Append("\nRESPONSE: ");
+            sb.Append(context.HttpContext.Response.Body.ToString());
 
             _logger.LogInformation(sb.ToString());
         }
