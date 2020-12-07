@@ -5,6 +5,7 @@
 
 trigger:
 - develop
+- feature/deploy
 
 variables:
   major: 1
