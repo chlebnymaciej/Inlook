@@ -66,11 +66,3 @@ steps:
   inputs: 
     pathtoPublish: $(Build.ArtifactStagingDirectory)
     ArtifactName: '_api'
-
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: 'InlookAPI'
-    appType: 'webApp'
-    appName: 'InlookAPI'
-    package: '$(Build.ArtifactStagingDirectory)/*.zip'
-    deploymentMethod: 'auto'
