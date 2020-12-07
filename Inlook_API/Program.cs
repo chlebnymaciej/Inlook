@@ -20,7 +20,13 @@ namespace Inlook_API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                    .ConfigureLogging(builder =>
+                    {
+                        builder.AddApplicationInsights("30b8ef2e-b860-4c80-9b19-654bf183aea2");
+                        builder.AddFilter<Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider>
+                                       ("", LogLevel.Information);
+                    });
                 });
     }
 }
