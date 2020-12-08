@@ -21,6 +21,7 @@ namespace Inlook_Infrastructure.Configurations
                 .WithMany(r => r.UserRoles)
                 .HasForeignKey(ur => ur.RoleId  );
 
+            builder.HasIndex(r => r.UserId);
         }
     }
 }

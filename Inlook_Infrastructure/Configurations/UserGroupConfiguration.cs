@@ -21,6 +21,8 @@ namespace Inlook_Infrastructure.Configurations
             builder.HasOne(ug => ug.Group)
                 .WithMany(g => g.UserGroups)
                 .HasForeignKey(ug => ug.GroupId);
+
+            builder.HasIndex(ug => new { ug.GroupId, ug.UserId });
         }
     }
 }

@@ -21,6 +21,8 @@ namespace Inlook_Infrastructure.Configurations
             builder.Property(g => g.Name)
                 .IsRequired()
                 .HasMaxLength(40);
+
+            builder.HasIndex(g => g.GroupOwnerId);
         }
     }
 }

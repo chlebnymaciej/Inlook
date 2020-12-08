@@ -13,6 +13,8 @@ namespace Inlook_Infrastructure.Configurations
         {
             builder.HasKey(u => u.Id);
             builder.Property(u => u.PhoneNumber).HasMaxLength(15);
+
+            builder.HasIndex(u => u.Id);
         }
     }
 }

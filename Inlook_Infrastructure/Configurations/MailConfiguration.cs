@@ -19,6 +19,8 @@ namespace Inlook_Infrastructure.Configurations
                 .HasForeignKey(m => m.SenderId);
 
             builder.Property(m => m.Subject).HasMaxLength(100);
+
+            builder.HasIndex(m => new { m.SenderId, m.Id }); //??
         }
     }
 }
