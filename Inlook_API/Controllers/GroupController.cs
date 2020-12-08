@@ -2,7 +2,7 @@
 using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
-
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,7 +17,7 @@ namespace Inlook_API.Controllers
     public class GroupController : BaseController
     {
         private readonly IGroupService groupService;
-        public GroupController(ILogger logger, IGroupService groupService):base(logger)
+        public GroupController(ILogger<GroupController> logger, TelemetryClient telemetryClient, IGroupService groupService):base(logger, telemetryClient)
         {
             this.groupService = groupService;
         }

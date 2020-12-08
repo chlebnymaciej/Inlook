@@ -1,10 +1,10 @@
 ﻿using Inlook_API.Extensions;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace Inlook_API.Controllers
 {
@@ -15,7 +15,7 @@ namespace Inlook_API.Controllers
     {
         private readonly IMailService _mailService;
         private readonly IUserService _userService;
-        public MailController(ILogger logger, IMailService mailService, IUserService userService) : base(logger)
+        public MailController(ILogger<MailController> logger, TelemetryClient telemetryClient, IMailService mailService, IUserService userService) : base(logger, telemetryClient)
         {
             _mailService = mailService;
             _userService = userService;

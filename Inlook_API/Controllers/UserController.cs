@@ -1,6 +1,7 @@
 ﻿using Inlook_API.Extensions;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,7 +15,7 @@ namespace Inlook_API.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService userService;
-        public UserController(ILogger logger, IUserService userService):base(logger)
+        public UserController(ILogger<UserController> logger,TelemetryClient telemetryClient, IUserService userService):base(logger, telemetryClient)
         {
             this.userService = userService;
         }

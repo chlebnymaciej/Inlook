@@ -1,1 +1,2 @@
-export const BASE_URL = "https://localhost:5001/"
+export const BASE_URL = "https://inlookapi.azurewebsites.net/";
+//"https://localhost:5001/";

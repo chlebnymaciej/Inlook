@@ -1,16 +1,10 @@
-﻿using Inlook_API.Extensions;
-using Inlook_Core.Entities;
-using Inlook_Core.Interfaces.Services;
-using Inlook_Core.Models;
-
+﻿using Inlook_Core.Interfaces.Services;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Inlook_API.Controllers
@@ -23,7 +17,7 @@ namespace Inlook_API.Controllers
         private readonly IAttachmentService attachmentService;
 
 
-        public AttachmentController(ILogger logger, IAttachmentService attachmentService):base(logger)
+        public AttachmentController(ILogger<AttachmentController> logger, TelemetryClient telemetryClient,  IAttachmentService attachmentService):base(logger, telemetryClient)
         {
             this.attachmentService = attachmentService;
         }
