@@ -18,7 +18,7 @@ namespace Inlook_Infrastructure.Configurations
             builder.HasOne(m => m.Mail)
                .WithMany(m => m.Recipients)
                .HasForeignKey(m => m.MailId);
-            builder.HasIndex(m => new { m.RecipientId, m.MailId });//??
+            builder.HasIndex(m => new { m.RecipientId, m.MailId });
         }
     }
 }
