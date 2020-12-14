@@ -30,14 +30,16 @@ namespace Inlook_Infrastructure.Configurations
                 Email = "polski@pingwin.pl", 
                 Id = Guid.NewGuid() });
 
-            users.Add(new User()
+            User admin = new User()
             {
                 Name = "Artur Chmura",
                 PhoneNumber = " + 48696969696",
-                Email = "01142158@pw.edu.pl",
-                Id = new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991"),
+                Email = "artur.chmura3@op.pl",
+                Id = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
                 Accepted = true,
-            });
+            };
+
+            users.Add(admin);
 
 
             users.Add(new User() { Name = "Mariusz Pudzianowski",
@@ -74,13 +76,13 @@ namespace Inlook_Infrastructure.Configurations
             userRoles.Add(new UserRole()
             {
                 RoleId = adminRole.Id,
-                UserId = new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991"),
+                UserId = admin.Id,
             });
 
             userRoles.Add(new UserRole()
             {
                 RoleId = userRole.Id,
-                UserId = new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991"),
+                UserId = admin.Id,
             });
 
             builder.Entity<UserRole>().HasData(userRoles);
