@@ -84,7 +84,7 @@ namespace Inlook_Infrastructure.Migrations
                 values: new object[,]
                 {
                     { new Guid("6d6a7b2f-d9ce-4929-8672-4f46ef6c7472"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "polski@pingwin.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Stuart Burton", " + 48696969696" },
-                    { new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991"), true, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "01142158@pw.edu.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Artur Chmura", " + 48696969696" },
+                    { new Guid("318ab40b-446a-4144-9fec-af9c5e5bb16d"), true, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "arturchmura2@op.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Artur Chmura", " + 48696969696" },
                     { new Guid("b8438a0b-a694-4575-9fdc-fe59fc91eff8"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mariusz.pudzian@transport.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mariusz Pudzianowski", null },
                     { new Guid("cc437d1a-f0d1-4d23-87e8-2794f8500494"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mrpathix@elo.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pan Paweł", null },
                     { new Guid("906bfc2c-c853-408e-90a8-d3c653f9d753"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nastepne@zawody.fi", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Janne Ahonen", null },
@@ -97,12 +97,12 @@ namespace Inlook_Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "UserRole",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { new Guid("f9154aea-9350-49df-b60a-4ed58e61e03c"), new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991") });
+                values: new object[] { new Guid("f9154aea-9350-49df-b60a-4ed58e61e03c"), new Guid("318ab40b-446a-4144-9fec-af9c5e5bb16d") });
 
             migrationBuilder.InsertData(
                 table: "UserRole",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { new Guid("30a5ff06-4fe3-4ad3-a994-49aa505867b0"), new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991") });
+                values: new object[] { new Guid("30a5ff06-4fe3-4ad3-a994-49aa505867b0"), new Guid("318ab40b-446a-4144-9fec-af9c5e5bb16d") });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_MailsTo_Users_RecipientId",
@@ -126,12 +126,12 @@ namespace Inlook_Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "UserRole",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { new Guid("30a5ff06-4fe3-4ad3-a994-49aa505867b0"), new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991") });
+                keyValues: new object[] { new Guid("30a5ff06-4fe3-4ad3-a994-49aa505867b0"), new Guid("318ab40b-446a-4144-9fec-af9c5e5bb16d") });
 
             migrationBuilder.DeleteData(
                 table: "UserRole",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { new Guid("f9154aea-9350-49df-b60a-4ed58e61e03c"), new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991") });
+                keyValues: new object[] { new Guid("f9154aea-9350-49df-b60a-4ed58e61e03c"), new Guid("318ab40b-446a-4144-9fec-af9c5e5bb16d") });
 
             migrationBuilder.DeleteData(
                 table: "Users",
@@ -186,7 +186,7 @@ namespace Inlook_Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Id",
-                keyValue: new Guid("164d8324-3dde-4baf-a2ac-ecede19ca991"));
+                keyValue: new Guid("318ab40b-446a-4144-9fec-af9c5e5bb16d"));
 
             migrationBuilder.DropColumn(
                 name: "Accepted",
