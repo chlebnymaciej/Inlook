@@ -114,3 +114,17 @@ export const acceptUser = async (userId: string, accept: boolean = true) => {
         }),
     }).then<T>(handleResponse).catch<T>(handleError);
 }
+
+export const deleteUser = async (userId: string) => {
+    type T = IApiResponse<null>;
+    let url = targetUrl + "DeleteUser";
+    url += `?userId=${userId}`;
+
+    return fetch(url, {
+        method: "GET",
+        headers: new Headers({
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + await getUserToken(),
+        }),
+    }).then<T>(handleResponse).catch<T>(handleError);
+}

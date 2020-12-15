@@ -166,6 +166,17 @@ const UserList = (props: UserListProps) => {
             })
     }
 
+    const deleteUser = (userId: string) => {
+        userApi.deleteUser(userId).then(r => {
+            if (r.errorMessage) {
+                enqueueSnackbar("Cannot delete user", { variant: "error" });
+            }
+            else {
+                setUsers(users.filter(u => u.id !== userId));
+            }
+        })
+    }
+
     const tableHeadWidths = <colgroup>
         <col style={{ width: '10%' }} />
         <col style={{ width: '40%' }} />
@@ -235,7 +246,7 @@ const UserList = (props: UserListProps) => {
                                     </IconButton>
                             }
                             <TableCell>
-                                <IconButton edge="end" aria-label="comments" >
+                                <IconButton edge="end" aria-label="comments" onClick={() => deleteUser(user.id)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </TableCell>

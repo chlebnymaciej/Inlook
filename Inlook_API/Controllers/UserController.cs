@@ -116,6 +116,15 @@ namespace Inlook_API.Controllers
 
         }
 
+        [HttpGet("DeleteUser")]
+        [Authorize(Policy = "AdminPolicy")]
+        public IActionResult DeleteUser(Guid userId)
+        {
+            this.userService.Delete(userId);
+
+            return NoContent();
+        }
+
         [HttpGet("GetAccounts")]
         [Authorize(Policy = "AdminPolicy")]
         public IActionResult GetAccounts(int? page, int? pageSize, string searchText, string orderBy, string orderType)
