@@ -2,8 +2,10 @@
 using Inlook_Core;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,11 +15,10 @@ namespace Inlook_API.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize(Policy = "UserPolicy")]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly IUserService userService;
-
-        public UserController(IUserService userService)
+        public UserController(ILogger<UserController> logger,TelemetryClient telemetryClient, IUserService userService):base(logger, telemetryClient)
         {
             this.userService = userService;
         }

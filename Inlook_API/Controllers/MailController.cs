@@ -1,21 +1,22 @@
 ﻿using Inlook_API.Extensions;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
+using Microsoft.ApplicationInsights;
 using Inlook_Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.Extensions.Logging;
 
 namespace Inlook_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize(Policy = "UserPolicy")]
-    public class MailController : ControllerBase
+    public class MailController : BaseController
     {
         private readonly IMailService _mailService;
         private readonly IUserService _userService;
-        public MailController(IMailService mailService, IUserService userService)
+        public MailController(ILogger<MailController> logger, TelemetryClient telemetryClient, IMailService mailService, IUserService userService) : base(logger, telemetryClient)
         {
             _mailService = mailService;
             _userService = userService;

@@ -42,15 +42,16 @@ namespace Inlook_API
         {
             services.AddControllers();
 
-            // Azure AD B2C Coordinates
+            services.AddApplicationInsightsTelemetry();
 
+           
 
             services.Configure<AuthenticationOptions>(Configuration.GetSection("Authentication:AzureAd"));
 
             IList<string> validissuers = new List<string>()
             {
                 Configuration.GetValue<string>("AzureAdB2C:Authority"),
-        };
+            };
 
             var configManager = new ConfigurationManager<OpenIdConnectConfiguration>($"{validissuers.Last()}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever());
 
@@ -167,7 +168,6 @@ namespace Inlook_API
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
