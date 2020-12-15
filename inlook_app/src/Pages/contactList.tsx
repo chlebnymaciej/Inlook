@@ -171,7 +171,7 @@ const ContactList = (props: ContactListProps) => {
             const labelId = `checkbox-list-label-${contact.email}`;
 
             return (
-              <TableRow key={contact.email} >
+              <TableRow key={index} >
                 <TableCell >
                   <Checkbox
                     edge="start"
