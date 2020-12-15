@@ -41,6 +41,7 @@ namespace Inlook_Infrastructure.Services
         {
             var groups = this.context.Groups;
             return groups.Where(x => x.GroupOwnerId == UserId)
+                .OrderBy(u=> u.Name)
                 .Include(g => g.UserGroups)
                 .ThenInclude(u=>u.User);
         }

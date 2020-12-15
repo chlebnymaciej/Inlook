@@ -22,7 +22,6 @@ const CallbackPage = (props: CallbackPageProps) => {
     const handleError = () => {
         props.setUser(null);
         enqueueSnackbar("Authorization error", { variant: "error" });
-        history.push("/");
     };
     return (
         <Callback userManager={userManager} onSuccess={handleSuccess} onError={handleError} />

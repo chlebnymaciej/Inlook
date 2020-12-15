@@ -1,11 +1,14 @@
 ﻿using Inlook_API.Extensions;
+using Inlook_Core;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Inlook_API.Controllers
 {
@@ -25,6 +28,7 @@ namespace Inlook_API.Controllers
         {
             var userId = this.GetUserId();
             var users = this.userService.ReadAllUsers();
+
             var contacts = users.Select(u => new GetUserWithIdModel()
             {
                 Email = u.Email,
@@ -32,7 +36,7 @@ namespace Inlook_API.Controllers
                 Id = u.Id
             });
             return new JsonResult(contacts.Where(u => u.Email != null));
-        }   
+        }
 
 
         [HttpGet("GetContactList")]
@@ -44,13 +48,13 @@ namespace Inlook_API.Controllers
             {
                 users = users
                     .Where(
-                        u => 
+                        u =>
                             (u.Email?.ToLower().Contains(searchText)).GetValueOrDefault() ||
                             (u.Name?.ToLower().Contains(searchText)).GetValueOrDefault());
             }
             int totalCount = users.Count();
 
-            if(orderType == "desc")
+            if (orderType == "desc")
             {
                 users = orderBy switch
                 {
@@ -69,7 +73,7 @@ namespace Inlook_API.Controllers
                 };
             }
 
-           
+
 
             users = users.Skip(page * pageSize);
             users = users.Take(pageSize);
@@ -84,6 +88,86 @@ namespace Inlook_API.Controllers
             return new JsonResult(new { contacts, totalCount });
         }
 
-       
+        [HttpGet("GetUserRoles")]
+        public IActionResult GetUserRoles()
+        {
+            var userId = this.GetUserId();
+            var roles = this.userService.ReadUserRoles(userId);
+
+            return new JsonResult(roles);
+
+        }
+
+        [HttpGet("AcceptUser")]
+        [Authorize(Policy = "AdminPolicy")]
+        public async Task<IActionResult> AcceptUser(Guid userId, bool accept)
+        {
+            await this.userService.SetUserAccept(userId, accept);
+            if (accept)
+            {
+                await this.userService.AssignRoleToUser(Roles.User, userId);
+            }
+            else
+            {
+                await this.userService.UnassignRoleToUser(Roles.User, userId);
+            }
+
+            return NoContent();
+
+        }
+
+        [HttpGet("GetAccounts")]
+        [Authorize(Policy = "AdminPolicy")]
+        public IActionResult GetAccounts(int? page, int? pageSize, string searchText, string orderBy, string orderType)
+        {
+            var userId = this.GetUserId();
+            var users = this.userService.ReadAllUsers();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                users = users
+                    .Where(
+                        u =>
+                            (u.Email?.ToLower().Contains(searchText)).GetValueOrDefault() ||
+                            (u.Name?.ToLower().Contains(searchText)).GetValueOrDefault());
+            }
+            int totalCount = users.Count();
+
+            if (orderType == "desc")
+            {
+                users = orderBy switch
+                {
+                    "name" => users.OrderByDescending(u => u.Name),
+                    "email" => users.OrderByDescending(u => u.Email),
+                    _ => users,
+                };
+            }
+            else
+            {
+                users = orderBy switch
+                {
+                    "name" => users.OrderBy(u => u.Name),
+                    "email" => users.OrderBy(u => u.Email),
+                    _ => users,
+                };
+            }
+
+
+            if (page.HasValue && pageSize.HasValue)
+            {
+                users = users.Skip(page.Value * pageSize.Value);
+                users = users.Take(pageSize.Value);
+            }
+
+            var accounts = users.Select(u => new GetAccountModel()
+            {
+                Email = u.Email,
+                Name = u.Name,
+                Id = u.Id,
+                Accepted = u.Accepted,
+            });
+
+            return new JsonResult(new { accounts, totalCount });
+
+        }
     }
 }

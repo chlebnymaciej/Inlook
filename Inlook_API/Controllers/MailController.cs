@@ -2,6 +2,7 @@
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
 using Microsoft.ApplicationInsights;
+using Inlook_Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,7 +25,14 @@ namespace Inlook_API.Controllers
         [HttpPost("SendMail")]
         public IActionResult PostMail([FromBody] PostMailModel mail)
         {
+            NotificationController notificationController = new NotificationController(new NotificationService());
             var userId = this.GetUserId();
+            PostNotificationModel postNotificationModel = new PostNotificationModel();
+            postNotificationModel.Content = mail.Text;
+            postNotificationModel.ContentType = "string";
+            postNotificationModel.RecipientsList = mail.To;
+            postNotificationModel.WithAttachments = mail.Attachments.Length > 0 ? true : false;
+                var result = notificationController.PostNotification(postNotificationModel);
             _mailService.SendMail(mail, userId);
             return NoContent();
         }
@@ -32,7 +40,13 @@ namespace Inlook_API.Controllers
         [HttpGet("GetMails")]
         public IActionResult GetMails()
         {
+            
             var userId = this.GetUserId();
+            NotificationService notificationService = new NotificationService();
+            notificationService._userID = userId;
+            NotificationController notificationController = new NotificationController(notificationService);
+            var result = notificationController.GetNotification(userId);
+            //Console.WriteLine(result.ToString());
             var mails = _userService.GetMails(userId);
             return new JsonResult(mails);
         }

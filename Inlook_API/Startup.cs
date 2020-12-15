@@ -4,11 +4,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Inlook_Core;
 using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Infrastructure;
 using Inlook_Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,6 +22,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Inlook_API
@@ -40,70 +45,106 @@ namespace Inlook_API
             services.AddApplicationInsightsTelemetry();
 
             services.AddAuthentication(sharedOptions =>
+            // Azure AD B2C Coordinates
+
+
+            services.Configure<AuthenticationOptions>(Configuration.GetSection("Authentication:AzureAd"));
+
+            IList<string> validissuers = new List<string>()
             {
-                sharedOptions.DefaultScheme = AzureADDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(AzureADDefaults.AuthenticationScheme, options =>
-                {
-                    options.Audience = Configuration.GetValue<string>("AzureAdB2C:Audience");
-                    options.Authority = Configuration.GetValue<string>("AzureAdB2C:Instance")
-                     + Configuration.GetValue<string>("AzureAdB2C:TenantId");
-                    options.TokenValidationParameters = new TokenValidationParameters()
+                Configuration.GetValue<string>("AzureAdB2C:Authority"),
+            };
+
+            var configManager = new ConfigurationManager<OpenIdConnectConfiguration>($"{validissuers.Last()}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever());
+
+            var openidconfig = configManager.GetConfigurationAsync().Result;
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(AppServicesAuthenticationDefaults.AuthenticationScheme, options =>
                     {
-                        ValidIssuer = Configuration.GetValue<string>("AzureAdB2C:Issuer"),
-                        ValidAudience = Configuration.GetValue<string>("AzureAdB2C:Audience")
-                    };
-                    options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents()
-                    {
-                        OnTokenValidated = o =>
+                        options.Audience = Configuration.GetValue<string>("AzureAdB2C:Audience");
+                        options.Authority = Configuration.GetValue<string>("AzureAdB2C:Authority");
+                        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                         {
+                            ValidateAudience = true,
+                            ValidAudience = Configuration.GetValue<string>("AzureAdB2C:Audience"),
 
-                            Guid oid = Guid.Parse(o.Principal.FindFirstValue("http://schemas.microsoft.com/identity/claims/objectidentifier"));
+                            ValidateIssuer = true,
+                            ValidIssuers = new[] { Configuration.GetValue<string>("AzureAdB2C:Authority") },
 
-                            var db = o.HttpContext.RequestServices.GetRequiredService<Inlook_Context>();
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKeys = openidconfig.SigningKeys,
 
-                            var userInDb = db.Users.Find(oid);
-                            if (userInDb == null)
+                            RequireExpirationTime = true,
+                            ValidateLifetime = true,
+                            RequireSignedTokens = true,
+                        };
+
+                        options.RequireHttpsMetadata = false;
+                        options.Events = new JwtBearerEvents()
+                        {
+                            OnTokenValidated = o =>
                             {
-                                var userRole = db.Roles.Where(r => r.Name == "User").FirstOrDefault();
-                                var givenName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
-                                var surName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname");
-                                var email = o.Principal.FindFirstValue(ClaimTypes.Email);
-                                User user = new User()
+
+                                Guid oid = Guid.Parse(o.Principal.FindFirstValue("http://schemas.microsoft.com/identity/claims/objectidentifier"));
+
+                                var db = o.HttpContext.RequestServices.GetRequiredService<Inlook_Context>();
+
+                                var userInDb = db.Users.Find(oid);
+                                if (userInDb == null)
                                 {
-                                    Id = oid,
-                                    Name = givenName + " " + surName,
-                                    Email = email,
-                                    UserRoles = new List<UserRole> { new UserRole() { RoleId = userRole.Id, UserId = oid } },
-                                };
-                                db.Users.Add(user);
-                                db.SaveChanges();
-                            }
+                                    var userRole = db.Roles.Where(r => r.Name == Roles.Pending).FirstOrDefault();
+                                    var givenName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+                                    var surName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname");
+                                    var email = o.Principal.FindFirstValue(ClaimTypes.Email);
+                                    User user = new User()
+                                    {
+                                        Id = oid,
+                                        Name = givenName + " " + surName,
+                                        Email = email,
+                                        UserRoles = new List<UserRole> { new UserRole() { RoleId = userRole.Id, UserId = oid } },
+                                    };
+                                    db.Users.Add(user);
+                                    db.SaveChanges();
+                                }
 
-                            var userRoles = db.UserRole.Where(ur => ur.UserId == oid).Include(ur => ur.Role).ToList();
+                                var userRoles = db.UserRole.Where(ur => ur.UserId == oid).Include(ur => ur.Role).ToList();
 
-                            var claims = new List<Claim>();
+                                var claims = new List<Claim>();
 
-                            foreach (var role in userRoles)
+                                foreach (var role in userRoles)
+                                {
+                                    claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
+                                }
+
+                                var appIdentity = new ClaimsIdentity(claims);
+
+                                o.Principal.AddIdentity(appIdentity);
+                                return Task.CompletedTask;
+                            },
+
+                            OnAuthenticationFailed = o =>
                             {
-                                claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
+                                Console.WriteLine(o.HttpContext.Request.Headers["Authorization"].ToString());
+
+                                return Task.CompletedTask;
                             }
-
-                            var appIdentity = new ClaimsIdentity(claims);
-
-                            o.Principal.AddIdentity(appIdentity);
-                            return Task.CompletedTask;
-                        },
-                    };
-                });
+                        };
+                    });
 
             services.AddAuthorization(o =>
             {
                 o.AddPolicy("UserPolicy", p =>
                {
-                   p.AuthenticationSchemes.Add(AzureADDefaults.AuthenticationScheme);
-                   p.RequireRole("User");
+                   p.AuthenticationSchemes.Add(AppServicesAuthenticationDefaults.AuthenticationScheme);
+                   p.RequireRole(Roles.User);
                });
+
+                o.AddPolicy("AdminPolicy", p =>
+                {
+                    p.AuthenticationSchemes.Add(AppServicesAuthenticationDefaults.AuthenticationScheme);
+                    p.RequireRole(Roles.Admin);
+                });
             });
 
             services.AddCors();
@@ -119,6 +160,7 @@ namespace Inlook_API
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<INotificationService, NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Inlook_Infrastructure.Services
 {
@@ -15,6 +16,8 @@ namespace Inlook_Infrastructure.Services
         public UserService(Inlook_Context context) : base(context)
         {
         }
+
+       
 
         public IEnumerable<GetMailModel> GetMails(Guid toId)
         {
@@ -136,6 +139,46 @@ namespace Inlook_Infrastructure.Services
         public IEnumerable<User> ReadAllUsers()
         {
             return this.context.Users;
+        }
+
+        public IEnumerable<string> ReadUserRoles(Guid userId)
+        {
+            return this.context.UserRole
+                .Where(ur => ur.UserId == userId)
+                .Include(ur => ur.Role)
+                .Select(ur=>ur.Role.Name);
+        }
+
+        public async Task SetUserAccept(Guid userId, bool accept)
+        {
+            var user = this.context.Users.Find(userId);
+            user.Accepted = accept;
+            await this.context.SaveChangesAsync();
+        }
+
+        public async Task AssignRoleToUser(string roleName, Guid userId)
+        {
+            var role = this.context.Roles.Where(r => r.Name == roleName).FirstOrDefault();
+            if (role == null) return;
+            var user = this.context.Users.Find(userId);
+            if (user == null) return;
+
+            user.UserRoles.Add(new UserRole() { Role = role });
+            await this.context.SaveChangesAsync();
+        }
+
+        public async Task UnassignRoleToUser(string roleName, Guid userId)
+        {
+         
+
+            var user = this.context.Users.Find(userId);
+            if (user == null) return;
+
+            var role = user.UserRoles.Where(r => r.Role.Name == roleName).FirstOrDefault();
+            if (role == null) return;
+
+            user.UserRoles.Remove(role);
+            await this.context.SaveChangesAsync();
         }
     }
 }
