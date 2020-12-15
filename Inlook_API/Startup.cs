@@ -44,9 +44,7 @@ namespace Inlook_API
 
             services.AddApplicationInsightsTelemetry();
 
-            services.AddAuthentication(sharedOptions =>
-            // Azure AD B2C Coordinates
-
+           
 
             services.Configure<AuthenticationOptions>(Configuration.GetSection("Authentication:AzureAd"));
 
