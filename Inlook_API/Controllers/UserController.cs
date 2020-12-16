@@ -116,7 +116,7 @@ namespace Inlook_API.Controllers
 
         }
 
-        [HttpGet("DeleteUser")]
+        [HttpDelete("DeleteUser")]
         [Authorize(Policy = "AdminPolicy")]
         public IActionResult DeleteUser(Guid userId)
         {

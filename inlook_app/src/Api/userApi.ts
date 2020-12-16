@@ -121,7 +121,7 @@ export const deleteUser = async (userId: string) => {
     url += `?userId=${userId}`;
 
     return fetch(url, {
-        method: "GET",
+        method: "DELETE",
         headers: new Headers({
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + await getUserToken(),
