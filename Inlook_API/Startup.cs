@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Azure.Storage.Blobs;
 using Inlook_Core;
 using Inlook_Core.Entities;
@@ -153,6 +156,19 @@ namespace Inlook_API
             services.AddSingleton(x =>
                 new BlobServiceClient(Configuration.GetValue<string>("AzureStorageBlobConnectionString")));
 
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+                {
+                    Title = "Inlook API",
+                    Version = "v1",
+                });
+
+                List<string> xmlFiles = Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly).ToList();
+                xmlFiles.ForEach(xmlFile => options.IncludeXmlComments(xmlFile));
+
+            });
+
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IMailService, MailService>();
@@ -179,6 +195,14 @@ namespace Inlook_API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Inlook API1");
+                options.RoutePrefix = "";
+
             });
         }
     }

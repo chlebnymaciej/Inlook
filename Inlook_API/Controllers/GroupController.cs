@@ -17,11 +17,16 @@ namespace Inlook_API.Controllers
     public class GroupController : BaseController
     {
         private readonly IGroupService groupService;
-        public GroupController(ILogger<GroupController> logger, TelemetryClient telemetryClient, IGroupService groupService):base(logger, telemetryClient)
+        public GroupController(ILogger<GroupController> logger, TelemetryClient telemetryClient, IGroupService groupService) : base(logger, telemetryClient)
         {
             this.groupService = groupService;
         }
 
+        /// <summary>
+        /// Gets groups owned by calling user
+        /// </summary>
+        /// <response code="200">List of groups that user owns.Groups contains info about members</response>
+        [ProducesResponseType(typeof(List<GetUserGroupModel>), 200)]
         [HttpGet("GetMyGroups")]
         public IActionResult GetGroups()
         {
@@ -53,7 +58,11 @@ namespace Inlook_API.Controllers
             return new JsonResult(resultsList);
         }
 
-
+        /// <summary>
+        /// Creates a new group, with caller as owner
+        /// </summary>
+        /// <param name="createGroupModel"></param>
+        ///  <response code="204">Success indicator</response>
         [HttpPost("PostGroup")]
         public IActionResult PostGroup([FromBody] PostGroupModel createGroupModel)
         {
@@ -62,6 +71,11 @@ namespace Inlook_API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes group of given Id
+        /// </summary>
+        /// <param name="id">Id of group to delete</param>
+        ///  <response code="204">Success indicator</response>
         [HttpDelete("DeleteGroup")]
         public IActionResult DeleteGroup([FromBody] string id)
         {
@@ -71,6 +85,11 @@ namespace Inlook_API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Updates data about group
+        /// </summary>
+        /// <param name="model">Group update model</param>
+        ///  <response code="204">Success indicator</response>
         [HttpPut("UpdateGroup")]
         public IActionResult UpdateGroup([FromBody] UpdateGroupModel model)
         {

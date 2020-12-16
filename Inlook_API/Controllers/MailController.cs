@@ -6,6 +6,7 @@ using Inlook_Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace Inlook_API.Controllers
 {
@@ -22,6 +23,11 @@ namespace Inlook_API.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Creates new mail on server
+        /// </summary>
+        /// <param name="mail">Post mail model</param>
+        ///  <response code="204">Success indicator</response>
         [HttpPost("SendMail")]
         public IActionResult PostMail([FromBody] PostMailModel mail)
         {
@@ -37,6 +43,11 @@ namespace Inlook_API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Gets all mails for calling user
+        /// </summary>
+        /// <response code="200">List of mails</response>
+        [ProducesResponseType(typeof(List<GetMailModel>), 200)]
         [HttpGet("GetMails")]
         public IActionResult GetMails()
         {
@@ -51,6 +62,11 @@ namespace Inlook_API.Controllers
             return new JsonResult(mails);
         }
 
+        /// <summary>
+        /// Set read status of mail
+        /// </summary>
+        /// <param name="mailStatus">Post mail status model</param>
+        ///  <response code="204">Success indicator</response>
         [HttpPut("ReadMailStatus")]
         public IActionResult ReadMailStatus([FromBody] PutMailStatusModel mailStatus)
         {
