@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,11 +19,16 @@ namespace Inlook_API.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService userService;
-        public UserController(ILogger<UserController> logger,TelemetryClient telemetryClient, IUserService userService):base(logger, telemetryClient)
+        public UserController(ILogger<UserController> logger, TelemetryClient telemetryClient, IUserService userService) : base(logger, telemetryClient)
         {
             this.userService = userService;
         }
 
+        /// <summary>
+        /// Gets list of all users
+        /// </summary>
+        /// <response code="200">List of users</response>
+        [ProducesResponseType(typeof(List<GetUserWithIdModel>), 200)]
         [HttpGet("GetUsersList")]
         public IActionResult GetUsers()
         {
@@ -39,6 +45,16 @@ namespace Inlook_API.Controllers
         }
 
 
+        /// <summary>
+        /// Gets page of global contact list
+        /// </summary>
+        /// <param name="page">Page number, starts with 0</param>
+        /// <param name="pageSize">Number of contacts in page</param>
+        /// <param name="searchText">Search text in mail or user name</param>
+        /// <param name="orderBy">Field to order by</param>
+        /// <param name="orderType">Order type, asc or desc</param>
+        /// <response code="200">Single page of contacts</response>
+        [ProducesResponseType(typeof(GetContactsPageModel), 200)]
         [HttpGet("GetContactList")]
         public IActionResult GetContactList(int page, int pageSize, string searchText, string orderBy, string orderType)
         {
@@ -85,9 +101,15 @@ namespace Inlook_API.Controllers
                 PhoneNumber = u.PhoneNumber,
             });
 
-            return new JsonResult(new { contacts, totalCount });
+            return new JsonResult(new GetContactsPageModel() { Contacts = contacts, TotalCount = totalCount });
         }
 
+        /// <summary>
+        /// Gets roles of given user
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">List of users roles names</response>
+        [ProducesResponseType(typeof(List<string>), 200)]
         [HttpGet("GetUserRoles")]
         public IActionResult GetUserRoles()
         {
@@ -98,6 +120,12 @@ namespace Inlook_API.Controllers
 
         }
 
+        /// <summary>
+        /// [Admin] Accept user request to join the application
+        /// </summary>
+        /// <param name="userId">Accepted user Id</param>
+        /// <param name="accept">Accept flag, true for acceptance, false for ban</param>
+        ///  <response code="204">Success indicator</response>
         [HttpGet("AcceptUser")]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> AcceptUser(Guid userId, bool accept)
@@ -116,6 +144,11 @@ namespace Inlook_API.Controllers
 
         }
 
+        /// <summary>
+        /// [Admin] Deletes user of given Id
+        /// </summary>
+        /// <param name="userId">Id of user to be deleted</param>
+        ///  <response code="204">Success indicator</response>
         [HttpDelete("DeleteUser")]
         [Authorize(Policy = "AdminPolicy")]
         public IActionResult DeleteUser(Guid userId)
@@ -125,6 +158,16 @@ namespace Inlook_API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// [Admin] Gets page of accounts in application
+        /// </summary>
+        /// <param name="page">Page number, starts with 0</param>
+        /// <param name="pageSize">Number of contacts in page</param>
+        /// <param name="searchText">Search text in mail or user name</param>
+        /// <param name="orderBy">Field to order by</param>
+        /// <param name="orderType">Order type, asc or desc</param>
+        /// <response code="200">Single page of accounts in application</response>
+        [ProducesResponseType(typeof(GetAccountsPageModel), 200)]
         [HttpGet("GetAccounts")]
         [Authorize(Policy = "AdminPolicy")]
         public IActionResult GetAccounts(int? page, int? pageSize, string searchText, string orderBy, string orderType)
@@ -175,7 +218,7 @@ namespace Inlook_API.Controllers
                 Accepted = u.Accepted,
             });
 
-            return new JsonResult(new { accounts, totalCount });
+            return new JsonResult(new GetAccountsPageModel { Accounts = accounts, TotalCount = totalCount });
 
         }
     }

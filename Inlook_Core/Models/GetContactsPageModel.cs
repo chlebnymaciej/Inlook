@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Inlook_Core.Models
 {
-    public class NotificationStatusModel
+    public class GetContactsPageModel
     {
         /// <summary>
-        /// Notification value
+        /// List of contacts
         /// </summary>
-        public int Value { get; set; }
+        public IEnumerable<GetUserModel> Contacts { get; set; }
         /// <summary>
-        /// Notification description
+        /// Count of all contacts
         /// </summary>
-        public string Description { get; set; }
+        public int TotalCount { get; set; }
     }
 }
