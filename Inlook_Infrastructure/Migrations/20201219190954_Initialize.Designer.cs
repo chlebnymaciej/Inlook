@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inlook_Infrastructure.Migrations
 {
     [DbContext(typeof(Inlook_Context))]
-    [Migration("20201214223003_Initialization")]
-    partial class Initialization
+    [Migration("20201219190954_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,6 +119,8 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.HasIndex("SenderId");
 
                     b.ToTable("Mails");
@@ -140,7 +142,7 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasKey("MailId", "RecipientId");
 
-                    b.HasIndex("RecipientId");
+                    b.HasIndex("RecipientId", "MailId");
 
                     b.ToTable("MailsTo");
                 });
@@ -172,7 +174,7 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("28ce0ec9-ff2a-469f-8eb1-7f078c5ad7da"),
+                            Id = new Guid("4263721b-74ae-4ed9-89d9-85e8a1daef39"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
@@ -180,7 +182,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a9abd872-982c-48a9-8865-e3e5cf5797a2"),
+                            Id = new Guid("9b179416-39fa-4757-a43d-b2b220ba2620"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
@@ -188,7 +190,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ab16ae22-4f23-4e91-bc3c-6420235d12bb"),
+                            Id = new Guid("d0b58ccf-2f6a-493f-996d-cac8c0094dce"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Pending",
@@ -223,12 +225,14 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f812412c-5bd8-4cab-9871-bb598fa9c2ad"),
+                            Id = new Guid("c0f06c3e-7277-4a58-93b0-da1453f5c96f"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "polski@pingwin.pl",
@@ -248,7 +252,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3a053109-f68d-4f77-9197-ca13257a2860"),
+                            Id = new Guid("50c0cf0a-5fce-47ed-9406-d02e65fa3671"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mariusz.pudzian@transport.pl",
@@ -257,7 +261,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("84b97db8-bd89-4187-85f9-fb64f4047b55"),
+                            Id = new Guid("17e1623e-34a4-4b54-b0fe-f13f4606b625"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mrpathix@elo.pl",
@@ -266,7 +270,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("395f1bda-6f88-41a6-8687-a0f9633d4fd0"),
+                            Id = new Guid("f01ef92c-bb3f-45f1-b7ea-1e907e144689"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nastepne@zawody.fi",
@@ -275,7 +279,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2abb0643-366d-4ece-8776-7e2d203f1d20"),
+                            Id = new Guid("e979ebb2-be1c-40f7-aa88-fa8a67dc1885"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "papiez_polak@vatican.vc",
@@ -284,7 +288,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("66a87f0b-0ebf-4f73-9d0f-c9c17891236f"),
+                            Id = new Guid("438beb36-ff5d-4fc3-8a03-f3e688d63e9d"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kenobi@jedi.order",
@@ -293,7 +297,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3008ae6a-483f-4677-a260-5dbd6f16de3c"),
+                            Id = new Guid("b963bfb1-b854-4b9d-b752-803c6a8677d6"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "senat@sith.com",
@@ -302,7 +306,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("22f74dd6-4d63-4d03-8cd4-006b110d840a"),
+                            Id = new Guid("75edc024-bd28-4e9f-9631-66361ffc8904"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "plusydodatnie@soli.darnosc",
@@ -321,7 +325,7 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasKey("UserId", "GroupId");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupId", "UserId");
 
                     b.ToTable("UserGroup");
                 });
@@ -338,18 +342,20 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserRole");
 
                     b.HasData(
                         new
                         {
                             UserId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
-                            RoleId = new Guid("28ce0ec9-ff2a-469f-8eb1-7f078c5ad7da")
+                            RoleId = new Guid("4263721b-74ae-4ed9-89d9-85e8a1daef39")
                         },
                         new
                         {
                             UserId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
-                            RoleId = new Guid("a9abd872-982c-48a9-8865-e3e5cf5797a2")
+                            RoleId = new Guid("9b179416-39fa-4757-a43d-b2b220ba2620")
                         });
                 });
 
