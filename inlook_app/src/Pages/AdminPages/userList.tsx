@@ -64,22 +64,12 @@ const UserList = (props: UserListProps) => {
     const [totalCount, setTotalCount] = React.useState<number>(0);
 
     useEffect(() => {
-        userApi
-            .getUserRoles()
-            .then(r => {
-                if (r.isError) {
-                    enqueueSnackbar("Could not load user roles", { variant: "error" });
-                    history.push("/");
-                }
-                else {
-                    const roles = r.data || []
-                    setRoles(roles);
-                    if (!roles.includes("Admin")) {
-                        enqueueSnackbar("Unauthorized", { variant: "error" });
-                        history.push("/");
-                    }
-                }
-            });
+        const roles = JSON.parse(localStorage.getItem('roles') || "[]");
+        setRoles(roles || []);
+        if (!roles.includes("Admin")) {
+            enqueueSnackbar("Unauthorized", { variant: "error" });
+            history.push("/");
+        }
 
         getPage(page, rowsPerPage, searchText, orderBy, orderType);
 

@@ -61,15 +61,8 @@ const MenuButton = (props: MenuButtonProps) => {
   };
 
   useEffect(() => {
-    userApi.getUserRoles()
-      .then(r => {
-        if (r.isError) {
-          enqueueSnackbar("Could not load user roles", { variant: "warning" });
-        }
-        else {
-          setRoles(r.data || []);
-        }
-      })
+    const roles = JSON.parse(localStorage.getItem('roles') || "[]");
+    setRoles(roles || []);
   }, []);
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
