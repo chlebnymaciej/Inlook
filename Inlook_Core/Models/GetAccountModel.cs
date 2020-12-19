@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Inlook_Core.Models
 {
-    public class GetUserWithIdModel
+    public class GetAccountModel
     {
         /// <summary>
         /// User name
@@ -16,5 +20,9 @@ namespace Inlook_Core.Models
         /// User Id
         /// </summary>
         public Guid Id { get; set; }
+        /// <summary>
+        /// Indicates if user was accepted
+        /// </summary>
+        public bool Accepted { get; set; }
     }
 }

@@ -10,16 +10,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inlook_Infrastructure.Migrations
 {
     [DbContext(typeof(Inlook_Context))]
-    [Migration("20201118123831_Initialization")]
+    [Migration("20201214223003_Initialization")]
     partial class Initialization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("Inlook_Core.Entities.Attachment", b =>
                 {
@@ -28,17 +28,20 @@ namespace Inlook_Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.Property<string>("AzureFileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClientFileName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("FilePath")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("MailId")
+                    b.Property<Guid?>("MailId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -80,7 +83,9 @@ namespace Inlook_Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -106,8 +111,8 @@ namespace Inlook_Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Subject")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -154,8 +159,8 @@ namespace Inlook_Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
@@ -167,7 +172,15 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("32f2df14-63e8-4bb7-b34e-526d9456a406"),
+                            Id = new Guid("28ce0ec9-ff2a-469f-8eb1-7f078c5ad7da"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Admin",
+                            Priority = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("a9abd872-982c-48a9-8865-e3e5cf5797a2"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
@@ -175,10 +188,10 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4092c467-5f46-4611-b6e9-66b31c8dec36"),
+                            Id = new Guid("ab16ae22-4f23-4e91-bc3c-6420235d12bb"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Admin",
+                            Name = "Pending",
                             Priority = 0
                         });
                 });
@@ -188,6 +201,9 @@ namespace Inlook_Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -202,8 +218,8 @@ namespace Inlook_Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -212,7 +228,8 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9a06a3ef-af7d-4676-8f3e-ba0cc19e3ffa"),
+                            Id = new Guid("f812412c-5bd8-4cab-9871-bb598fa9c2ad"),
+                            Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "polski@pingwin.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -221,7 +238,18 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("48e9d25e-e397-4dbd-89fa-3a754bd857ea"),
+                            Id = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
+                            Accepted = true,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "artur.chmura3@op.pl",
+                            LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Artur Chmura",
+                            PhoneNumber = " + 48696969696"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a053109-f68d-4f77-9197-ca13257a2860"),
+                            Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mariusz.pudzian@transport.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -229,7 +257,8 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d18c174a-3818-49a9-be0e-4e7f70ceb22f"),
+                            Id = new Guid("84b97db8-bd89-4187-85f9-fb64f4047b55"),
+                            Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mrpathix@elo.pl",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -237,7 +266,8 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7c513bc2-d20c-4824-89ab-633205820a69"),
+                            Id = new Guid("395f1bda-6f88-41a6-8687-a0f9633d4fd0"),
+                            Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nastepne@zawody.fi",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -245,7 +275,8 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4ec0bd1a-44b7-40ab-960a-a92fba662649"),
+                            Id = new Guid("2abb0643-366d-4ece-8776-7e2d203f1d20"),
+                            Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "papiez_polak@vatican.vc",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -253,7 +284,8 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b6077114-2532-412d-a457-6f411c3b14d2"),
+                            Id = new Guid("66a87f0b-0ebf-4f73-9d0f-c9c17891236f"),
+                            Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kenobi@jedi.order",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -261,7 +293,8 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("120ccc29-f9f9-41f9-83fc-5c34c58cca9b"),
+                            Id = new Guid("3008ae6a-483f-4677-a260-5dbd6f16de3c"),
+                            Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "senat@sith.com",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -269,7 +302,8 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c85a460e-d830-40db-b140-a44b4913a9a0"),
+                            Id = new Guid("22f74dd6-4d63-4d03-8cd4-006b110d840a"),
+                            Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "plusydodatnie@soli.darnosc",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -305,15 +339,27 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRole");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
+                            RoleId = new Guid("28ce0ec9-ff2a-469f-8eb1-7f078c5ad7da")
+                        },
+                        new
+                        {
+                            UserId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
+                            RoleId = new Guid("a9abd872-982c-48a9-8865-e3e5cf5797a2")
+                        });
                 });
 
             modelBuilder.Entity("Inlook_Core.Entities.Attachment", b =>
                 {
                     b.HasOne("Inlook_Core.Entities.Mail", "Mail")
                         .WithMany("Attachments")
-                        .HasForeignKey("MailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MailId");
+
+                    b.Navigation("Mail");
                 });
 
             modelBuilder.Entity("Inlook_Core.Entities.Favorites", b =>
@@ -329,6 +375,10 @@ namespace Inlook_Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("FavoriteUser");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Inlook_Core.Entities.Group", b =>
@@ -338,6 +388,8 @@ namespace Inlook_Infrastructure.Migrations
                         .HasForeignKey("GroupOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("GroupOwner");
                 });
 
             modelBuilder.Entity("Inlook_Core.Entities.Mail", b =>
@@ -347,6 +399,8 @@ namespace Inlook_Infrastructure.Migrations
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Inlook_Core.Entities.MailTo", b =>
@@ -360,8 +414,12 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasOne("Inlook_Core.Entities.User", "Recipient")
                         .WithMany("MailsReceived")
                         .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Mail");
+
+                    b.Navigation("Recipient");
                 });
 
             modelBuilder.Entity("Inlook_Core.Entities.UserGroup", b =>
@@ -377,6 +435,10 @@ namespace Inlook_Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Inlook_Core.Entities.UserRole", b =>
@@ -392,6 +454,44 @@ namespace Inlook_Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Inlook_Core.Entities.Group", b =>
+                {
+                    b.Navigation("UserGroups");
+                });
+
+            modelBuilder.Entity("Inlook_Core.Entities.Mail", b =>
+                {
+                    b.Navigation("Attachments");
+
+                    b.Navigation("Recipients");
+                });
+
+            modelBuilder.Entity("Inlook_Core.Entities.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Inlook_Core.Entities.User", b =>
+                {
+                    b.Navigation("FavoritesUsers");
+
+                    b.Navigation("GroupsOwned");
+
+                    b.Navigation("MailsReceived");
+
+                    b.Navigation("MailsSend");
+
+                    b.Navigation("UserGroups");
+
+                    b.Navigation("UserRoles");
+
+                    b.Navigation("UsersThatFavorize");
                 });
 #pragma warning restore 612, 618
         }

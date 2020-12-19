@@ -13,7 +13,7 @@ namespace Inlook_Infrastructure.Configurations
             builder.HasOne(m => m.Recipient)
                 .WithMany(u => u.MailsReceived)
                 .HasForeignKey(m => m.RecipientId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(m => m.Mail)
                .WithMany(m => m.Recipients)

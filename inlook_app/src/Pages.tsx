@@ -16,6 +16,7 @@ import Inbox from "./Pages/Inbox/inbox";
 import NewMessage from "./Pages/newmessage";
 import ContactList from "./Pages/contactList";
 import EditGroup from "./Pages/groupEdit";
+import UserList from "./Pages/AdminPages/userList";
 
 const Pages = () => {
   const [user, setUser] = useState<User | null>(null)
@@ -49,6 +50,10 @@ const Pages = () => {
         <Route path="/groupEdit" component={EditGroup} />
         <Route path="/creategroup">
           <CreateGroups user={user} />
+        </Route>
+
+        <Route path="/accounts">
+          <UserList />
         </Route>
         <Route path="/">
           <Home />
