@@ -6,11 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Inlook_Core\Inlook_Core.csproj" />
-    <ProjectReference Include="..\TrayApp\TrayApp.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +17,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

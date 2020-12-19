@@ -1,9 +1,6 @@
 ﻿using Inlook_Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Inlook_Infrastructure.Configurations
 {
@@ -21,6 +18,8 @@ namespace Inlook_Infrastructure.Configurations
             builder.HasOne(ug => ug.Group)
                 .WithMany(g => g.UserGroups)
                 .HasForeignKey(ug => ug.GroupId);
+
+            builder.HasIndex(ug => new { ug.GroupId, ug.UserId });
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using Inlook_Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Inlook_Infrastructure.Configurations
 {
@@ -19,6 +16,8 @@ namespace Inlook_Infrastructure.Configurations
                 .HasForeignKey(m => m.SenderId);
 
             builder.Property(m => m.Subject).HasMaxLength(100);
+
+            builder.HasIndex(m =>  m.Id );
         }
     }
 }

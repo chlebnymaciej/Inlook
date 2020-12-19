@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Inlook_Infrastructure.Migrations
 {
-    public partial class Initialization : Migration
+    public partial class Initialize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,11 +11,11 @@ namespace Inlook_Infrastructure.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "NEWID()"),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(maxLength: 50, nullable: true),
-                    Priority = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,12 +26,13 @@ namespace Inlook_Infrastructure.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    PhoneNumber = table.Column<string>(maxLength: 15, nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Accepted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,8 +43,8 @@ namespace Inlook_Infrastructure.Migrations
                 name: "Favorites",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(nullable: false),
-                    FavoriteUserId = table.Column<Guid>(nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FavoriteUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,11 +67,11 @@ namespace Inlook_Infrastructure.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "NEWID()"),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    GroupOwnerId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    GroupOwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,12 +88,12 @@ namespace Inlook_Infrastructure.Migrations
                 name: "Mails",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "NEWID()"),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    SenderId = table.Column<Guid>(nullable: false),
-                    Subject = table.Column<string>(maxLength: 100, nullable: true),
-                    Text = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Subject = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,8 +110,8 @@ namespace Inlook_Infrastructure.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(nullable: false),
-                    RoleId = table.Column<Guid>(nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,8 +134,8 @@ namespace Inlook_Infrastructure.Migrations
                 name: "UserGroup",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(nullable: false),
-                    GroupId = table.Column<Guid>(nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,11 +158,12 @@ namespace Inlook_Infrastructure.Migrations
                 name: "Attachments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "NEWID()"),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    MailId = table.Column<Guid>(nullable: false),
-                    FilePath = table.Column<string>(maxLength: 255, nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    MailId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ClientFileName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    AzureFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,17 +173,17 @@ namespace Inlook_Infrastructure.Migrations
                         column: x => x.MailId,
                         principalTable: "Mails",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "MailsTo",
                 columns: table => new
                 {
-                    MailId = table.Column<Guid>(nullable: false),
-                    RecipientId = table.Column<Guid>(nullable: false),
-                    CC = table.Column<bool>(nullable: true),
-                    StatusRead = table.Column<bool>(nullable: false)
+                    MailId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RecipientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CC = table.Column<bool>(type: "bit", nullable: true),
+                    StatusRead = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -196,8 +198,7 @@ namespace Inlook_Infrastructure.Migrations
                         name: "FK_MailsTo_Users_RecipientId",
                         column: x => x.RecipientId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -205,24 +206,36 @@ namespace Inlook_Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedDate", "LastModifiedDate", "Name", "Priority" },
                 values: new object[,]
                 {
-                    { new Guid("32f2df14-63e8-4bb7-b34e-526d9456a406"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", 0 },
-                    { new Guid("4092c467-5f46-4611-b6e9-66b31c8dec36"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", 0 }
+                    { new Guid("4263721b-74ae-4ed9-89d9-85e8a1daef39"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", 0 },
+                    { new Guid("9b179416-39fa-4757-a43d-b2b220ba2620"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", 0 },
+                    { new Guid("d0b58ccf-2f6a-493f-996d-cac8c0094dce"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pending", 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedDate", "Email", "LastModifiedDate", "Name", "PhoneNumber" },
+                columns: new[] { "Id", "Accepted", "CreatedDate", "Email", "LastModifiedDate", "Name", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("9a06a3ef-af7d-4676-8f3e-ba0cc19e3ffa"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "polski@pingwin.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Stuart Burton", " + 48696969696" },
-                    { new Guid("48e9d25e-e397-4dbd-89fa-3a754bd857ea"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mariusz.pudzian@transport.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mariusz Pudzianowski", null },
-                    { new Guid("d18c174a-3818-49a9-be0e-4e7f70ceb22f"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mrpathix@elo.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pan Paweł", null },
-                    { new Guid("7c513bc2-d20c-4824-89ab-633205820a69"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nastepne@zawody.fi", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Janne Ahonen", null },
-                    { new Guid("4ec0bd1a-44b7-40ab-960a-a92fba662649"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "papiez_polak@vatican.vc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jan Paweł", null },
-                    { new Guid("b6077114-2532-412d-a457-6f411c3b14d2"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kenobi@jedi.order", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Obi-Wan Kenobi", null },
-                    { new Guid("120ccc29-f9f9-41f9-83fc-5c34c58cca9b"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "senat@sith.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Palpatine", null },
-                    { new Guid("c85a460e-d830-40db-b140-a44b4913a9a0"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null }
+                    { new Guid("c0f06c3e-7277-4a58-93b0-da1453f5c96f"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "polski@pingwin.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Stuart Burton", " + 48696969696" },
+                    { new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"), true, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "artur.chmura3@op.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Artur Chmura", " + 48696969696" },
+                    { new Guid("50c0cf0a-5fce-47ed-9406-d02e65fa3671"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mariusz.pudzian@transport.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mariusz Pudzianowski", null },
+                    { new Guid("17e1623e-34a4-4b54-b0fe-f13f4606b625"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mrpathix@elo.pl", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pan Paweł", null },
+                    { new Guid("f01ef92c-bb3f-45f1-b7ea-1e907e144689"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nastepne@zawody.fi", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Janne Ahonen", null },
+                    { new Guid("e979ebb2-be1c-40f7-aa88-fa8a67dc1885"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "papiez_polak@vatican.vc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jan Paweł", null },
+                    { new Guid("438beb36-ff5d-4fc3-8a03-f3e688d63e9d"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kenobi@jedi.order", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Obi-Wan Kenobi", null },
+                    { new Guid("b963bfb1-b854-4b9d-b752-803c6a8677d6"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "senat@sith.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Palpatine", null },
+                    { new Guid("75edc024-bd28-4e9f-9631-66361ffc8904"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null }
                 });
+
+            migrationBuilder.InsertData(
+                table: "UserRole",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("4263721b-74ae-4ed9-89d9-85e8a1daef39"), new Guid("2884a694-6a60-4e87-9477-6bd589106ab2") });
+
+            migrationBuilder.InsertData(
+                table: "UserRole",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("9b179416-39fa-4757-a43d-b2b220ba2620"), new Guid("2884a694-6a60-4e87-9477-6bd589106ab2") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attachments_MailId",
@@ -240,24 +253,39 @@ namespace Inlook_Infrastructure.Migrations
                 column: "GroupOwnerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Mails_Id",
+                table: "Mails",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Mails_SenderId",
                 table: "Mails",
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MailsTo_RecipientId",
+                name: "IX_MailsTo_RecipientId_MailId",
                 table: "MailsTo",
-                column: "RecipientId");
+                columns: new[] { "RecipientId", "MailId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGroup_GroupId",
+                name: "IX_UserGroup_GroupId_UserId",
                 table: "UserGroup",
-                column: "GroupId");
+                columns: new[] { "GroupId", "UserId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
                 table: "UserRole",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_UserId",
+                table: "UserRole",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Id",
+                table: "Users",
+                column: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

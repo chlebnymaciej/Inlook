@@ -119,41 +119,41 @@ const NewMessage = (props: NewMessageProps) => {
 
     const sendMail = () => {
         setHelperText('');
-        let bccuser = new Set<UserModel>();
-        bccUsers.forEach(x => bccuser.add(x));
+        let bccuser = new Set<string>();
+        bccUsers.forEach(x => bccuser.add(x.id));
         bccGroups.forEach(x => {
-            x.users?.forEach(y => bccuser.add(y));
+            x.users?.forEach(y => bccuser.add(y.id));
         });
-        let ccuser = new Set<UserModel>();
+        let ccuser = new Set<string>();
         ccUsers.forEach(x => {
-            if (!(bccuser.has(x)))
-                ccuser.add(x);
+            if (!(bccuser.has(x.id)))
+                ccuser.add(x.id);
         });
         ccGroups.forEach(x => {
             x.users?.forEach(y => {
-                if (!(bccuser.has(y)))
-                    ccuser.add(y);
+                if (!(bccuser.has(y.id)))
+                    ccuser.add(y.id);
             });
         });
 
-        let touser = new Set<UserModel>();
+        let touser = new Set<string>();
         toUsers.forEach(x => {
-            if (!(bccuser.has(x) || ccuser.has(x)))
-                touser.add(x);
+            if (!(bccuser.has(x.id) || ccuser.has(x.id)))
+                touser.add(x.id);
         });
         toGroups.forEach(x => {
             x.users?.forEach(y => {
-                if (!(bccuser.has(y) || ccuser.has(y)))
-                    touser.add(y);
+                if (!(bccuser.has(y.id) || ccuser.has(y.id)))
+                    touser.add(y.id);
             });
         });
 
 
         postMail(
             {
-                to: Array.from(touser).map(x => x.id),
-                cc: Array.from(ccuser).map(x => x.id),
-                bcc: Array.from(bccuser).map(x => x.id),
+                to: Array.from(touser),
+                cc: Array.from(ccuser),
+                bcc: Array.from(bccuser),
                 subject: subject || null,
                 text: mailValue || null,
                 attachments: attachments.map(a => a.id),

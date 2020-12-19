@@ -7,7 +7,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
-using TrayApp;
 namespace Inlook_Infrastructure.Services
 {
     public class NotificationService : INotificationService
