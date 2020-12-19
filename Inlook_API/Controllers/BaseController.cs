@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,9 +24,10 @@ namespace Inlook_API.Controllers
         {
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("REQUEST: ");
+            sb.Append("REQUEST:\n ");
             sb.Append(context.HttpContext.Request.GetDetails());
-            sb.Append("\nRESPONSE: ");
+            sb.Append("\nRESPONSE:\n ");
+
             sb.Append(context.HttpContext.Response.Body.ToString());
 
             _logger.LogInformation(sb.ToString());
