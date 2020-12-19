@@ -39,7 +39,17 @@ namespace Inlook_Infrastructure.Configurations
                 Accepted = true,
             };
 
+            User bogen = new User()
+            {
+                Name = "Maciej Chlebny",
+                PhoneNumber = " + 4821372137",
+                Email = "01142157@pw.edu.pl",
+                Id = new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903"),
+                Accepted = true,
+            };
             users.Add(admin);
+            users.Add(bogen);
+           
 
 
             users.Add(new User() { Name = "Mariusz Pudzianowski",
@@ -85,6 +95,18 @@ namespace Inlook_Infrastructure.Configurations
                 UserId = admin.Id,
             });
 
+
+            userRoles.Add(new UserRole()
+            {
+                RoleId = adminRole.Id,
+                UserId = bogen.Id,
+            });
+
+            userRoles.Add(new UserRole()
+            {
+                RoleId = userRole.Id,
+                UserId = bogen.Id,
+            });
             builder.Entity<UserRole>().HasData(userRoles);
 
         }
