@@ -28,9 +28,7 @@ namespace Inlook_API.Controllers
             sb.Append(context.HttpContext.Request.GetDetails());
             sb.Append("\nRESPONSE:\n ");
 
-            var streamReader = new StreamReader(context.HttpContext.Response.Body);
-            string body = streamReader.ReadToEnd();
-            sb.Append(body);
+            sb.Append(context.HttpContext.Response.Body.ToString());
 
             _logger.LogInformation(sb.ToString());
 
