@@ -22,12 +22,24 @@ namespace Inlook_API.Controllers
             notificationService = _notificationService;
         }
 
+        /// <summary>
+        /// Creates new notification
+        /// </summary>
+        /// <param name="notification">Post notification model</param>
+        ///  <response code="204">Success indicator</response>
         [HttpPost("SendNotification")]
         public IActionResult PostNotification([FromBody] PostNotificationModel notification)
         {
             notificationService.sendNotificationAsync(notification);
             return NoContent();
         }
+
+        /// <summary>
+        /// Gets notification for given user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <response code="200">Notification</response>
+        [ProducesResponseType(typeof(GetNotificationModel), 200)]
         [HttpGet("GetNotification")]
         public IActionResult GetNotification(Guid userId)
         {
