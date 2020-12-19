@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -13,27 +14,20 @@ namespace Inlook_Infrastructure.Services
     { 
 
         public Guid _userID;
+        bool started = false;
         public async System.Threading.Tasks.Task<GetNotificationModel> getNotificationAsync(Guid userID)
         {
-            using (var httpClient = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://mini-notification-service.azurewebsites.net/notifications/16"))
-                {
-                    request.Headers.TryAddWithoutValidation("accept", "text/plain");
-                    request.Headers.TryAddWithoutValidation("x-api-key", "db5bddca-c759-419e-bc0d-65d8dd2cad42");
-
-                    var response = await httpClient.SendAsync(request);
-                    Console.WriteLine(await response.Content.ReadAsStringAsync());
-                    if (response.IsSuccessStatusCode)
-                    {
-                        Console.WriteLine(await response.Content.ReadAsStringAsync());
-                    }
-                    return new GetNotificationModel();
-                }
-            }
+            return new GetNotificationModel();       
         }
 
         public async System.Threading.Tasks.Task sendNotificationAsync(PostNotificationModel postNotificationModel)
+        {
+            foreach(var item in postNotificationModel.RecipientsList)
+            {
+                await sendOneNotificationAsync(item);
+            }
+        }
+        private async System.Threading.Tasks.Task sendOneNotificationAsync(string s)
         {
             using (var httpClient = new HttpClient())
             {
@@ -42,11 +36,10 @@ namespace Inlook_Infrastructure.Services
                     request.Headers.TryAddWithoutValidation("accept", "text/plain");
                     request.Headers.TryAddWithoutValidation("x-api-key", "db5bddca-c759-419e-bc0d-65d8dd2cad42");
 
-                    request.Content = new StringContent("{\"content\":\"string\",\"contentType\":\"string\",\"recipientsList\":[\"string\"],\"withAttachments\":true}");
+                    request.Content = new StringContent($"{{\"content\":\"string\",\"contentType\":\"string\",\"recipientsList\":[\"{s}\"] ,\"withAttachments\":true}}");
                     request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
                     var response = await httpClient.SendAsync(request);
-                    Console.WriteLine(await response.Content.ReadAsStringAsync());
                     if (response.IsSuccessStatusCode)
                     {
                         Console.WriteLine(await response.Content.ReadAsStringAsync());
