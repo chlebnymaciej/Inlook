@@ -95,7 +95,7 @@ namespace Inlook_API
                                     var userRole = db.Roles.Where(r => r.Name == Roles.Pending).FirstOrDefault();
                                     var givenName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
                                     var surName = o.Principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname");
-                                    var email = o.Principal.FindFirstValue(ClaimTypes.Email);
+                                    var email = o.Principal.FindFirstValue("emails");
                                     User user = new User()
                                     {
                                         Id = oid,

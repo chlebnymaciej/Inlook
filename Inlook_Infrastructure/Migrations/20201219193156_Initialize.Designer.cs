@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inlook_Infrastructure.Migrations
 {
     [DbContext(typeof(Inlook_Context))]
-    [Migration("20201214223003_Initialization")]
-    partial class Initialization
+    [Migration("20201219193156_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,6 +119,8 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.HasIndex("SenderId");
 
                     b.ToTable("Mails");
@@ -140,7 +142,7 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasKey("MailId", "RecipientId");
 
-                    b.HasIndex("RecipientId");
+                    b.HasIndex("RecipientId", "MailId");
 
                     b.ToTable("MailsTo");
                 });
@@ -172,7 +174,7 @@ namespace Inlook_Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("28ce0ec9-ff2a-469f-8eb1-7f078c5ad7da"),
+                            Id = new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
@@ -180,7 +182,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a9abd872-982c-48a9-8865-e3e5cf5797a2"),
+                            Id = new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
@@ -188,7 +190,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ab16ae22-4f23-4e91-bc3c-6420235d12bb"),
+                            Id = new Guid("ac91aade-63ed-4de3-a31b-65109b4789f4"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Pending",
@@ -223,12 +225,14 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f812412c-5bd8-4cab-9871-bb598fa9c2ad"),
+                            Id = new Guid("7e0e035f-559b-4ec5-8c79-b8e47b2f0f94"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "polski@pingwin.pl",
@@ -248,7 +252,17 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3a053109-f68d-4f77-9197-ca13257a2860"),
+                            Id = new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903"),
+                            Accepted = true,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "01142157@pw.edu.pl",
+                            LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Maciej Chlebny",
+                            PhoneNumber = " + 4821372137"
+                        },
+                        new
+                        {
+                            Id = new Guid("487fed64-8089-46bd-a4a5-5a0a8d26df4d"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mariusz.pudzian@transport.pl",
@@ -257,7 +271,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("84b97db8-bd89-4187-85f9-fb64f4047b55"),
+                            Id = new Guid("7d6f3e44-4ee4-451a-93f2-6b53ab8c5548"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mrpathix@elo.pl",
@@ -266,7 +280,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("395f1bda-6f88-41a6-8687-a0f9633d4fd0"),
+                            Id = new Guid("b4278e66-7d8a-47b3-906d-db95cede49f1"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nastepne@zawody.fi",
@@ -275,7 +289,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2abb0643-366d-4ece-8776-7e2d203f1d20"),
+                            Id = new Guid("c49ecaac-2fe3-43e1-a1c8-acf9c2fc3ea4"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "papiez_polak@vatican.vc",
@@ -284,7 +298,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("66a87f0b-0ebf-4f73-9d0f-c9c17891236f"),
+                            Id = new Guid("53cf29c2-7220-4874-bd05-64ef68ca08a9"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kenobi@jedi.order",
@@ -293,7 +307,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3008ae6a-483f-4677-a260-5dbd6f16de3c"),
+                            Id = new Guid("e570f721-96d6-41de-94c7-29ed388c9929"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "senat@sith.com",
@@ -302,7 +316,7 @@ namespace Inlook_Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("22f74dd6-4d63-4d03-8cd4-006b110d840a"),
+                            Id = new Guid("3c0e4e0d-d91b-42ef-a98e-497177e88597"),
                             Accepted = false,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "plusydodatnie@soli.darnosc",
@@ -321,7 +335,7 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasKey("UserId", "GroupId");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupId", "UserId");
 
                     b.ToTable("UserGroup");
                 });
@@ -338,18 +352,30 @@ namespace Inlook_Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserRole");
 
                     b.HasData(
                         new
                         {
                             UserId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
-                            RoleId = new Guid("28ce0ec9-ff2a-469f-8eb1-7f078c5ad7da")
+                            RoleId = new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5")
                         },
                         new
                         {
                             UserId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
-                            RoleId = new Guid("a9abd872-982c-48a9-8865-e3e5cf5797a2")
+                            RoleId = new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5")
+                        },
+                        new
+                        {
+                            UserId = new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903"),
+                            RoleId = new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5")
+                        },
+                        new
+                        {
+                            UserId = new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903"),
+                            RoleId = new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5")
                         });
                 });
 
