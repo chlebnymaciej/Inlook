@@ -1,11 +1,15 @@
 
 import { User } from "oidc-client";
 import React, { PropsWithChildren, useEffect, useState } from "react";
+import { Route } from "react-router";
+import Home from "./Pages/home";
+import WaitingRoom from "./Pages/waitingRoom";
 
-export interface RoleRouteProps extends PropsWithChildren<JSX.Element> {
-    component?: JSX.Element;
+export interface RoleRouteProps extends PropsWithChildren<any> {
+    path: string;
+    component?: JSX.Element | ((props: any) => JSX.Element);
     requiredRoles?: string[];
-    user: User;
+    user?: User | null;
     mustBeLogged?: boolean;
 }
 
@@ -29,7 +33,24 @@ const RoleRoute = (props: RoleRouteProps) => {
 
     }, [props.user]);
 
-    return (loggedAccess && roledAccess ? (props.component || props.children) :
-        loggedAccess && !roledAccess ? <Waiting
-    )
+    useEffect(() => {
+        const roles = JSON.parse(localStorage.getItem('roles') || "[]") as string[];
+        let isRoleAccess: boolean = true;
+        props.requiredRoles?.forEach(rr => {
+            if (!roles.includes(rr)) {
+                isRoleAccess = false;
+            }
+        });
+        setRoleAccess(isRoleAccess);
+
+    }, [props.user]);
+
+    return (
+        <Route path={props.path}>
+            { (loggedAccess && roledAccess) ? (props.component || props.children) :
+                (loggedAccess && !roledAccess) ? <WaitingRoom /> : <Home />
+            }
+        </Route>)
+
 }
+export default RoleRoute;

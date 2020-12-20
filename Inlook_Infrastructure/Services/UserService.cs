@@ -149,13 +149,6 @@ namespace Inlook_Infrastructure.Services
                 .Select(ur=>ur.Role.Name);
         }
 
-        public async Task SetUserAccept(Guid userId, bool accept)
-        {
-            var user = this.context.Users.Find(userId);
-            user.Accepted = accept;
-            await this.context.SaveChangesAsync();
-        }
-
         public async Task AssignRoleToUser(string roleName, Guid userId)
         {
             var role = this.context.Roles.Where(r => r.Name == roleName).FirstOrDefault();

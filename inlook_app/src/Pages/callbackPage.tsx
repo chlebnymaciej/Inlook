@@ -18,22 +18,31 @@ const CallbackPage = (props: CallbackPageProps) => {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const handleSuccess = async () => {
-        props.setUser(await userManager.getUser());
-        getUserRoles().then(r => {
-            var roles = r.data || [];
-            localStorage.setItem("roles", JSON.stringify(roles));
-            if (roles.includes("User")) {
-                history.push("/");
-            }
-            else {
-                history.push("waitingRoom");
-            }
-        });
+        localStorage.clear();
+        const user = await userManager.getUser();
+        if (user) {
+            getUserRoles().then(r => {
+                var roles = r.data || [];
+                localStorage.setItem("roles", JSON.stringify(roles));
+                props.setUser(user);
+                if (roles.includes("User")) {
+                    history.push("/");
+                }
+                else {
+                    history.push("waitingRoom");
+                }
+            });
+        }
+        else {
+            history.push("");
+        }
 
     };
     const handleError = () => {
+        localStorage.clear();
         props.setUser(null);
         enqueueSnackbar("Authorization error", { variant: "error" });
+        history.push("");
     };
     return (
         <Callback userManager={userManager} onSuccess={handleSuccess} onError={handleError} />

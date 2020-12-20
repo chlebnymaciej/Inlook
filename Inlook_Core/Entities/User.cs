@@ -9,7 +9,6 @@ namespace Inlook_Core.Entities
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
-        public bool Accepted { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; } = new HashSet<UserRole>();
         public virtual ICollection<Favorites> FavoritesUsers { get; set; } = new HashSet<Favorites>();
         public virtual ICollection<Favorites> UsersThatFavorize { get; set; } = new HashSet<Favorites>();

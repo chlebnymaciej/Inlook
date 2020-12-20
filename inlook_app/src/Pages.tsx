@@ -2,8 +2,7 @@ import { User } from "oidc-client";
 import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
-  Switch,
-  Route,
+  Switch
 } from "react-router-dom";
 import userManager from "./Authorization/userManager";
 import Topbar from "./Layout/topbar";
@@ -18,6 +17,7 @@ import ContactList from "./Pages/contactList";
 import EditGroup from "./Pages/groupEdit";
 import UserList from "./Pages/AdminPages/userList";
 import WaitingRoom from "./Pages/waitingRoom";
+import RoleRoute from "./RoleRoute";
 
 const Pages = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -32,35 +32,35 @@ const Pages = () => {
     <BrowserRouter>
       <Topbar user={user} />
       <Switch>
-        <Route path="/newmessage">
+        <RoleRoute path="/newmessage" mustBeLogged user={user} requiredRoles={["User"]}>
           <NewMessage user={user} />
-        </Route>
-        <Route path="/contacts">
+        </RoleRoute>
+        <RoleRoute path="/contacts" mustBeLogged user={user} requiredRoles={["User"]}>
           <ContactList />
-        </Route>
-        <Route path="/inbox">
+        </RoleRoute>
+        <RoleRoute path="/inbox" mustBeLogged user={user} requiredRoles={["User"]}>
           <Inbox />
-        </Route>
-        <Route path="/groups">
+        </RoleRoute>
+        <RoleRoute path="/groups" mustBeLogged user={user} requiredRoles={["User"]}>
           <Groups user={user} />
-        </Route>
-        <Route path="/groupinfo" component={GroupInfo} />
-        <Route path="/groupEdit" component={EditGroup} />
-        <Route path="/creategroup">
+        </RoleRoute>
+        <RoleRoute path="/groupinfo" component={GroupInfo} mustBeLogged user={user} requiredRoles={["User"]} />
+        <RoleRoute path="/groupEdit" component={EditGroup} mustBeLogged user={user} requiredRoles={["User"]} />
+        <RoleRoute path="/creategroup" mustBeLogged user={user} requiredRoles={["User"]}>
           <CreateGroups user={user} />
-        </Route>
-        <Route path="/accounts">
+        </RoleRoute>
+        <RoleRoute path="/accounts" mustBeLogged user={user} requiredRoles={["Admin"]}>
           <UserList />
-        </Route>
-        <Route path="/callback">
+        </RoleRoute>
+        <RoleRoute path="/callback">
           <CallbackPage setUser={setUser} />
-        </Route>
-        <Route path="/waitingRoom">
+        </RoleRoute>
+        <RoleRoute path="/waitingRoom">
           <WaitingRoom />
-        </Route>
-        <Route path="/">
+        </RoleRoute>
+        <RoleRoute path="/">
           <Home />
-        </Route>
+        </RoleRoute>
       </Switch>
     </BrowserRouter>
   </div>

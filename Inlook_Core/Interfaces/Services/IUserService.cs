@@ -13,7 +13,6 @@ namespace Inlook_Core.Interfaces.Services
 
         IEnumerable<GetMailModel> GetMails(Guid toId);
         IEnumerable<string> ReadUserRoles(Guid userId);
-        Task SetUserAccept(Guid userId, bool accept);
         Task AssignRoleToUser(string role, Guid userId);
         Task UnassignRoleToUser(string role, Guid userId);
 
