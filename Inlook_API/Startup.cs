@@ -121,13 +121,6 @@ namespace Inlook_API
                                 o.Principal.AddIdentity(appIdentity);
                                 return Task.CompletedTask;
                             },
-
-                            OnAuthenticationFailed = o =>
-                            {
-                                Console.WriteLine(o.HttpContext.Request.Headers["Authorization"].ToString());
-
-                                return Task.CompletedTask;
-                            }
                         };
                     });
 
