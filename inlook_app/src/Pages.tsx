@@ -17,13 +17,14 @@ import NewMessage from "./Pages/newmessage";
 import ContactList from "./Pages/contactList";
 import EditGroup from "./Pages/groupEdit";
 import UserList from "./Pages/AdminPages/userList";
+import WaitingRoom from "./Pages/waitingRoom";
 
 const Pages = () => {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     (async () => {
-      setUser(await userManager.getUser())
+      setUser(await userManager.getUser());
     })();
   }, [])
 
@@ -31,9 +32,6 @@ const Pages = () => {
     <BrowserRouter>
       <Topbar user={user} />
       <Switch>
-        <Route path="/callback">
-          <CallbackPage setUser={setUser} />
-        </Route>
         <Route path="/newmessage">
           <NewMessage user={user} />
         </Route>
@@ -51,9 +49,14 @@ const Pages = () => {
         <Route path="/creategroup">
           <CreateGroups user={user} />
         </Route>
-
         <Route path="/accounts">
           <UserList />
+        </Route>
+        <Route path="/callback">
+          <CallbackPage setUser={setUser} />
+        </Route>
+        <Route path="/waitingRoom">
+          <WaitingRoom />
         </Route>
         <Route path="/">
           <Home />
