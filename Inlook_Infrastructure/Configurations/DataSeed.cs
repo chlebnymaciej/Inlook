@@ -36,7 +36,6 @@ namespace Inlook_Infrastructure.Configurations
                 PhoneNumber = " + 48696969696",
                 Email = "artur.chmura3@op.pl",
                 Id = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2"),
-                Accepted = true,
             };
 
             User bogen = new User()
@@ -45,7 +44,6 @@ namespace Inlook_Infrastructure.Configurations
                 PhoneNumber = " + 4821372137",
                 Email = "01142157@pw.edu.pl",
                 Id = new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903"),
-                Accepted = true,
             };
             users.Add(admin);
             users.Add(bogen);

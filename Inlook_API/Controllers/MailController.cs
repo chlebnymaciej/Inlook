@@ -33,12 +33,14 @@ namespace Inlook_API.Controllers
         {
             NotificationController notificationController = new NotificationController(new NotificationService());
             var userId = this.GetUserId();
-            PostNotificationModel postNotificationModel = new PostNotificationModel();
-            postNotificationModel.Content = mail.Text;
-            postNotificationModel.ContentType = "string";
-            postNotificationModel.RecipientsList = mail.To;
-            postNotificationModel.WithAttachments = mail.Attachments.Length > 0 ? true : false;
-                var result = notificationController.PostNotification(postNotificationModel);
+            PostNotificationModel postNotificationModel = new PostNotificationModel
+            {
+                Content = mail.Text,
+                ContentType = "string",
+                RecipientsList = mail.To,
+                WithAttachments = mail.Attachments.Length > 0 ? true : false
+            };
+            var result = notificationController.PostNotification(postNotificationModel);
             _mailService.SendMail(mail, userId);
             return NoContent();
         }

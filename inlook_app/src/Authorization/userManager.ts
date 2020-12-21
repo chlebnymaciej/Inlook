@@ -6,7 +6,7 @@ const config: OIDC.UserManagerSettings = {
     client_id: "48fe1a17-69e2-4942-ab1d-4e288783860f",
     response_type: "id_token",
     redirect_uri: `${window.location.protocol}//${window.location.host}/callback`,
-    post_logout_redirect_uri: `${window.location.protocol}//${window.location.host}/callback`,
+    post_logout_redirect_uri: `${window.location.protocol}//${window.location.host}`,
     silent_redirect_uri: `${window.location.protocol}//${window.location.host}/callback`,
     automaticSilentRenew: true,
     scope: "openid"

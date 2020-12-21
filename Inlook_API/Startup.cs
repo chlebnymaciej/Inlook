@@ -63,12 +63,10 @@ namespace Inlook_API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(AppServicesAuthenticationDefaults.AuthenticationScheme, options =>
                     {
-                        options.Audience = Configuration.GetValue<string>("AzureAdB2C:Audience");
                         options.Authority = Configuration.GetValue<string>("AzureAdB2C:Authority");
                         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                         {
-                            ValidateAudience = true,
-                            ValidAudience = Configuration.GetValue<string>("AzureAdB2C:Audience"),
+                            ValidateAudience = false,
 
                             ValidateIssuer = true,
                             ValidIssuers = new[] { Configuration.GetValue<string>("AzureAdB2C:Authority") },
@@ -123,13 +121,6 @@ namespace Inlook_API
                                 o.Principal.AddIdentity(appIdentity);
                                 return Task.CompletedTask;
                             },
-
-                            OnAuthenticationFailed = o =>
-                            {
-                                Console.WriteLine(o.HttpContext.Request.Headers["Authorization"].ToString());
-
-                                return Task.CompletedTask;
-                            }
                         };
                     });
 

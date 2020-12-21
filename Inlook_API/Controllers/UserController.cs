@@ -115,7 +115,6 @@ namespace Inlook_API.Controllers
         {
             var userId = this.GetUserId();
             var roles = this.userService.ReadUserRoles(userId);
-
             return new JsonResult(roles);
 
         }
@@ -130,7 +129,6 @@ namespace Inlook_API.Controllers
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> AcceptUser(Guid userId, bool accept)
         {
-            await this.userService.SetUserAccept(userId, accept);
             if (accept)
             {
                 await this.userService.AssignRoleToUser(Roles.User, userId);
@@ -215,7 +213,7 @@ namespace Inlook_API.Controllers
                 Email = u.Email,
                 Name = u.Name,
                 Id = u.Id,
-                Accepted = u.Accepted,
+                Accepted = userService.ReadUserRoles(u.Id).Contains("User"),
             });
 
             return new JsonResult(new GetAccountsPageModel { Accounts = accounts, TotalCount = totalCount });
