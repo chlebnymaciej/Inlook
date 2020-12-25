@@ -87,15 +87,6 @@ const EmailContent = (props: EmailContentProps) => {
                 <div className={classes.textMail}>
                     {props.email.text}
                 </div>
-
-                <div className={classes.oneLiner}>
-                    <Button startIcon={<ReplyIcon />} className={classes.buttonClass} disabled>
-                        Odpowiedz
-                    </Button>
-                    <Button startIcon={<ArrowForwardIcon />} className={classes.buttonClass} disabled>
-                        Przekaż dalej
-                    </Button>
-                </div>
                 <div className={classes.attachments}>
 
                     <List dense>

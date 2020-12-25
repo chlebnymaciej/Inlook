@@ -1,4 +1,4 @@
-import { Divider, ListItem } from '@material-ui/core';
+import { Divider, ListItem, makeStyles } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -7,6 +7,28 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { EmailProps } from '../../Api/mailApi';
 
+
+
+const useStyles = makeStyles({
+    avatar:{
+        display:"flex"
+    },
+    not_seen:{
+        display: 'flex ',
+        flexWrap: 'wrap',
+        fontWeight:"bold",
+        background: "lightgrey"
+    },
+    seen:{
+        display: 'flex ',
+        flexWrap: 'wrap',
+        background: "white"
+    },
+    date:{ 
+        alignSelf: 'center',
+        fontSize: '12px'
+    }
+});
 export interface EmailCardProps {
     email: EmailProps;
     handleClick: (email: EmailProps) => void;
@@ -15,36 +37,34 @@ export interface EmailCardProps {
 }
 
 const EmailCard = (props: EmailCardProps) => {
+    const classes = useStyles();
+    let classSeenNotSeen  = classes.not_seen;
+    if(props.email.read){
+        classSeenNotSeen = classes.seen;
+    }
     return (
-        <div >
+        <div>
             <ListItem button onClick={() => props.handleClick(props.email)}
-                style={{ display: 'flex ', flexWrap: 'wrap', backgroundColor: props.email.read ? 'lightgrey' : 'white', }}  >
-                <div style={{ display: 'flex ' }}>
+                className={ classSeenNotSeen}>
+                <div className={classes.avatar}>
                     <ListItemAvatar>
                         <Avatar alt={props.email.from.name} src="/static/images/avatar/1.jpg" />
                     </ListItemAvatar>
-                    <Button onClick={() => props.handleChangeRead(props.index)} style={{ backgroundColor: props.email.read ? 'white' : 'lightgrey' }}>
+                    <Button onClick={() => props.handleChangeRead(props.index)}>
                         {props.email.read ? "seen" : "not seen"}
                     </Button>
                 </div>
 
                 <ListItemText
+                    style={{fontWeight:"bold"}}
                     primary={props.email.subject || ""}
                     secondary={
-                        <React.Fragment>
-                            <Typography
-                                component="span"
-                                variant="body2"
-                                style={{ display: 'inline', }}
-                                color="textPrimary"
-                            >
-                                {props.email.from.name || ""}
-                            </Typography>
-                :  {(props.email.text || "").substring(0, 40) + "..."}
-                        </React.Fragment>
-                    }
-                />
-                <div style={{ alignSelf: 'center', fontSize: '12px' }}>
+                    (<>  
+                    {props.email.from.name || ""}:{(props.email.text || "").substring(0, 40) + "..."}
+                    </>)
+                    }>
+                </ListItemText>
+                <div className={classes.date}>
                     {props.email.sendTime?.toLocaleString() || ""}
                 </div>
             </ListItem>

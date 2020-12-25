@@ -82,13 +82,17 @@ const GroupInfo = (props: any) => {
         <div>
           <Button
             className={classes.buttonEdit}
+            id="edit_group_button"
             onClick={
               (e) => history.push({
                 pathname: '/groupEdit',
                 state: group
               })}
           >Edit</Button>
-          <Button className={classes.buttonDelete} onClick={() => setOpen(true)}>Delete</Button>
+          <Button 
+          className={classes.buttonDelete} 
+          id="delete_group_button"
+          onClick={() => setOpen(true)}>Delete</Button>
           <Dialog
             open={open}
             TransitionComponent={Transition}
