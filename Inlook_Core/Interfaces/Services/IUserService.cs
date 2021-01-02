@@ -15,6 +15,6 @@ namespace Inlook_Core.Interfaces.Services
         IEnumerable<string> ReadUserRoles(Guid userId);
         Task AssignRoleToUser(string role, Guid userId);
         Task UnassignRoleToUser(string role, Guid userId);
-
+        public string GetMail(Guid userId);
     }
 }
