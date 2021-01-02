@@ -6,9 +6,27 @@ import * as userApi from "../../Api/userApi";
 import { OrderType, AccountModel } from "../../Api/userApi";
 import DeleteIcon from '@material-ui/icons/Delete';
 import TouchAppIcon from '@material-ui/icons/TouchApp';
-
+import shape from "@material-ui/core/styles/shape";
+//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
 export interface UserListProps {
 
+}
+const sgMail = require("@sendgrid/mail");
+var SENDGRID_API_KEY = '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';
+sgMail.setApiKey(SENDGRID_API_KEY);
+const msg ={
+
+    to:"kubakrolik99@gmail.com",
+    from:"kubakrolik99@gmail.com",
+    subject:"XD",
+    text:"POZDERKI",
+    html:"<strong>xD</strong>",
+};
+//console.log({ key: (SENDGRID_API_KEY) });
+sgMail.send(msg);
+const welcomeMail = (user: userApi.AccountModel ) =>
+{
+    sgMail.send(msg);
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -145,8 +163,9 @@ const UserList = (props: UserListProps) => {
                 if (r.isError) {
                     enqueueSnackbar("Something went wrong", { variant: "error" });
                 }
-                else {
+                else {                  
                     setUsers(prev => prev.map(u => {
+                        welcomeMail(u);
                         if (u.id === userId) {
                             return { ...u, accepted: true };
                         }

@@ -6,6 +6,8 @@ using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -132,6 +134,18 @@ namespace Inlook_API.Controllers
             if (accept)
             {
                 await this.userService.AssignRoleToUser(Roles.User, userId);
+                var apiKey = "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";
+                var client = new SendGridClient(apiKey);
+                var from = new EmailAddress("kubakrolik99@gmail.com", "Zajonc");
+                var to = new EmailAddress(this.userService.GetMail(userId), "Example User");
+                var dynamicTemplateData = new Dictionary<string, string>
+            {
+                {"first_name", "&lt;p&gt;this is some html&lt;/p&gt;"},
+                {"last_name", "<div>l23456</div>"},
+                {"Sender_Name", "<div>Sender_Name</div>"},
+            };
+                var msg = MailHelper.CreateSingleTemplateEmail(from, to, "d-439559e2079846e0b3214f6186b6f019", dynamicTemplateData);
+                var response = await client.SendEmailAsync(msg);
             }
             else
             {

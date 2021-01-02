@@ -159,7 +159,11 @@ namespace Inlook_Infrastructure.Services
             user.UserRoles.Add(new UserRole() { Role = role });
             await this.context.SaveChangesAsync();
         }
-
+        public string GetMail(Guid userId)
+        {
+            var user = this.context.Users.Find(userId);
+            return user.Email;
+        }
         public async Task UnassignRoleToUser(string roleName, Guid userId)
         {
          

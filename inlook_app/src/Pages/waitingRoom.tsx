@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { getUserRoles } from "../Api/userApi";
 import inlookLogo from "./../Resources/sonicWaiting.gif";
 import { useHistory } from "react-router";
+
 const useStyles = makeStyles(theme => ({
     header_my: {
         margin: "auto",

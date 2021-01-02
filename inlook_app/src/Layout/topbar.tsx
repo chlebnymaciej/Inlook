@@ -9,8 +9,6 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import userManager from "../Authorization/userManager";
 import MenuButton from "./menu";
-
-
 const useStyles = makeStyles(theme => ({
     topBar: {
         width: '100%',

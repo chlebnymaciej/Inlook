@@ -4,7 +4,6 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Pages from './Pages';
 import { SnackbarProvider } from 'notistack';
-
 ReactDOM.render(
   <React.StrictMode>
     <SnackbarProvider maxSnack={3}>

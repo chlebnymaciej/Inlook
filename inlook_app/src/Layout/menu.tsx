@@ -1,4 +1,4 @@
-import { Button, useRadioGroup } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { User } from "oidc-client";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router";
@@ -16,7 +16,6 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import HomeIcon from '@material-ui/icons/Home';
 import GroupIcon from '@material-ui/icons/Group';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
-import * as userApi from "../Api/userApi";
 import { useSnackbar } from "notistack";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
