@@ -9,11 +9,11 @@ namespace Inlook_Core.Models
     public class GetContactsPageModel
     {
         /// <summary>
-        /// List of contacts
+        /// List of contacts.
         /// </summary>
         public IEnumerable<GetUserModel> Contacts { get; set; }
         /// <summary>
-        /// Count of all contacts
+        /// Count of all contacts.
         /// </summary>
         public int TotalCount { get; set; }
     }

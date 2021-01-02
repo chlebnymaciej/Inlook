@@ -1,12 +1,12 @@
-﻿using Inlook_API.Extensions;
+﻿using System.Collections.Generic;
+using Inlook_API.Extensions;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
-using Microsoft.ApplicationInsights;
 using Inlook_Infrastructure.Services;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 
 namespace Inlook_API.Controllers
 {
@@ -17,17 +17,19 @@ namespace Inlook_API.Controllers
     {
         private readonly IMailService _mailService;
         private readonly IUserService _userService;
-        public MailController(ILogger<MailController> logger, TelemetryClient telemetryClient, IMailService mailService, IUserService userService) : base(logger, telemetryClient)
+
+        public MailController(ILogger<MailController> logger, TelemetryClient telemetryClient, IMailService mailService, IUserService userService)
+            : base(logger, telemetryClient)
         {
-            _mailService = mailService;
-            _userService = userService;
+            this._mailService = mailService;
+            this._userService = userService;
         }
 
         /// <summary>
-        /// Creates new mail on server
+        /// Creates new mail on server.
         /// </summary>
-        /// <param name="mail">Post mail model</param>
-        ///  <response code="204">Success indicator</response>
+        /// <param name="mail">Post mail model.</param>
+        /// <response code="204">Success indicator.</response>
         [HttpPost("SendMail")]
         public IActionResult PostMail([FromBody] PostMailModel mail)
         {
@@ -38,44 +40,42 @@ namespace Inlook_API.Controllers
                 Content = mail.Text,
                 ContentType = "string",
                 RecipientsList = mail.To,
-                WithAttachments = mail.Attachments.Length > 0 ? true : false
+                WithAttachments = mail.Attachments.Length > 0 ? true : false,
             };
             var result = notificationController.PostNotification(postNotificationModel);
-            _mailService.SendMail(mail, userId);
-            return NoContent();
+            this._mailService.SendMail(mail, userId);
+            return this.NoContent();
         }
 
         /// <summary>
-        /// Gets all mails for calling user
+        /// Gets all mails for calling user.
         /// </summary>
-        /// <response code="200">List of mails</response>
+        /// <response code="200">List of mails.</response>
         [ProducesResponseType(typeof(List<GetMailModel>), 200)]
         [HttpGet("GetMails")]
         public IActionResult GetMails()
         {
-            
             var userId = this.GetUserId();
             NotificationService notificationService = new NotificationService();
             notificationService._userID = userId;
             NotificationController notificationController = new NotificationController(notificationService);
             var result = notificationController.GetNotification(userId);
             //Console.WriteLine(result.ToString());
-            var mails = _userService.GetMails(userId);
+            var mails = this._userService.GetMails(userId);
             return new JsonResult(mails);
         }
 
         /// <summary>
-        /// Set read status of mail
+        /// Set read status of mail.
         /// </summary>
-        /// <param name="mailStatus">Post mail status model</param>
-        ///  <response code="204">Success indicator</response>
+        /// <param name="mailStatus">Post mail status model.</param>
+        /// <response code="204">Success indicator.</response>
         [HttpPut("ReadMailStatus")]
         public IActionResult ReadMailStatus([FromBody] PutMailStatusModel mailStatus)
         {
             var userId = this.GetUserId();
             this._mailService.SetRead(mailStatus.MailId, userId, mailStatus.Read);
-            return NoContent();
+            return this.NoContent();
         }
     }
 }
-

@@ -1,7 +1,7 @@
-﻿using Inlook_Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Inlook_Core.Entities;
 
 namespace Inlook_Core.Interfaces.Services
 {

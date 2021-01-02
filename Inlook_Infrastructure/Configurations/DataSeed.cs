@@ -1,14 +1,14 @@
-﻿using Inlook_Core;
-using Inlook_Core.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Inlook_Core;
+using Inlook_Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inlook_Infrastructure.Configurations
 {
-    static class DataSeed
+    internal static class DataSeed
     {
         public static void AddMockData(this ModelBuilder builder)
         {
@@ -16,19 +16,19 @@ namespace Inlook_Infrastructure.Configurations
             Role userRole = new Role() { Name = Roles.User, Id = Guid.NewGuid() };
             Role pendingRole = new Role() { Name = Roles.Pending, Id = Guid.NewGuid() };
 
-
-
             builder.Entity<Role>().HasData(
                 adminRole,
                 userRole,
-                pendingRole
-                );
+                pendingRole);
 
             IList<User> users = new List<User>();
-            users.Add(new User() { Name = "Stuart Burton",
-                PhoneNumber = " + 48696969696", 
-                Email = "polski@pingwin.pl", 
-                Id = Guid.NewGuid() });
+            users.Add(new User()
+            {
+                Name = "Stuart Burton",
+                PhoneNumber = " + 48696969696",
+                Email = "polski@pingwin.pl",
+                Id = Guid.NewGuid(),
+            });
 
             User admin = new User()
             {
@@ -47,35 +47,49 @@ namespace Inlook_Infrastructure.Configurations
             };
             users.Add(admin);
             users.Add(bogen);
-           
 
-
-            users.Add(new User() { Name = "Mariusz Pudzianowski",
+            users.Add(new User()
+            {
+                Name = "Mariusz Pudzianowski",
                 Email = "mariusz.pudzian@transport.pl",
-                Id = Guid.NewGuid() });
-            users.Add(new User() { Name = "Pan Paweł",
+                Id = Guid.NewGuid(),
+            });
+            users.Add(new User()
+            {
+                Name = "Pan Paweł",
                 Email = "mrpathix@elo.pl",
-                Id = Guid.NewGuid() });
-            users.Add(new User() { Name = "Janne Ahonen",
+                Id = Guid.NewGuid(),
+            });
+            users.Add(new User()
+            {
+                Name = "Janne Ahonen",
                 Email = "nastepne@zawody.fi",
-                Id = Guid.NewGuid() });
-            users.Add(new User() { Name = "Jan Paweł",
+                Id = Guid.NewGuid(),
+            });
+            users.Add(new User()
+            {
+                Name = "Jan Paweł",
                 Email = "papiez_polak@vatican.vc",
-                Id = Guid.NewGuid() });
-            users.Add(new User() { Name = "Obi-Wan Kenobi",
+                Id = Guid.NewGuid(),
+            });
+            users.Add(new User()
+            {
+                Name = "Obi-Wan Kenobi",
                 Email = "kenobi@jedi.order",
-                Id = Guid.NewGuid() });
-            users.Add(new User() { Name = "Palpatine",
+                Id = Guid.NewGuid(),
+            });
+            users.Add(new User()
+            {
+                Name = "Palpatine",
                 Email = "senat@sith.com",
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
             });
-            users.Add(new User() { Name = "Lech Wałęsa",
+            users.Add(new User()
+            {
+                Name = "Lech Wałęsa",
                 Email = "plusydodatnie@soli.darnosc",
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
             });
-
-
-          
 
             builder.Entity<User>().HasData(users);
 
@@ -93,7 +107,6 @@ namespace Inlook_Infrastructure.Configurations
                 UserId = admin.Id,
             });
 
-
             userRoles.Add(new UserRole()
             {
                 RoleId = adminRole.Id,
@@ -106,7 +119,6 @@ namespace Inlook_Infrastructure.Configurations
                 UserId = bogen.Id,
             });
             builder.Entity<UserRole>().HasData(userRoles);
-
         }
     }
 }

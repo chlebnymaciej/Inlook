@@ -11,7 +11,6 @@ namespace Inlook_Infrastructure.Configurations
             builder.HasKey(r => r.Id);
             builder.Property(r => r.Id).HasDefaultValueSql("NEWID()");
             builder.Property(r => r.Name).HasMaxLength(50);
-
         }
     }
 }

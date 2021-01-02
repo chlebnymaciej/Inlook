@@ -9,31 +9,31 @@ namespace Inlook_Core.Models
     public class GetNotificationModel
     {
         /// <summary>
-        /// Notification content
+        /// Notification content.
         /// </summary>
         public string Content { get; set; }
         /// <summary>
-        /// Content type
+        /// Content type.
         /// </summary>
         public string ContentType { get; set; }
         /// <summary>
-        /// List od notification recepients
+        /// List od notification recepients.
         /// </summary>
         public string[] RecipientsList { get; set; }
         /// <summary>
-        /// Indicates if notification has attachments
+        /// Indicates if notification has attachments.
         /// </summary>
         public bool WithAttachments { get; set; }
         /// <summary>
-        /// Notification status
+        /// Notification status.
         /// </summary>
         public NotificationStatusModel Status { get; set; }
         /// <summary>
-        /// Date the notification was send
+        /// Date the notification was send.
         /// </summary>
         public string SentAt { get; set; }
         /// <summary>
-        /// Date the notification was precessed
+        /// Date the notification was precessed.
         /// </summary>
         public string ProcessAt { get; set; }
     }

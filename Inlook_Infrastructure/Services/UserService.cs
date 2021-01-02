@@ -1,29 +1,27 @@
-﻿using Inlook_Core.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
 using Inlook_Core.Models.Attachments;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Inlook_Infrastructure.Services
 {
     public class UserService : BaseService<User>, IUserService
     {
-
-        public UserService(Inlook_Context context) : base(context)
+        public UserService(Inlook_Context context)
+            : base(context)
         {
         }
-
-       
 
         public IEnumerable<GetMailModel> GetMails(Guid toId)
         {
             var users = this.context.Users;
 
-            User user = (users.Where(x => x.Id == toId)
+            User user = users.Where(x => x.Id == toId)
                 .Include(mt => mt.MailsReceived)
                     .ThenInclude(mr => mr.Mail)
                     .ThenInclude(m => m.Sender)
@@ -33,7 +31,7 @@ namespace Inlook_Infrastructure.Services
                     .ThenInclude(mt => mt.Recipient)
                 .Include(mt => mt.MailsReceived)
                     .ThenInclude(mr => mr.Mail)
-                    .ThenInclude(m => m.Attachments))
+                    .ThenInclude(m => m.Attachments)
             .FirstOrDefault();
 
             List<GetMailModel> mails = new List<GetMailModel>();
@@ -41,14 +39,19 @@ namespace Inlook_Infrastructure.Services
             List<MailTo> BCC = new List<MailTo>();
             foreach (var item in mailsTo)
             {
-                if(item.CC.HasValue && item.CC.Value == false)
+                if (item.CC.HasValue && item.CC.Value == false)
+                {
                     BCC.Add(item);
+                }
             }
+
             List<MailTo> rest = new List<MailTo>();
             foreach (var item in mailsTo)
             {
-                if (item.CC.HasValue==false || item.CC.Value == true)
+                if (item.CC.HasValue == false || item.CC.Value == true)
+                {
                     rest.Add(item);
+                }
             }
 
             foreach (MailTo item in BCC)
@@ -58,7 +61,7 @@ namespace Inlook_Infrastructure.Services
                         Email = user.Email,
                         Name = user.Name,
                         Id = user.Id
-                    }
+                    },
                     };
                 var empty = new List<GetUserWithIdModel>();
                 GetMailModel tmp = new GetMailModel()
@@ -67,7 +70,7 @@ namespace Inlook_Infrastructure.Services
                     {
                         Email = item.Mail.Sender.Email,
                         Id = item.Mail.Sender.Id,
-                        Name = item.Mail.Sender.Name
+                        Name = item.Mail.Sender.Name,
                     },
                     CC = empty.ToArray(),
                     Read = item.StatusRead,
@@ -86,29 +89,28 @@ namespace Inlook_Infrastructure.Services
                 var toTmp = new List<GetUserWithIdModel>();
                 foreach (var recipment in item.Mail.Recipients)
                 {
-                    if(recipment.CC.HasValue==false)
+                    if (recipment.CC.HasValue == false)
                         toTmp.Add(
                             new GetUserWithIdModel()
                             {
                                 Email = recipment.Recipient.Email,
                                 Name = recipment.Recipient.Name,
-                                Id = recipment.Recipient.Id
-                            }
-                            );
+                                Id = recipment.Recipient.Id,
+                            });
                 }
+
                 var ccTmp = new List<GetUserWithIdModel>();
 
                 foreach (var recipment in item.Mail.Recipients)
                 {
                     if (recipment.CC.HasValue && recipment.CC == true)
-                         ccTmp.Add(
-                             new GetUserWithIdModel()
-                             {
-                                 Email = recipment.Recipient.Email,
-                                 Name = recipment.Recipient.Name,
-                                 Id = recipment.Recipient.Id
-                             }
-                            );
+                        ccTmp.Add(
+                            new GetUserWithIdModel()
+                            {
+                                Email = recipment.Recipient.Email,
+                                Name = recipment.Recipient.Name,
+                                Id = recipment.Recipient.Id,
+                            });
                 }
 
                 GetMailModel tmp = new GetMailModel()
@@ -117,7 +119,7 @@ namespace Inlook_Infrastructure.Services
                     {
                         Email = item.Mail.Sender.Email,
                         Id = item.Mail.Sender.Id,
-                        Name = item.Mail.Sender.Name
+                        Name = item.Mail.Sender.Name,
                     },
                     CC = ccTmp.ToArray(),
                     Read = item.StatusRead,
@@ -129,9 +131,7 @@ namespace Inlook_Infrastructure.Services
                     Attachments = item.Mail.Attachments.Select(a => new GetAttachmentModel() { Id = a.Id, AzureFileName = a.AzureFileName, ClientFileName = a.ClientFileName }).ToArray(),
                 };
                 mails.Add(tmp);
-
             }
-
 
             return mails;
         }
@@ -146,24 +146,33 @@ namespace Inlook_Infrastructure.Services
             return this.context.UserRole
                 .Where(ur => ur.UserId == userId)
                 .Include(ur => ur.Role)
-                .Select(ur=>ur.Role.Name);
+                .Select(ur => ur.Role.Name);
         }
 
         public async Task AssignRoleToUser(string roleName, Guid userId)
         {
             var role = this.context.Roles.Where(r => r.Name == roleName).FirstOrDefault();
-            if (role == null) return;
+            if (role == null)
+            {
+                return;
+            }
+
             var user = this.context.Users.Find(userId);
-            if (user == null) return;
+            if (user == null)
+            {
+                return;
+            }
 
             user.UserRoles.Add(new UserRole() { Role = role });
             await this.context.SaveChangesAsync();
         }
+
         public string GetMail(Guid userId)
         {
             var user = this.context.Users.Find(userId);
             return user.Email;
         }
+
         public async Task UnassignRoleToUser(string roleName, Guid userId)
         {
             var user = this.context.Users
@@ -171,12 +180,18 @@ namespace Inlook_Infrastructure.Services
                 .ThenInclude(r => r.Role)
                 .Where(u => u.Id == userId)
                 .FirstOrDefault();
-            if (user == null) return;
+            if (user == null)
+            {
+                return;
+            }
 
             var role = user.UserRoles
                 .Where(r => r.Role.Name == roleName)
                 .FirstOrDefault();
-            if (role == null) return;
+            if (role == null)
+            {
+                return;
+            }
 
             user.UserRoles.Remove(role);
             await this.context.SaveChangesAsync();

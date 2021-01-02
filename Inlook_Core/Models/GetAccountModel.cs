@@ -9,19 +9,19 @@ namespace Inlook_Core.Models
     public class GetAccountModel
     {
         /// <summary>
-        /// User name
+        /// User name.
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// User email
+        /// User email.
         /// </summary>
         public string Email { get; set; }
         /// <summary>
-        /// User Id
+        /// User Id.
         /// </summary>
         public Guid Id { get; set; }
         /// <summary>
-        /// Indicates if user was accepted
+        /// Indicates if user was accepted.
         /// </summary>
         public bool Accepted { get; set; }
     }

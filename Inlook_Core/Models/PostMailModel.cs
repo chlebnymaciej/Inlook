@@ -6,31 +6,30 @@ namespace Inlook_Core.Models
     public class PostMailModel
     {
         /// <summary>
-        /// Mail recepients
+        /// Mail recepients.
         /// </summary>
         [MinLength(1)]
         public string[] To { get; set; }
         /// <summary>
-        /// Mail CC recepients
+        /// Mail CC recepients.
         /// </summary>
         public string[] CC { get; set; }
         /// <summary>
-        /// Mail BCC recepients
+        /// Mail BCC recepients.
         /// </summary>
         public string[] BCC { get; set; }
 
         /// <summary>
-        /// Main subject
+        /// Main subject.
         /// </summary>
         public string Subject { get; set; }
         /// <summary>
-        /// Mail content text
+        /// Mail content text.
         /// </summary>
         public string Text { get; set; }
         /// <summary>
-        /// Mail attachments
+        /// Mail attachments.
         /// </summary>
         public string[] Attachments { get; set; }
-
     }
 }

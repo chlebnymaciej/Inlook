@@ -15,7 +15,7 @@ namespace Inlook_Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Priority = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -32,7 +32,7 @@ namespace Inlook_Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Accepted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -44,7 +44,7 @@ namespace Inlook_Infrastructure.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FavoriteUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    FavoriteUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -71,7 +71,7 @@ namespace Inlook_Infrastructure.Migrations
                     GroupOwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -93,7 +93,7 @@ namespace Inlook_Infrastructure.Migrations
                     Subject = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -111,7 +111,7 @@ namespace Inlook_Infrastructure.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -135,7 +135,7 @@ namespace Inlook_Infrastructure.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -163,7 +163,7 @@ namespace Inlook_Infrastructure.Migrations
                     ClientFileName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     AzureFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -183,7 +183,7 @@ namespace Inlook_Infrastructure.Migrations
                     MailId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RecipientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CC = table.Column<bool>(type: "bit", nullable: true),
-                    StatusRead = table.Column<bool>(type: "bit", nullable: false)
+                    StatusRead = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -208,7 +208,7 @@ namespace Inlook_Infrastructure.Migrations
                 {
                     { new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", 0 },
                     { new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", 0 },
-                    { new Guid("ac91aade-63ed-4de3-a31b-65109b4789f4"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pending", 0 }
+                    { new Guid("ac91aade-63ed-4de3-a31b-65109b4789f4"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pending", 0 },
                 });
 
             migrationBuilder.InsertData(
@@ -225,7 +225,7 @@ namespace Inlook_Infrastructure.Migrations
                     { new Guid("c49ecaac-2fe3-43e1-a1c8-acf9c2fc3ea4"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "papiez_polak@vatican.vc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jan Paweł", null },
                     { new Guid("53cf29c2-7220-4874-bd05-64ef68ca08a9"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kenobi@jedi.order", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Obi-Wan Kenobi", null },
                     { new Guid("e570f721-96d6-41de-94c7-29ed388c9929"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "senat@sith.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Palpatine", null },
-                    { new Guid("3c0e4e0d-d91b-42ef-a98e-497177e88597"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null }
+                    { new Guid("3c0e4e0d-d91b-42ef-a98e-497177e88597"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null },
                 });
 
             migrationBuilder.InsertData(
@@ -236,7 +236,7 @@ namespace Inlook_Infrastructure.Migrations
                     { new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5"), new Guid("2884a694-6a60-4e87-9477-6bd589106ab2") },
                     { new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"), new Guid("2884a694-6a60-4e87-9477-6bd589106ab2") },
                     { new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") },
-                    { new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") }
+                    { new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") },
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,8 +1,8 @@
-﻿using Inlook_Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Text;
+using Inlook_Core.Entities;
 
 namespace Inlook_Core.Interfaces.Services
 {
@@ -10,8 +10,11 @@ namespace Inlook_Core.Interfaces.Services
         where T : Base
     {
         void Create(T entity);
+
         T Read(Guid Id);
+
         void Update(T entity);
+
         void Delete(Guid Id);
     }
 }

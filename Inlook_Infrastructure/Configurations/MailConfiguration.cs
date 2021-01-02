@@ -17,7 +17,7 @@ namespace Inlook_Infrastructure.Configurations
 
             builder.Property(m => m.Subject).HasMaxLength(100);
 
-            builder.HasIndex(m =>  m.Id );
+            builder.HasIndex(m => m.Id);
         }
     }
 }
