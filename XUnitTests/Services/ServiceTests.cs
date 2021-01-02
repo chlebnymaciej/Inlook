@@ -21,7 +21,10 @@ namespace XUnitTests.Services
         IRoleService roleService;
         IUserService userService;
         INotificationService notificationService;
-        Guid userId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2");
+
+        Inlook_Context Inlook_Context;
+
+         Guid userId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2");
         public ServiceTests()
         {
             var services = new ServiceCollection();
@@ -48,6 +51,7 @@ namespace XUnitTests.Services
             roleService = serviceProvider.GetService<IRoleService>();
             userService = serviceProvider.GetService<IUserService>();
             notificationService = serviceProvider.GetService<INotificationService>();
+            Inlook_Context = serviceProvider.GetService<Inlook_Context>();
         }
        
 

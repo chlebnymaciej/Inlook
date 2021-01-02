@@ -26,6 +26,7 @@ namespace XUnitTests.Services
 
             var groups = groupService.GetAllGroups(userId);
             var group = groups.Where(g => g.Name == groupName).FirstOrDefault();
+
             Assert.NotNull(group);
 
             string editedName = groupName + "Edited";
@@ -39,6 +40,7 @@ namespace XUnitTests.Services
 
             groups = groupService.GetAllGroups(userId);
             group = groups.Where(g => g.Name == editedName).FirstOrDefault();
+
             Assert.NotNull(group);
             Assert.True(group.Name == editedName);
             Assert.True(group.UserGroups.Count == 0);
