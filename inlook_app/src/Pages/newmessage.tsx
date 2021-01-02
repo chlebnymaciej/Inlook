@@ -312,6 +312,7 @@ const NewMessage = (props: NewMessageProps) => {
                                 className={classes.halfliners}
                                 multiple
                                 size="small"
+                                id="cc_users_field"
                                 onChange={(object, values) => setCcUsers(values)}
                                 options={users}
                                 getOptionLabel={(option) => option.email}
@@ -334,6 +335,7 @@ const NewMessage = (props: NewMessageProps) => {
                                 className={classes.halfliners}
                                 multiple
                                 size="small"
+                                id="cc_groups_field"
                                 onChange={(object, values) => setCcGroups(values)}
                                 options={groups}
                                 getOptionLabel={(option) => option?.name}
@@ -357,6 +359,7 @@ const NewMessage = (props: NewMessageProps) => {
                             <Autocomplete
                                 className={classes.halfliners}
                                 multiple
+                                id="bcc_user_field"
                                 size="small"
                                 onChange={(object, values) => setBccUsers(values)}
                                 options={users}
@@ -380,6 +383,7 @@ const NewMessage = (props: NewMessageProps) => {
                                 className={classes.halfliners}
                                 multiple
                                 size="small"
+                                id="bcc_group_field"
                                 onChange={(object, values) => setBccGroups(values)}
                                 options={groups}
                                 getOptionLabel={(option) => option?.name}
@@ -404,6 +408,7 @@ const NewMessage = (props: NewMessageProps) => {
                             label="Subject"
                             placeholder="Subject"
                             variant="filled"
+                            id='subject_field'
                             defaultValue={subject}
                             className={classes.oneliners}
                             onChange={(event: any) => setSubject(event.target.value)}
@@ -412,6 +417,7 @@ const NewMessage = (props: NewMessageProps) => {
                             type="text"
                             label="Email text"
                             variant="filled"
+                            id="email_text_field"
                             rows="15"
                             defaultValue={mailValue}
                             className={classes.new_message}

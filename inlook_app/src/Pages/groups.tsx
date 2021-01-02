@@ -62,7 +62,7 @@ const Groups = (props: GroupsProps) => {
         <div className={classes.root}>
             {error ? error :
                 <>
-                    <Button variant="contained" color="primary" endIcon={<GroupAddIcon />}
+                    <Button variant="contained" id="create_gorup_button" color="primary" endIcon={<GroupAddIcon />}
                         onClick={() => history.push('/creategroup')}
                     >Create group</Button>
                     <div>
