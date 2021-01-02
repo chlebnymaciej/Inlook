@@ -55,7 +55,7 @@ namespace Inlook_Infrastructure.Services
             }
             var blobDownloadInfo = await blobClient.DownloadAsync();
 
-            return new GetFileModel() { ClientFileName = attachment.AzureFileName, FileStream = blobDownloadInfo.Value.Content, ContentType = blobDownloadInfo.Value.ContentType };
+            return new GetFileModel() { ClientFileName = attachment.ClientFileName, FileStream = blobDownloadInfo.Value.Content, ContentType = blobDownloadInfo.Value.ContentType };
         }
 
         public async Task DeleteAttachment(Guid id)

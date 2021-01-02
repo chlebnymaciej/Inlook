@@ -162,12 +162,16 @@ namespace Inlook_Infrastructure.Services
 
         public async Task UnassignRoleToUser(string roleName, Guid userId)
         {
-         
-
-            var user = this.context.Users.Find(userId);
+            var user = this.context.Users
+                .Include(u => u.UserRoles)
+                .ThenInclude(r => r.Role)
+                .Where(u => u.Id == userId)
+                .FirstOrDefault();
             if (user == null) return;
 
-            var role = user.UserRoles.Where(r => r.Role.Name == roleName).FirstOrDefault();
+            var role = user.UserRoles
+                .Where(r => r.Role.Name == roleName)
+                .FirstOrDefault();
             if (role == null) return;
 
             user.UserRoles.Remove(role);
