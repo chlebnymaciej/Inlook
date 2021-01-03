@@ -16,7 +16,6 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import HomeIcon from '@material-ui/icons/Home';
 import GroupIcon from '@material-ui/icons/Group';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
-import { useSnackbar } from "notistack";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -49,14 +48,13 @@ interface MenuButtonProps {
 }
 
 const MenuButton = (props: MenuButtonProps) => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [openMenu, setOpenMenu] = React.useState(false);
   const [roles, setRoles] = React.useState<string[]>([]);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const history = useHistory();
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
+  const handleMenuButtonClick = () => {
+    setOpenMenu((prevOpen) => !prevOpen);
   };
 
   useEffect(() => {
@@ -69,24 +67,24 @@ const MenuButton = (props: MenuButtonProps) => {
       return;
     }
 
-    setOpen(false);
+    setOpenMenu(false);
   };
 
   function handleListKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault();
-      setOpen(false);
+      setOpenMenu(false);
     }
   }
 
-  const prevOpen = React.useRef(open);
+  const prevOpen = React.useRef(openMenu);
   React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
+    if (prevOpen.current === true && openMenu === false) {
       anchorRef.current!.focus();
     }
 
-    prevOpen.current = open;
-  }, [open]);
+    prevOpen.current = openMenu;
+  }, [openMenu]);
 
   return (
     <>
@@ -97,14 +95,14 @@ const MenuButton = (props: MenuButtonProps) => {
               <Button
                 className={classes.button}
                 ref={anchorRef}
-                aria-controls={open ? 'menu-list-grow' : undefined}
+                aria-controls={openMenu ? 'menu-list-grow' : undefined}
                 aria-haspopup="true"
-                onClick={handleToggle}
+                onClick={handleMenuButtonClick}
               >
                 <MenuIcon
                 ></MenuIcon>
               </Button>
-              <Popper style={{ zIndex: 2137 }} open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+              <Popper style={{ zIndex: 2137 }} open={openMenu} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (
                   <Grow
                     {...TransitionProps}
@@ -112,7 +110,7 @@ const MenuButton = (props: MenuButtonProps) => {
                   >
                     <Paper>
                       <ClickAwayListener onClickAway={handleClose}>
-                        <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                        <MenuList autoFocusItem={openMenu} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                           <MenuItem className={classes.mitem} onClick={(e) => { handleClose(e); history.push('/home'); }}>
                             <div>Home</div>
                             <HomeIcon className={classes.icon}></HomeIcon>
