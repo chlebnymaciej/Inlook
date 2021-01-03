@@ -11,6 +11,10 @@ namespace Inlook_Core.Interfaces.Services
     {
         IEnumerable<User> ReadAllUsers();
 
+        IEnumerable<GetUserModel> ReadAllContacts();
+
+        IEnumerable<GetAccountModel> ReadAllAccounts();
+
         IEnumerable<GetMailModel> GetMails(Guid toId);
 
         IEnumerable<string> ReadUserRoles(Guid userId);
