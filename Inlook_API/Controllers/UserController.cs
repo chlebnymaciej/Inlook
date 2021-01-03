@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Inlook_API.Extensions;
+using Inlook_API.Helpers;
 using Inlook_Core;
+using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
 using Microsoft.ApplicationInsights;
@@ -61,49 +64,24 @@ namespace Inlook_API.Controllers
         [HttpGet("GetContactList")]
         public IActionResult GetContactList(int page, int pageSize, string searchText, string orderBy, string orderType)
         {
-            var users = this.userService.ReadAllUsers();
-            searchText = searchText?.ToLower();
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                users = users
-                    .Where(
-                        u =>
-                            (u.Email?.ToLower().Contains(searchText)).GetValueOrDefault() ||
-                            (u.Name?.ToLower().Contains(searchText)).GetValueOrDefault());
-            }
+            var users = this.userService.ReadAllContacts();
 
-            int totalCount = users.Count();
-
-            if (orderType == "desc")
-            {
-                users = orderBy switch
+            int totalCount;
+            (users, totalCount) = Paging.GetPage(users,
+                page,
+                pageSize,
+                searchText,
+                new Func<GetUserModel, string>[]
                 {
-                    "name" => users.OrderByDescending(u => u.Name),
-                    "email" => users.OrderByDescending(u => u.Email),
-                    _ => users,
-                };
-            }
-            else
-            {
-                users = orderBy switch
-                {
-                    "name" => users.OrderBy(u => u.Name),
-                    "email" => users.OrderBy(u => u.Email),
-                    _ => users,
-                };
-            }
+                    u => u.Email,
+                    u => u.Name,
+                },
+                orderType,
+                string.IsNullOrEmpty(orderBy) ? null :
+                u => u.GetType().GetProperty(StringHelpers.FirstCharToUpper(orderBy)).GetValue(u, null)
+                );
 
-            users = users.Skip(page * pageSize);
-            users = users.Take(pageSize);
-
-            var contacts = users.Select(u => new GetUserModel()
-            {
-                Email = u.Email,
-                Name = u.Name,
-                PhoneNumber = u.PhoneNumber,
-            });
-
-            return new JsonResult(new GetContactsPageModel() { Contacts = contacts, TotalCount = totalCount });
+            return new JsonResult(new GetContactsPageModel() { Contacts = users, TotalCount = totalCount });
         }
 
         /// <summary>
@@ -182,52 +160,23 @@ namespace Inlook_API.Controllers
         public IActionResult GetAccounts(int? page, int? pageSize, string searchText, string orderBy, string orderType)
         {
             var userId = this.GetUserId();
-            var users = this.userService.ReadAllUsers();
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                users = users
-                    .Where(
-                        u =>
-                            (u.Email?.ToLower().Contains(searchText)).GetValueOrDefault() ||
-                            (u.Name?.ToLower().Contains(searchText)).GetValueOrDefault());
-            }
-
-            int totalCount = users.Count();
-
-            if (orderType == "desc")
-            {
-                users = orderBy switch
+            var users = this.userService.ReadAllAccounts();
+            int totalCount;
+            (users, totalCount) = Paging.GetPage(users,
+                page,
+                pageSize,
+                searchText,
+                new Func<GetAccountModel, string>[]
                 {
-                    "name" => users.OrderByDescending(u => u.Name),
-                    "email" => users.OrderByDescending(u => u.Email),
-                    _ => users,
-                };
-            }
-            else
-            {
-                users = orderBy switch
-                {
-                    "name" => users.OrderBy(u => u.Name),
-                    "email" => users.OrderBy(u => u.Email),
-                    _ => users,
-                };
-            }
+                    u => u.Email,
+                    u => u.Name,
+                },
+                orderType,
+                string.IsNullOrEmpty(orderBy) ? null:
+                u => u.GetType().GetProperty(StringHelpers.FirstCharToUpper(orderBy)).GetValue(u, null)
+                );
 
-            if (page.HasValue && pageSize.HasValue)
-            {
-                users = users.Skip(page.Value * pageSize.Value);
-                users = users.Take(pageSize.Value);
-            }
-
-            var accounts = users.Select(u => new GetAccountModel()
-            {
-                Email = u.Email,
-                Name = u.Name,
-                Id = u.Id,
-                Accepted = this.userService.ReadUserRoles(u.Id).Contains("User"),
-            });
-
-            return new JsonResult(new GetAccountsPageModel { Accounts = accounts, TotalCount = totalCount });
+            return new JsonResult(new GetAccountsPageModel { Accounts = users, TotalCount = totalCount });
         }
     }
 }

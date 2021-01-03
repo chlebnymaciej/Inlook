@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Inlook_Core;
 using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
@@ -139,6 +140,31 @@ namespace Inlook_Infrastructure.Services
         public IEnumerable<User> ReadAllUsers()
         {
             return this.context.Users;
+        }
+
+        public IEnumerable<GetUserModel> ReadAllContacts()
+        {
+            return this.context.Users.Select(u => new GetUserModel()
+            {
+                Email = u.Email,
+                Name = u.Name,
+                PhoneNumber = u.PhoneNumber,
+            }); 
+        }
+
+        public IEnumerable<GetAccountModel> ReadAllAccounts()
+        {
+            return this.context.Users
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .Select(u => new GetAccountModel()
+                {
+                    Email = u.Email,
+                    Name = u.Name,
+                    Id = u.Id,
+                    Accepted = u.UserRoles.Any(ur => ur.Role.Name == Roles.User),
+                });
+            ;
         }
 
         public IEnumerable<string> ReadUserRoles(Guid userId)
