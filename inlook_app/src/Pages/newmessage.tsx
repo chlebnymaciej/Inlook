@@ -251,7 +251,8 @@ const NewMessage = (props: NewMessageProps) => {
                     <div className={classes.formClass}>
                         <TextField type="text" label="From:"
                             variant="filled"
-                            placeholder="From:" value={props.user?.profile.email} 
+                            placeholder="From:" 
+                            value={props.user?.profile.emails[0]} 
                             defaultValue='Error could not load your email'
                             required
                             disabled
