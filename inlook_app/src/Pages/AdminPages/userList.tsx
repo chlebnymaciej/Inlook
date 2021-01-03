@@ -116,20 +116,6 @@ const UserList = (props: UserListProps) => {
             })
     }
 
-
-    const handleToggle = (mail: string) => {
-        const currentIndex = checked.indexOf(mail);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(mail);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setChecked(newChecked);
-    };
-
     const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setSearchText(value);
@@ -187,15 +173,14 @@ const UserList = (props: UserListProps) => {
     }
 
     const tableHeadWidths = <colgroup>
-        <col style={{ width: '10%' }} />
+        <col style={{ width: '50%' }} />
         <col style={{ width: '40%' }} />
-        <col style={{ width: '40%' }} />
-        <col style={{ width: '10%' }} />
+        <col style={{ width: '5%' }} />
+        <col style={{ width: '5%' }} />
     </colgroup>
 
     const tableHead =
         <TableHead  >
-            <TableCell></TableCell>
             {headCells.map(hc => {
                 return <TableCell
                     key={hc.id}
@@ -230,16 +215,6 @@ const UserList = (props: UserListProps) => {
 
                     return (
                         <TableRow key={index} >
-                            <TableCell >
-                                <Checkbox
-                                    edge="start"
-                                    checked={checked.indexOf(user.email) !== -1}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    inputProps={{ 'aria-labelledby': labelId }}
-                                    onChange={() => handleToggle(user.email)}
-                                />
-                            </TableCell>
                             <TableCell>
                                 <p>{user.name}</p>
                             </TableCell>

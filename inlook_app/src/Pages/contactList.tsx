@@ -87,19 +87,6 @@ const ContactList = (props: ContactListProps) => {
       })
   }
 
-  const handleToggle = (mail: string) => {
-    const currentIndex = checked.indexOf(mail);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(mail);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-
   const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchText(value);
@@ -128,15 +115,12 @@ const ContactList = (props: ContactListProps) => {
   }
 
   const tableHeadWidths = <colgroup>
-    <col style={{ width: '10%' }} />
-    <col style={{ width: '40%' }} />
-    <col style={{ width: '40%' }} />
-    <col style={{ width: '10%' }} />
+    <col style={{ width: '50%' }} />
+    <col style={{ width: '50%' }} />
   </colgroup>
 
   const tableHead =
     <TableHead  >
-      <TableCell></TableCell>
       {headCells.map(hc => {
         return <TableCell
           key={hc.id}
@@ -172,26 +156,11 @@ const ContactList = (props: ContactListProps) => {
 
             return (
               <TableRow key={index} >
-                <TableCell >
-                  <Checkbox
-                    edge="start"
-                    checked={checked.indexOf(contact.email) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
-                    onChange={() => handleToggle(contact.email)}
-                  />
-                </TableCell>
                 <TableCell>
                   <p>{contact.name}</p>
                 </TableCell>
                 <TableCell>
                   <p>{contact.email}</p>
-                </TableCell>
-                <TableCell>
-                  <IconButton edge="end" aria-label="comments">
-                    <CommentIcon />
-                  </IconButton>
                 </TableCell>
               </TableRow>
             );
