@@ -35,7 +35,7 @@ namespace Inlook_API
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -47,13 +47,11 @@ namespace Inlook_API
 
             services.AddApplicationInsightsTelemetry();
 
-           
-
-            services.Configure<AuthenticationOptions>(Configuration.GetSection("Authentication:AzureAd"));
+            services.Configure<AuthenticationOptions>(this.Configuration.GetSection("Authentication:AzureAd"));
 
             IList<string> validissuers = new List<string>()
             {
-                Configuration.GetValue<string>("AzureAdB2C:Authority"),
+                this.Configuration.GetValue<string>("AzureAdB2C:Authority"),
             };
 
             var configManager = new ConfigurationManager<OpenIdConnectConfiguration>($"{validissuers.Last()}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever());
@@ -63,13 +61,13 @@ namespace Inlook_API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(AppServicesAuthenticationDefaults.AuthenticationScheme, options =>
                     {
-                        options.Authority = Configuration.GetValue<string>("AzureAdB2C:Authority");
+                        options.Authority = this.Configuration.GetValue<string>("AzureAdB2C:Authority");
                         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                         {
                             ValidateAudience = false,
 
                             ValidateIssuer = true,
-                            ValidIssuers = new[] { Configuration.GetValue<string>("AzureAdB2C:Authority") },
+                            ValidIssuers = new[] { this.Configuration.GetValue<string>("AzureAdB2C:Authority") },
 
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKeys = openidconfig.SigningKeys,
@@ -84,7 +82,6 @@ namespace Inlook_API
                         {
                             OnTokenValidated = o =>
                             {
-
                                 Guid oid = Guid.Parse(o.Principal.FindFirstValue("http://schemas.microsoft.com/identity/claims/objectidentifier"));
 
                                 var db = o.HttpContext.RequestServices.GetRequiredService<Inlook_Context>();
@@ -142,10 +139,10 @@ namespace Inlook_API
             services.AddCors();
 
             services.AddDbContext<Inlook_Context>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSingleton(x =>
-                new BlobServiceClient(Configuration.GetValue<string>("AzureStorageBlobConnectionString")));
+                new BlobServiceClient(this.Configuration.GetValue<string>("AzureStorageBlobConnectionString")));
 
             services.AddSwaggerGen(options =>
             {
@@ -157,7 +154,6 @@ namespace Inlook_API
 
                 List<string> xmlFiles = Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly).ToList();
                 xmlFiles.ForEach(xmlFile => options.IncludeXmlComments(xmlFile));
-
             });
 
             services.AddScoped<IAttachmentService, AttachmentService>();
@@ -175,6 +171,7 @@ namespace Inlook_API
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -193,7 +190,6 @@ namespace Inlook_API
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Inlook API1");
                 options.RoutePrefix = "";
-
             });
         }
     }

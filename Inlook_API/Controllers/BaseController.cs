@@ -1,12 +1,12 @@
-﻿using Inlook_API.Extensions;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using Inlook_API.Extensions;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Inlook_API.Controllers
 {
@@ -14,6 +14,7 @@ namespace Inlook_API.Controllers
     {
         protected readonly ILogger _logger;
         protected readonly TelemetryClient _telemetryClient;
+
         public BaseController(ILogger logger, TelemetryClient telemetryClient)
         {
             this._logger = logger;
@@ -22,7 +23,6 @@ namespace Inlook_API.Controllers
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-
             StringBuilder sb = new StringBuilder();
             sb.Append("REQUEST:\n ");
             sb.Append(context.HttpContext.Request.GetDetails());
@@ -30,12 +30,11 @@ namespace Inlook_API.Controllers
 
             sb.Append(context.HttpContext.Response.Body.ToString());
 
-            _logger.LogInformation(sb.ToString());
+            this._logger.LogInformation(sb.ToString());
 
             var dic = new Dictionary<string, string>();
             dic.Add("messagge", sb.ToString());
-            this._telemetryClient.TrackEvent("RequestEvent",dic);
-
+            this._telemetryClient.TrackEvent("RequestEvent", dic);
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -49,4 +48,3 @@ namespace Inlook_API.Controllers
         }
     }
 }
-

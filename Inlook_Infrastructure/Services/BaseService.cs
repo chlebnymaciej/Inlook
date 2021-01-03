@@ -17,8 +17,8 @@ namespace Inlook_Infrastructure.Services
         {
             this.context = context;
             this.dbSet = context.Set<T>();
-
         }
+
         public void Create(T entity)
         {
             entity.LastModifiedDate = entity.CreatedDate = DateTime.Now;
@@ -35,7 +35,7 @@ namespace Inlook_Infrastructure.Services
 
         public T Read(Guid Id)
         {
-            var entity = dbSet.Find(Id);
+            var entity = this.dbSet.Find(Id);
             return entity;
         }
 

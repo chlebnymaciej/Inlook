@@ -8,7 +8,7 @@ namespace Inlook_Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<MailTo> builder)
         {
-            builder.HasKey(m => new {m.MailId, m.RecipientId });
+            builder.HasKey(m => new { m.MailId, m.RecipientId });
 
             builder.HasOne(m => m.Recipient)
                 .WithMany(u => u.MailsReceived)

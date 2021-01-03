@@ -3,15 +3,15 @@
     public class GetUserModel
     {
         /// <summary>
-        /// User name
+        /// User name.
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// User email
+        /// User email.
         /// </summary>
         public string Email { get; set; }
         /// <summary>
-        /// User phone number
+        /// User phone number.
         /// </summary>
         public string PhoneNumber { get; set; }
     }

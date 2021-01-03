@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Infrastructure;
@@ -5,26 +8,21 @@ using Inlook_Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace XUnitTests.Services
 {
-   
     public partial class ServiceTests
     {
-        IAttachmentService attachmentService;
-        IGroupService groupService;
-        IMailService mailService;
-        IRoleService roleService;
-        IUserService userService;
-        INotificationService notificationService;
+        private readonly IAttachmentService attachmentService;
+        private readonly IGroupService groupService;
+        private readonly IMailService mailService;
+        private readonly IUserService userService;
+        private readonly INotificationService notificationService;
+        private readonly Inlook_Context dbContext;
 
-        Inlook_Context Inlook_Context;
+        private Guid userId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2");
 
-         Guid userId = new Guid("2884a694-6a60-4e87-9477-6bd589106ab2");
         public ServiceTests()
         {
             var services = new ServiceCollection();
@@ -45,15 +43,13 @@ namespace XUnitTests.Services
 
             var serviceProvider = services.BuildServiceProvider();
 
-            attachmentService = serviceProvider.GetService<IAttachmentService>();
-            groupService = serviceProvider.GetService<IGroupService>();
-            mailService = serviceProvider.GetService<IMailService>();
-            roleService = serviceProvider.GetService<IRoleService>();
-            userService = serviceProvider.GetService<IUserService>();
-            notificationService = serviceProvider.GetService<INotificationService>();
-            Inlook_Context = serviceProvider.GetService<Inlook_Context>();
+            this.attachmentService = serviceProvider.GetService<IAttachmentService>();
+            this.groupService = serviceProvider.GetService<IGroupService>();
+            this.mailService = serviceProvider.GetService<IMailService>();
+            this.userService = serviceProvider.GetService<IUserService>();
+            this.notificationService = serviceProvider.GetService<INotificationService>();
+            this.dbContext = serviceProvider.GetService<Inlook_Context>();
         }
-       
 
         public static IConfiguration InitConfiguration()
         {
@@ -62,8 +58,5 @@ namespace XUnitTests.Services
                 .Build();
             return config;
         }
-
-
     }
 }
-    

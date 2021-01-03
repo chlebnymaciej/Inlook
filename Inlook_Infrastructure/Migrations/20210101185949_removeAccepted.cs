@@ -93,7 +93,7 @@ namespace Inlook_Infrastructure.Migrations
                 {
                     { new Guid("c55a9789-f0ab-4c32-aa78-f054a9e19a3f"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", 0 },
                     { new Guid("2615313f-7df9-49bc-861a-2444abe24dcd"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", 0 },
-                    { new Guid("3ecaed79-15a1-43e8-89c7-3dafc33ae27d"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pending", 0 }
+                    { new Guid("3ecaed79-15a1-43e8-89c7-3dafc33ae27d"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pending", 0 },
                 });
 
             migrationBuilder.InsertData(
@@ -108,7 +108,7 @@ namespace Inlook_Infrastructure.Migrations
                     { new Guid("76b7b060-58d4-4a79-b3b6-965576f204b4"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "papiez_polak@vatican.vc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jan Paweł", null },
                     { new Guid("fbddf21d-4f5d-4eb9-9631-bb3d30235f64"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kenobi@jedi.order", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Obi-Wan Kenobi", null },
                     { new Guid("d8400a20-7282-4f86-a1e1-1385e8549ee2"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "senat@sith.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Palpatine", null },
-                    { new Guid("c8624a2f-f4cc-4885-8ea6-519cd78418c6"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null }
+                    { new Guid("c8624a2f-f4cc-4885-8ea6-519cd78418c6"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null },
                 });
 
             migrationBuilder.InsertData(
@@ -119,7 +119,7 @@ namespace Inlook_Infrastructure.Migrations
                     { new Guid("c55a9789-f0ab-4c32-aa78-f054a9e19a3f"), new Guid("2884a694-6a60-4e87-9477-6bd589106ab2") },
                     { new Guid("c55a9789-f0ab-4c32-aa78-f054a9e19a3f"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") },
                     { new Guid("2615313f-7df9-49bc-861a-2444abe24dcd"), new Guid("2884a694-6a60-4e87-9477-6bd589106ab2") },
-                    { new Guid("2615313f-7df9-49bc-861a-2444abe24dcd"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") }
+                    { new Guid("2615313f-7df9-49bc-861a-2444abe24dcd"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") },
                 });
         }
 
@@ -214,7 +214,7 @@ namespace Inlook_Infrastructure.Migrations
                 {
                     { new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", 0 },
                     { new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", 0 },
-                    { new Guid("ac91aade-63ed-4de3-a31b-65109b4789f4"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pending", 0 }
+                    { new Guid("ac91aade-63ed-4de3-a31b-65109b4789f4"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pending", 0 },
                 });
 
             migrationBuilder.UpdateData(
@@ -243,7 +243,7 @@ namespace Inlook_Infrastructure.Migrations
                     { new Guid("c49ecaac-2fe3-43e1-a1c8-acf9c2fc3ea4"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "papiez_polak@vatican.vc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jan Paweł", null },
                     { new Guid("53cf29c2-7220-4874-bd05-64ef68ca08a9"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kenobi@jedi.order", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Obi-Wan Kenobi", null },
                     { new Guid("e570f721-96d6-41de-94c7-29ed388c9929"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "senat@sith.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Palpatine", null },
-                    { new Guid("3c0e4e0d-d91b-42ef-a98e-497177e88597"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null }
+                    { new Guid("3c0e4e0d-d91b-42ef-a98e-497177e88597"), false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "plusydodatnie@soli.darnosc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lech Wałęsa", null },
                 });
 
             migrationBuilder.InsertData(
@@ -254,7 +254,7 @@ namespace Inlook_Infrastructure.Migrations
                     { new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5"), new Guid("2884a694-6a60-4e87-9477-6bd589106ab2") },
                     { new Guid("7537fb2a-9982-40a8-81d3-a5b7cdb8c0d5"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") },
                     { new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"), new Guid("2884a694-6a60-4e87-9477-6bd589106ab2") },
-                    { new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") }
+                    { new Guid("d5ce5076-1d74-4548-81cd-8b01322b39b5"), new Guid("0d3a47cf-1cb3-4df4-a1b1-640a49b8b903") },
                 });
         }
     }

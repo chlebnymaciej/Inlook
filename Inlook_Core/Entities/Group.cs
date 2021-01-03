@@ -8,8 +8,11 @@ namespace Inlook_Core.Entities
     public class Group : Base
     {
         public User GroupOwner { get; set; }
+
         public Guid GroupOwnerId { get; set; }
+
         public string Name { get; set; }
+
         public ICollection<UserGroup> UserGroups { get; set; } = new HashSet<UserGroup>();
     }
-}   
+}

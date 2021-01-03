@@ -8,7 +8,7 @@ namespace Inlook_Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.HasKey(ur => new { ur.UserId, ur.RoleId});
+            builder.HasKey(ur => new { ur.UserId, ur.RoleId });
 
             builder.HasOne(ur => ur.User)
                 .WithMany(u => u.UserRoles)
@@ -16,7 +16,7 @@ namespace Inlook_Infrastructure.Configurations
 
             builder.HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
-                .HasForeignKey(ur => ur.RoleId  );
+                .HasForeignKey(ur => ur.RoleId);
 
             builder.HasIndex(r => r.UserId);
         }

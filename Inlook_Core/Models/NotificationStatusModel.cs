@@ -9,11 +9,11 @@ namespace Inlook_Core.Models
     public class NotificationStatusModel
     {
         /// <summary>
-        /// Notification value
+        /// Notification value.
         /// </summary>
         public int Value { get; set; }
         /// <summary>
-        /// Notification description
+        /// Notification description.
         /// </summary>
         public string Description { get; set; }
     }

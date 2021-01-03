@@ -1,4 +1,8 @@
-﻿using Inlook_API.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Inlook_API.Extensions;
 using Inlook_Core;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
@@ -8,10 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Inlook_API.Controllers
 {
@@ -21,15 +21,17 @@ namespace Inlook_API.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService userService;
-        public UserController(ILogger<UserController> logger, TelemetryClient telemetryClient, IUserService userService) : base(logger, telemetryClient)
+
+        public UserController(ILogger<UserController> logger, TelemetryClient telemetryClient, IUserService userService)
+            : base(logger, telemetryClient)
         {
             this.userService = userService;
         }
 
         /// <summary>
-        /// Gets list of all users
+        /// Gets list of all users.
         /// </summary>
-        /// <response code="200">List of users</response>
+        /// <response code="200">List of users.</response>
         [ProducesResponseType(typeof(List<GetUserWithIdModel>), 200)]
         [HttpGet("GetUsersList")]
         public IActionResult GetUsers()
@@ -41,21 +43,20 @@ namespace Inlook_API.Controllers
             {
                 Email = u.Email,
                 Name = u.Name,
-                Id = u.Id
+                Id = u.Id,
             });
             return new JsonResult(contacts.Where(u => u.Email != null));
         }
 
-
         /// <summary>
-        /// Gets page of global contact list
+        /// Gets page of global contact list.
         /// </summary>
-        /// <param name="page">Page number, starts with 0</param>
-        /// <param name="pageSize">Number of contacts in page</param>
-        /// <param name="searchText">Search text in mail or user name</param>
-        /// <param name="orderBy">Field to order by</param>
-        /// <param name="orderType">Order type, asc or desc</param>
-        /// <response code="200">Single page of contacts</response>
+        /// <param name="page">Page number, starts with 0.</param>
+        /// <param name="pageSize">Number of contacts in page.</param>
+        /// <param name="searchText">Search text in mail or user name.</param>
+        /// <param name="orderBy">Field to order by.</param>
+        /// <param name="orderType">Order type, asc or desc.</param>
+        /// <response code="200">Single page of contacts.</response>
         [ProducesResponseType(typeof(GetContactsPageModel), 200)]
         [HttpGet("GetContactList")]
         public IActionResult GetContactList(int page, int pageSize, string searchText, string orderBy, string orderType)
@@ -70,6 +71,7 @@ namespace Inlook_API.Controllers
                             (u.Email?.ToLower().Contains(searchText)).GetValueOrDefault() ||
                             (u.Name?.ToLower().Contains(searchText)).GetValueOrDefault());
             }
+
             int totalCount = users.Count();
 
             if (orderType == "desc")
@@ -90,8 +92,6 @@ namespace Inlook_API.Controllers
                     _ => users,
                 };
             }
-
-
 
             users = users.Skip(page * pageSize);
             users = users.Take(pageSize);
@@ -107,10 +107,9 @@ namespace Inlook_API.Controllers
         }
 
         /// <summary>
-        /// Gets roles of given user
+        /// Gets roles of given user.
         /// </summary>
-        /// <returns></returns>
-        /// <response code="200">List of users roles names</response>
+        /// <response code="200">List of users roles names.</response>
         [ProducesResponseType(typeof(List<string>), 200)]
         [HttpGet("GetUserRoles")]
         public IActionResult GetUserRoles()
@@ -118,15 +117,14 @@ namespace Inlook_API.Controllers
             var userId = this.GetUserId();
             var roles = this.userService.ReadUserRoles(userId);
             return new JsonResult(roles);
-
         }
 
         /// <summary>
-        /// [Admin] Accept user request to join the application
+        /// [Admin] Accept user request to join the application.
         /// </summary>
-        /// <param name="userId">Accepted user Id</param>
-        /// <param name="accept">Accept flag, true for acceptance, false for ban</param>
-        ///  <response code="204">Success indicator</response>
+        /// <param name="userId">Accepted user Id.</param>
+        /// <param name="accept">Accept flag, true for acceptance, false for ban.</param>
+        /// <response code="204">Success indicator.</response>
         [HttpGet("AcceptUser")]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> AcceptUser(Guid userId, bool accept)
@@ -140,45 +138,44 @@ namespace Inlook_API.Controllers
                 var to = new EmailAddress(this.userService.GetMail(userId), "Example User");
                 var dynamicTemplateData = new Dictionary<string, string>
             {
-                {"first_name", "&lt;p&gt;this is some html&lt;/p&gt;"},
-                {"last_name", "<div>l23456</div>"},
-                {"Sender_Name", "<div>Sender_Name</div>"},
+                { "first_name", "&lt;p&gt;this is some html&lt;/p&gt;" },
+                { "last_name", "<div>l23456</div>" },
+                { "Sender_Name", "<div>Sender_Name</div>" },
             };
                 var msg = MailHelper.CreateSingleTemplateEmail(from, to, "d-439559e2079846e0b3214f6186b6f019", dynamicTemplateData);
-                var response = await client.SendEmailAsync(msg);
+                _ = await client.SendEmailAsync(msg);
             }
             else
             {
                 await this.userService.UnassignRoleToUser(Roles.User, userId);
             }
 
-            return NoContent();
-
+            return this.NoContent();
         }
 
         /// <summary>
-        /// [Admin] Deletes user of given Id
+        /// [Admin] Deletes user of given Id.
         /// </summary>
-        /// <param name="userId">Id of user to be deleted</param>
-        ///  <response code="204">Success indicator</response>
+        /// <param name="userId">Id of user to be deleted.</param>
+        /// <response code="204">Success indicator.</response>
         [HttpDelete("DeleteUser")]
         [Authorize(Policy = "AdminPolicy")]
         public IActionResult DeleteUser(Guid userId)
         {
             this.userService.Delete(userId);
 
-            return NoContent();
+            return this.NoContent();
         }
 
         /// <summary>
-        /// [Admin] Gets page of accounts in application
+        /// [Admin] Gets page of accounts in application.
         /// </summary>
-        /// <param name="page">Page number, starts with 0</param>
-        /// <param name="pageSize">Number of contacts in page</param>
-        /// <param name="searchText">Search text in mail or user name</param>
-        /// <param name="orderBy">Field to order by</param>
-        /// <param name="orderType">Order type, asc or desc</param>
-        /// <response code="200">Single page of accounts in application</response>
+        /// <param name="page">Page number, starts with 0.</param>
+        /// <param name="pageSize">Number of contacts in page.</param>
+        /// <param name="searchText">Search text in mail or user name.</param>
+        /// <param name="orderBy">Field to order by.</param>
+        /// <param name="orderType">Order type, asc or desc.</param>
+        /// <response code="200">Single page of accounts in application.</response>
         [ProducesResponseType(typeof(GetAccountsPageModel), 200)]
         [HttpGet("GetAccounts")]
         [Authorize(Policy = "AdminPolicy")]
@@ -194,6 +191,7 @@ namespace Inlook_API.Controllers
                             (u.Email?.ToLower().Contains(searchText)).GetValueOrDefault() ||
                             (u.Name?.ToLower().Contains(searchText)).GetValueOrDefault());
             }
+
             int totalCount = users.Count();
 
             if (orderType == "desc")
@@ -215,7 +213,6 @@ namespace Inlook_API.Controllers
                 };
             }
 
-
             if (page.HasValue && pageSize.HasValue)
             {
                 users = users.Skip(page.Value * pageSize.Value);
@@ -227,11 +224,10 @@ namespace Inlook_API.Controllers
                 Email = u.Email,
                 Name = u.Name,
                 Id = u.Id,
-                Accepted = userService.ReadUserRoles(u.Id).Contains("User"),
+                Accepted = this.userService.ReadUserRoles(u.Id).Contains("User"),
             });
 
             return new JsonResult(new GetAccountsPageModel { Accounts = accounts, TotalCount = totalCount });
-
         }
     }
 }

@@ -1,20 +1,20 @@
-﻿using Inlook_Core.Entities;
-using Inlook_Core.Interfaces.Services;
-using Inlook_Core.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Inlook_Core.Entities;
+using Inlook_Core.Interfaces.Services;
+using Inlook_Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inlook_Infrastructure.Services
 {
     public class MailService : BaseService<Mail>, IMailService
     {
-        public MailService(Inlook_Context context) : base(context)
+        public MailService(Inlook_Context context)
+            : base(context)
         {
         }
-
 
         public void SendMail(PostMailModel mail, Guid ownerId)
         {
@@ -28,9 +28,10 @@ namespace Inlook_Infrastructure.Services
                     RecipientId = Guid.Parse(item),
                     MailId = id,
                     CC = null,
-                    StatusRead = false
+                    StatusRead = false,
                 });
             }
+
             foreach (string item in mail.CC)
             {
                 recipients.Add(new MailTo()
@@ -38,9 +39,10 @@ namespace Inlook_Infrastructure.Services
                     RecipientId = Guid.Parse(item),
                     MailId = id,
                     CC = true,
-                    StatusRead = false
+                    StatusRead = false,
                 });
             }
+
             foreach (string item in mail.BCC)
             {
                 recipients.Add(new MailTo()
@@ -48,11 +50,9 @@ namespace Inlook_Infrastructure.Services
                     RecipientId = Guid.Parse(item),
                     MailId = id,
                     CC = false,
-                    StatusRead = false
+                    StatusRead = false,
                 });
             }
-
-          
 
             Mail mailEnt = new Mail()
             {
@@ -60,7 +60,7 @@ namespace Inlook_Infrastructure.Services
                 SenderId = ownerId,
                 Subject = mail.Subject,
                 Text = mail.Text,
-                Recipients = recipients
+                Recipients = recipients,
             };
 
             var attachmentsIds = mail.Attachments.Select(a => Guid.Parse(a));
@@ -70,7 +70,7 @@ namespace Inlook_Infrastructure.Services
                 mailEnt.Attachments.Add(attachment);
             }
 
-            Create(mailEnt);
+            this.Create(mailEnt);
         }
 
         public void SetRead(Guid mailId, Guid recipmentId, bool read)

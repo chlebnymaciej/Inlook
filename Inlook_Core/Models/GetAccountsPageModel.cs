@@ -9,11 +9,11 @@ namespace Inlook_Core.Models
     public class GetAccountsPageModel
     {
         /// <summary>
-        /// List of accounts
+        /// List of accounts.
         /// </summary>
         public IEnumerable<GetAccountModel> Accounts { get; set; }
         /// <summary>
-        /// Count of all accounts
+        /// Count of all accounts.
         /// </summary>
         public int TotalCount { get; set; }
     }

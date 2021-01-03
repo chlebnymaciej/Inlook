@@ -1,18 +1,18 @@
-﻿using Inlook_Core.Entities;
-using Inlook_Core.Interfaces.Services;
-using Inlook_Core.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Inlook_Core.Entities;
+using Inlook_Core.Interfaces.Services;
+using Inlook_Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inlook_Infrastructure.Services
 {
     public class GroupService : BaseService<Group>, IGroupService
     {
-
-        public GroupService(Inlook_Context context) : base(context)
+        public GroupService(Inlook_Context context)
+            : base(context)
         {
         }
 
@@ -23,7 +23,7 @@ namespace Inlook_Infrastructure.Services
 
             foreach (string item in model.Users)
             {
-                userGroups.Add(new UserGroup() {UserId=Guid.Parse(item),GroupId=groupId});
+                userGroups.Add(new UserGroup() { UserId = Guid.Parse(item), GroupId = groupId });
             }
 
             Group group = new Group()
@@ -31,19 +31,18 @@ namespace Inlook_Infrastructure.Services
                 Id = groupId,
                 Name = model.Name,
                 GroupOwnerId = ownerId,
-                UserGroups = userGroups
+                UserGroups = userGroups,
             };
-            Create(group);
+            this.Create(group);
         }
-
 
         public IEnumerable<Group> GetAllGroups(Guid UserId)
         {
             var groups = this.context.Groups;
             return groups.Where(x => x.GroupOwnerId == UserId)
-                .OrderBy(u=> u.Name)
+                .OrderBy(u => u.Name)
                 .Include(g => g.UserGroups)
-                .ThenInclude(u=>u.User);
+                .ThenInclude(u => u.User);
         }
 
         public void UpdateGroup(UpdateGroupModel model, Guid ownerId)
@@ -61,7 +60,7 @@ namespace Inlook_Infrastructure.Services
                 Id = groupId,
                 Name = model.Name,
                 GroupOwnerId = ownerId,
-                UserGroups = userGroups
+                UserGroups = userGroups,
             };
             //Update(group);
 
