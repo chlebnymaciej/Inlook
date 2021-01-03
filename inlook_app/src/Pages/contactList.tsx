@@ -173,14 +173,6 @@ const ContactList = (props: ContactListProps) => {
             return (
               <TableRow key={index} >
                 <TableCell >
-                  <Checkbox
-                    edge="start"
-                    checked={checked.indexOf(contact.email) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
-                    onChange={() => handleToggle(contact.email)}
-                  />
                 </TableCell>
                 <TableCell>
                   <p>{contact.name}</p>
@@ -189,9 +181,6 @@ const ContactList = (props: ContactListProps) => {
                   <p>{contact.email}</p>
                 </TableCell>
                 <TableCell>
-                  <IconButton edge="end" aria-label="comments">
-                    <CommentIcon />
-                  </IconButton>
                 </TableCell>
               </TableRow>
             );
