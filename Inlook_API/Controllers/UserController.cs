@@ -25,6 +25,7 @@ namespace Inlook_API.Controllers
     {
         private readonly IUserService userService;
 
+
         public UserController(ILogger<UserController> logger, TelemetryClient telemetryClient, IUserService userService)
             : base(logger, telemetryClient)
         {

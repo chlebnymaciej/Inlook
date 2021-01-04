@@ -15,6 +15,7 @@ export interface MailModel {
     text: string | null;
     attachments: string[] | null;
 }
+export type OrderType = 'asc' | 'desc';
 
 export const postMail = async (mail: MailModel) => {
     let url = target_url + "sendMail";
@@ -42,7 +43,11 @@ export interface EmailProps {
     mailId: string;
     attachments: AttachmentInfo[];
 }
+export interface EmailPropsPageModel {
+    emailsPage: EmailProps[];
+    totalCount: number;
 
+}
 export const getMails = async () => {
     let url = target_url + "GetMails";
     type T = IApiResponse<EmailProps[]>;
@@ -56,6 +61,22 @@ export const getMails = async () => {
     }).then<T>(handleResponse).catch<T>(handleError);
 }
 
+export const getEmailList = async (page: number = 0, pageSize: number = 10, searchText?: string, orderBy?: keyof EmailProps, orderType?: OrderType) => {
+    type T = IApiResponse<EmailPropsPageModel>;
+    let url = target_url + "getContactList";
+    url += `?page=${page}`;
+    url += `&pageSize=${pageSize}`;
+    if (searchText) url += `&searchText=${searchText}`;
+    if (orderBy) url += `&orderBy=${orderBy}`;
+    if (orderType) url += `&orderType=${orderType}`;
+    return fetch(url, {
+        method: "GET",
+        headers: new Headers({
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + await getUserToken(),
+        }),
+    }).then<T>(handleResponse).catch<T>(handleError);
+}
 
 export const setReadMailStatus = async (mailId: string, read: boolean) => {
     let url = target_url + 'ReadMailStatus';

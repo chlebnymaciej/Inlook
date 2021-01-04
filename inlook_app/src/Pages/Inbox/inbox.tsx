@@ -1,23 +1,28 @@
-import { IconButton, TextField } from '@material-ui/core';
+import {TextField ,TablePagination} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
-import DateRangeIcon from '@material-ui/icons/DateRange';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import * as mailApi from '../../Api/mailApi';
-import { EmailProps } from '../../Api/mailApi';
+import { EmailProps ,OrderType} from '../../Api/mailApi';
 import EmailCard from './emailCard';
 import EmailContent from './emailContent';
-
 
 const Inbox = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [counter, SetCounter] = React.useState(0);
   const iCounter = () => SetCounter(counter + 1);
+  const [totalCount, setTotalCount] = React.useState<number>(0);
+  const [page, setPage] = React.useState<number>(0);
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const [selectedEmail, setSelectedEmail] = React.useState<EmailProps>();
   const [allEmails, setAllEmails] = useState<EmailProps[]>([]);
   const [emails, setEmails] = useState<EmailProps[]>([]);
+  const [emailsPage, setEmailsPage] = useState<EmailProps[]>();
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [searchText, setSearchText] = React.useState<string>("");
+  const [orderBy, setOrderBy] = React.useState<keyof EmailProps>('sendTime');
+  const [orderType, setOrderType] = React.useState<OrderType>('asc');
   const handleListItemClick = (
     index: number,
   ) => {
@@ -41,7 +46,29 @@ const Inbox = () => {
 
   useEffect(() => {
     setEmails(allEmails);
+    getPage(page, rowsPerPage, searchText, orderBy, orderType);
   }, [allEmails]);
+
+  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, page: number) => {
+    setPage(page);
+    getPage(page, rowsPerPage, searchText, orderBy, orderType);
+  };
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const pageSize = parseInt(event.target.value, 10);
+    setRowsPerPage(pageSize);
+    getPage(page, pageSize, searchText, orderBy, orderType);
+  };
+  const getPage = (pageNumber: number, pageSize: number, searchText: string, orderBy?: keyof EmailProps, orderType?: OrderType) => {
+    mailApi.getEmailList(pageNumber, pageSize, searchText, orderBy, orderType)
+      .then(r => {
+        if (r.isError) {
+          enqueueSnackbar("Could not load contact list", { variant: "error" });
+          return;
+        }
+        setEmailsPage(r.data?.emailsPage);
+        setTotalCount(r.data?.totalCount || 0)
+      })
+  }
 
   const sortDateAscending = (a: EmailProps, b: EmailProps) => {
     if (a.sendTime < b.sendTime) return -1;
@@ -109,9 +136,6 @@ let weekUsed=false;
          <Button onClick={handleSort} style={{ width: '50%' }}>
             {counter % 2 == 0 ? "descending" : "ascending"}
           </Button>
-          <IconButton>
-            <DateRangeIcon aria-label="choose date" />
-          </IconButton>
         </div>
         <TextField onChange={handleFilterChange} label={"Search"} style={{ marginLeft: '0.3em', marginRight: "0.7em", width: "90%" }} />
         <List style={{ overflowY: 'scroll', height: '88%', width: '100%' }}>
@@ -227,6 +251,14 @@ let weekUsed=false;
           )}
 
         </List>
+        <TablePagination
+          count={totalCount}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[10, 25,100]}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </div>
       <div style={{ width: '2%', backgroundColor: 'white' }}>
       </div>
