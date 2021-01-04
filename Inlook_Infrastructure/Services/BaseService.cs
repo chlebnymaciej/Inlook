@@ -29,8 +29,12 @@ namespace Inlook_Infrastructure.Services
         public void Delete(Guid id)
         {
             var entity = this.dbSet.Find(id);
-            this.dbSet.Remove(entity);
-            this.context.SaveChanges();
+            if (entity != null)
+            {
+                this.dbSet.Remove(entity);
+                this.context.SaveChanges();
+            }
+            
         }
 
         public T Read(Guid Id)
