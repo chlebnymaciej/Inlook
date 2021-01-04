@@ -55,18 +55,17 @@ interface CreateGroupsProps {
 
 const CreateGroups = (props: CreateGroupsProps) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [error, setError] = useState<string>();
   const [checked, setChecked] = useState<UserModel[]>([]);
-  const [left, setLeft] = useState<UserModel[]>([]);
-  const [right, setRight] = useState<UserModel[]>([]);
+  const [leftUsers, setLeftUsers] = useState<UserModel[]>([]);
+  const [rightUsers, setRightUsers] = useState<UserModel[]>([]);
   const [errorText, setErrorText] = useState<string>('');
   const [groupName, setGroupName] = useState<string>('');
 
   const history = useHistory();
   const classes = useStyles();
 
-  const leftChecked: UserModel[] = checked.filter((x: UserModel) => left.includes(x));
-  const rightChecked: UserModel[] = checked.filter((x: UserModel) => right.includes(x));
+  const leftSideCheckedUsers: UserModel[] = checked.filter((x: UserModel) => leftUsers.includes(x));
+  const rightSideCheckedUsers: UserModel[] = checked.filter((x: UserModel) => rightUsers.includes(x));
 
   useEffect(() => {
     getUsers().then(result => {
@@ -74,7 +73,7 @@ const CreateGroups = (props: CreateGroupsProps) => {
         enqueueSnackbar("Could not load contacts", { variant: "error" });
       }
       else {
-        setLeft(result.data || []);
+        setLeftUsers(result.data || []);
       }
     })
   }, [props.user]);
@@ -116,29 +115,29 @@ const CreateGroups = (props: CreateGroupsProps) => {
     </Paper>
   );
 
-  const handleAllRight = () => {
-    setRight(right.concat(left));
-    setLeft([]);
+  const handleAllRightClick = () => {
+    setRightUsers(rightUsers.concat(leftUsers));
+    setLeftUsers([]);
   };
-  const handleAllLeft = () => {
-    setLeft(left.concat(right));
-    setRight([]);
+  const handleAllLeftClick = () => {
+    setLeftUsers(leftUsers.concat(rightUsers));
+    setRightUsers([]);
   };
 
-  const handleCheckedRight = () => {
-    setRight(right.concat(leftChecked));
-    setLeft(left.filter((x: UserModel) => !leftChecked.includes(x)));
+  const handleCheckedUsersRightClick = () => {
+    setRightUsers(rightUsers.concat(leftSideCheckedUsers));
+    setLeftUsers(leftUsers.filter((x: UserModel) => !leftSideCheckedUsers.includes(x)));
     setChecked([]);
   };
 
-  const handleCheckedLeft = () => {
-    setLeft(left.concat(rightChecked));
-    setRight(right.filter((x: UserModel) => !rightChecked.includes(x)));
+  const handleCheckedUsersLeftClick = () => {
+    setLeftUsers(leftUsers.concat(rightSideCheckedUsers));
+    setRightUsers(rightUsers.filter((x: UserModel) => !rightSideCheckedUsers.includes(x)));
     setChecked([]);
   };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (right.length === 0) {
+    if (rightUsers.length === 0) {
       setErrorText('List of user in group cannot be empty.');
       return;
     }
@@ -149,7 +148,7 @@ const CreateGroups = (props: CreateGroupsProps) => {
 
     postGroup({
       name: groupName,
-      users: right.map(x => x.id)
+      users: rightUsers.map(x => x.id)
     }).then(r => {
       if (r.isError) {
         enqueueSnackbar("Something went wrong", { variant: "error" });
@@ -172,14 +171,14 @@ const CreateGroups = (props: CreateGroupsProps) => {
         {errorText ? <FormHelperText className={classes.errorClass}>{errorText}</FormHelperText> : <></>}
 
         <Grid container spacing={2} justify="center" alignItems="center" className={classes.grid}>
-          <Grid item>{customList(left)}</Grid>
+          <Grid item>{customList(leftUsers)}</Grid>
           <Grid item>
             <Grid container direction="column" alignItems="center">
               <Button
                 variant="outlined"
                 size="small"
-                disabled={left.length === 0}
-                onClick={handleAllRight}
+                disabled={leftUsers.length === 0}
+                onClick={handleAllRightClick}
                 aria-label="move all right"
               >
                 ≫
@@ -188,8 +187,8 @@ const CreateGroups = (props: CreateGroupsProps) => {
                 variant="outlined"
                 size="small"
                 aria-label="move selected right"
-                onClick={handleCheckedRight}
-                disabled={leftChecked.length === 0}
+                onClick={handleCheckedUsersRightClick}
+                disabled={leftSideCheckedUsers.length === 0}
               >
                 &gt;
           </Button>
@@ -197,8 +196,8 @@ const CreateGroups = (props: CreateGroupsProps) => {
                 variant="outlined"
                 size="small"
                 aria-label="move selected left"
-                onClick={handleCheckedLeft}
-                disabled={rightChecked.length === 0}
+                onClick={handleCheckedUsersLeftClick}
+                disabled={rightSideCheckedUsers.length === 0}
 
               >
                 &lt;
@@ -206,15 +205,15 @@ const CreateGroups = (props: CreateGroupsProps) => {
               <Button
                 variant="outlined"
                 size="small"
-                disabled={right.length === 0}
+                disabled={rightUsers.length === 0}
                 aria-label="move all left"
-                onClick={handleAllLeft}
+                onClick={handleAllLeftClick}
               >
                 ≪
           </Button>
             </Grid>
           </Grid>
-          <Grid item>{customList(right)}</Grid>
+          <Grid item>{customList(rightUsers)}</Grid>
         </Grid>
         <Button className={classes.button} type="submit">Create group</Button>
       </form>

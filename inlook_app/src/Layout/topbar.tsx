@@ -6,7 +6,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AccountCircle } from "@material-ui/icons";
 import { User } from "oidc-client";
 import React, { useEffect } from "react";
-import { useHistory } from "react-router";
 import userManager from "../Authorization/userManager";
 import MenuButton from "./menu";
 const useStyles = makeStyles(theme => ({
@@ -49,7 +48,6 @@ const Topbar = (props: ToolbarProps) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const history = useHistory();
     const [roles, setRoles] = React.useState<string[]>([]);
 
 
@@ -110,10 +108,7 @@ const Topbar = (props: ToolbarProps) => {
                                 open={open}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={(e) => { handleClose(); history.push('/myaccount'); }}>My account</MenuItem>
-                                <MenuItem onClick={handleLogoutClick}>Log out</MenuItem>
-
+                            <MenuItem onClick={handleLogoutClick}>Log out</MenuItem>
                             </Menu>
                         </>
                         :

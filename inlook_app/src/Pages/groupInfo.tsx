@@ -63,15 +63,15 @@ const GroupInfo = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const [open, setOpen] = useState<boolean>(false);
-  const handleClose = () => {
-    setOpen(false);
+  const [openSlidingWindow, setOpenSlidingWindow] = useState<boolean>(false);
+  const handleCloseSlidingWindow = () => {
+    setOpenSlidingWindow(false);
   };
   const deleteClicked = () => {
     deleteGroup(group.group.id).then(() => {
       history.push('/groups');
     });
-    setOpen(false);
+    setOpenSlidingWindow(false);
 
   };
 
@@ -92,12 +92,12 @@ const GroupInfo = (props: any) => {
           <Button 
           className={classes.buttonDelete} 
           id="delete_group_button"
-          onClick={() => setOpen(true)}>Delete</Button>
+          onClick={() => setOpenSlidingWindow(true)}>Delete</Button>
           <Dialog
-            open={open}
+            open={openSlidingWindow}
             TransitionComponent={Transition}
             keepMounted
-            onClose={handleClose}
+            onClose={handleCloseSlidingWindow}
             aria-labelledby="alert-dialog-slide-title"
             aria-describedby="alert-dialog-slide-description"
           >
@@ -108,7 +108,7 @@ const GroupInfo = (props: any) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleCloseSlidingWindow} color="primary">
                 No
                 </Button>
               <Button onClick={deleteClicked} color="primary">
