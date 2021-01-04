@@ -15,7 +15,8 @@ namespace Inlook_Infrastructure.Configurations
             builder.Property(x => x.Id).HasDefaultValueSql("NEWID()");
             builder.HasOne(a => a.Mail)
                 .WithMany(m => m.Attachments)
-                .HasForeignKey(a => a.MailId);
+                .HasForeignKey(a => a.MailId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(a => a.ClientFileName).HasMaxLength(255);
         }
