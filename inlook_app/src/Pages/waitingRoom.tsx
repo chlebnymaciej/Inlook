@@ -21,7 +21,7 @@ const WaitingRoom = () => {
     useEffect(() => {
         getUserRoles().then(r => {
             var roles = r.data || [];
-            localStorage.setItem("roles", roles.toLocaleString());
+            localStorage.setItem("roles", JSON.stringify(roles));
             if (roles.includes("User")) {
                 history.push("/");
             }

@@ -1,16 +1,16 @@
 
 import { User } from "oidc-client";
 import React, { PropsWithChildren, useEffect, useState } from "react";
-import { Route } from "react-router";
+import { Route, RouteComponentProps, StaticContext } from "react-router";
 import Home from "./Pages/home";
 import WaitingRoom from "./Pages/waitingRoom";
 
 export interface RoleRouteProps extends PropsWithChildren<any> {
     path: string;
-    component?: JSX.Element | ((props: any) => JSX.Element);
     requiredRoles?: string[];
     user?: User | null;
     mustBeLogged?: boolean;
+    component?: (props: any) => JSX.Element;
 }
 
 const RoleRoute = (props: RoleRouteProps) => {
@@ -46,8 +46,8 @@ const RoleRoute = (props: RoleRouteProps) => {
     }, [props.user]);
 
     return (
-        <Route path={props.path}>
-            { (loggedAccess && roledAccess) ? (props.component || props.children) :
+        <Route path={props.path} component={props.component}>
+            { (loggedAccess && roledAccess) ?  props.children :
                 (loggedAccess && !roledAccess) ? <WaitingRoom /> : <Home />
             }
         </Route>)

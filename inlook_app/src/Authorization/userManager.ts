@@ -9,8 +9,8 @@ const config: OIDC.UserManagerSettings = {
     post_logout_redirect_uri: `${window.location.protocol}//${window.location.host}`,
     silent_redirect_uri: `${window.location.protocol}//${window.location.host}/callback`,
     automaticSilentRenew: true,
-    scope: "openid"
-};
+    scope: "openid",
+    };
 
 const userManager = new OIDC.UserManager(config);
 
