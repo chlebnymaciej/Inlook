@@ -20,7 +20,6 @@ namespace Inlook_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Policy = "UserPolicy")]
     public class UserController : BaseController
     {
         private readonly IUserService userService;
@@ -37,6 +36,7 @@ namespace Inlook_API.Controllers
         /// <response code="200">List of users.</response>
         [ProducesResponseType(typeof(List<GetUserWithIdModel>), 200)]
         [HttpGet("GetUsersList")]
+        [Authorize(Policy = "UserPolicy")]
         public IActionResult GetUsers()
         {
             var userId = this.GetUserId();
@@ -62,6 +62,7 @@ namespace Inlook_API.Controllers
         /// <response code="200">Single page of contacts.</response>
         [ProducesResponseType(typeof(GetContactsPageModel), 200)]
         [HttpGet("GetContactList")]
+        [Authorize(Policy = "UserPolicy")]
         public IActionResult GetContactList(int page, int pageSize, string searchText, string orderBy, string orderType)
         {
             var users = this.userService.ReadAllContacts();
@@ -90,6 +91,7 @@ namespace Inlook_API.Controllers
         /// <response code="200">List of users roles names.</response>
         [ProducesResponseType(typeof(List<string>), 200)]
         [HttpGet("GetUserRoles")]
+        [Authorize(Policy = "PendingPolicy")]
         public IActionResult GetUserRoles()
         {
             var userId = this.GetUserId();
@@ -140,7 +142,7 @@ namespace Inlook_API.Controllers
         [Authorize(Policy = "AdminPolicy")]
         public IActionResult DeleteUser(Guid userId)
         {
-            this.userService.Delete(userId);
+             this.userService.Delete(userId);
 
             return this.NoContent();
         }

@@ -17,7 +17,8 @@ namespace Inlook_Infrastructure.Configurations
 
             builder.HasOne(m => m.Mail)
                .WithMany(m => m.Recipients)
-               .HasForeignKey(m => m.MailId);
+               .HasForeignKey(m => m.MailId)
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasIndex(m => new { m.RecipientId, m.MailId });
         }
     }
