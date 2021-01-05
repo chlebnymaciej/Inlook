@@ -123,16 +123,20 @@ namespace Inlook_API
 
             services.AddAuthorization(o =>
             {
-                o.AddPolicy("UserPolicy", p =>
-               {
-                   p.AuthenticationSchemes.Add(AppServicesAuthenticationDefaults.AuthenticationScheme);
-                   p.RequireRole(Roles.User);
-               });
-
                 o.AddPolicy("AdminPolicy", p =>
                 {
                     p.AuthenticationSchemes.Add(AppServicesAuthenticationDefaults.AuthenticationScheme);
                     p.RequireRole(Roles.Admin);
+                });
+                o.AddPolicy("UserPolicy", p =>
+               {
+                   p.AuthenticationSchemes.Add(AppServicesAuthenticationDefaults.AuthenticationScheme);
+                   p.RequireRole(Roles.User, Roles.Admin);
+               });
+                o.AddPolicy("PendingPolicy", p =>
+                {
+                    p.AuthenticationSchemes.Add(AppServicesAuthenticationDefaults.AuthenticationScheme);
+                    p.RequireRole(Roles.Pending, Roles.Admin, Roles.Pending);
                 });
             });
 

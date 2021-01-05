@@ -30,7 +30,6 @@ interface GroupsProps {
 }
 const Groups = (props: GroupsProps) => {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-    const [error, setError] = useState<string>();
     const [groups, setGroups] = useState<GroupModel[]>([]);
 
     const classes = useStyles();
@@ -46,7 +45,7 @@ const Groups = (props: GroupsProps) => {
         })
     }, [props.user]);
 
-    const itemFunction = (x: GroupModel) => {
+    const ListItemFunction = (x: GroupModel) => {
         return (
             <ListItem button onClick={
                 (e) => history.push({
@@ -60,22 +59,20 @@ const Groups = (props: GroupsProps) => {
     }
     return (
         <div className={classes.root}>
-            {error ? error :
-                <>
-                    <Button variant="contained" id="create_gorup_button" color="primary" endIcon={<GroupAddIcon />}
-                        onClick={() => history.push('/creategroup')}
-                    >Create group</Button>
-                    <div>
-                        <h3> Groups list</h3>
-                        {groups.length === 0 ? <h3> No groups</h3>
-                            :
-                            <List className={classes.listClass}>
-                                {groups.map(itemFunction)}
-                            </List>
-                        }
-                    </div>
-                </>
-            }
+            <>
+                <Button variant="contained" id="create_gorup_button" color="primary" endIcon={<GroupAddIcon />}
+                    onClick={() => history.push('/creategroup')}
+                >Create group</Button>
+                <div>
+                    <h3> Groups list</h3>
+                    {groups.length === 0 ? <h3> No groups</h3>
+                        :
+                        <List className={classes.listClass}>
+                            {groups.map(ListItemFunction)}
+                        </List>
+                    }
+                </div>
+            </>
         </div>
     );
 };

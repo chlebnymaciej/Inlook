@@ -13,7 +13,8 @@ namespace Inlook_Infrastructure.Configurations
 
             builder.HasOne(m => m.Sender)
                 .WithMany(u => u.MailsSend)
-                .HasForeignKey(m => m.SenderId);
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(m => m.Subject).HasMaxLength(100);
 

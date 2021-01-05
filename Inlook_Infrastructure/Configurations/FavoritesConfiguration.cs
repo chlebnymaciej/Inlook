@@ -20,7 +20,8 @@ namespace Inlook_Infrastructure.Configurations
 
             builder.HasOne(f => f.User)
                 .WithMany(u => u.FavoritesUsers)
-                .HasForeignKey(f => f.UserId);
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { getUserRoles } from "../Api/userApi";
-import inlookLogo from "./../Resources/sonicWaiting.gif";
+import inlookWaitingImage from "./../Resources/sonicWaiting.gif";
 import { useHistory } from "react-router";
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +21,7 @@ const WaitingRoom = () => {
     useEffect(() => {
         getUserRoles().then(r => {
             var roles = r.data || [];
-            localStorage.setItem("roles", roles.toLocaleString());
+            localStorage.setItem("roles", JSON.stringify(roles));
             if (roles.includes("User")) {
                 history.push("/");
             }
@@ -31,7 +31,7 @@ const WaitingRoom = () => {
     return <div className={classes.header_my} >
         <h1>Hello!</h1>
         <h3>Wait for the admin to confirm your account </h3>
-        <img src={inlookLogo} />
+        <img src={inlookWaitingImage} />
     </div>
 
 }

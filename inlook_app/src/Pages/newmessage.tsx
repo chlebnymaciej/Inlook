@@ -83,9 +83,6 @@ const useStyles = makeStyles(theme => ({
 interface NewMessageProps {
     user: User | null;
 }
-interface ValidationErrors {
-    to: string | null;
-}
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement<any, any> },
     ref: React.Ref<unknown>,
@@ -98,7 +95,6 @@ const NewMessage = (props: NewMessageProps) => {
     const classes = useStyles();
     const history = useHistory();
 
-    const [error, setError] = useState<string>();
     const [groups, setGroups] = useState<GroupModel[]>([]);
     const [helperText, setHelperText] = useState<string>();
     const [users, setUsers] = useState<UserModel[]>([]);
@@ -109,12 +105,12 @@ const NewMessage = (props: NewMessageProps) => {
     const [ccGroups, setCcGroups] = useState<GroupModel[]>([]);
     const [bccGroups, setBccGroups] = useState<GroupModel[]>([]);
     const [subject, setSubject] = useState<string>("Hello There!");
-    const [mailValue, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
-    const [open, setOpen] = useState<boolean>(false);
+    const [mailText, setMail] = useState<string>(`Hello There!\n\n\nBest Regards,\nGeneral Kenobi`);
+    const [openSlidingWindow, setOpenSlidingWindow] = useState<boolean>(false);
     const [attachments, setAttachments] = useState<AttachmentInfo[]>([]);
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenSlidingWindow(false);
     };
 
     const sendMail = () => {
@@ -155,7 +151,7 @@ const NewMessage = (props: NewMessageProps) => {
                 cc: Array.from(ccuser),
                 bcc: Array.from(bccuser),
                 subject: subject || null,
-                text: mailValue || null,
+                text: mailText || null,
                 attachments: attachments.map(a => a.id),
             }).then(r => {
                 if (r.isError) {
@@ -166,7 +162,7 @@ const NewMessage = (props: NewMessageProps) => {
                     history.push('/inbox');
                 }
             });
-        setOpen(false);
+        setOpenSlidingWindow(false);
     };
 
     useEffect(() => {
@@ -195,8 +191,8 @@ const NewMessage = (props: NewMessageProps) => {
             setHelperText('Field "To" or "To groups" cannot be empty');
             return;
         }
-        if (subject.length < 1 || mailValue.length < 1) {
-            setOpen(true);
+        if (subject.length < 1 || mailText.length < 1) {
+            setOpenSlidingWindow(true);
             return;
         }
         sendMail();
@@ -206,7 +202,7 @@ const NewMessage = (props: NewMessageProps) => {
         if (subject.length < 1) {
             setSubject('(empty)');
         }
-        if (mailValue.length < 1) {
+        if (mailText.length < 1) {
             setMail('(empty)');
         }
         sendMail();
@@ -249,15 +245,16 @@ const NewMessage = (props: NewMessageProps) => {
     }
 
     return <>
-        {error ?
-            <p>{error}</p>
-            :
+        
             <div>
                 <form onSubmit={submitHandled}>
                     <div className={classes.formClass}>
                         <TextField type="text" label="From:"
                             variant="filled"
-                            placeholder="From:" value={props.user?.profile.email} defaultValue='test' required
+                            placeholder="From:" 
+                            value={props.user?.profile.emails[0]} 
+                            defaultValue='Error could not load your email'
+                            required
                             disabled
                             className={classes.oneliners}></TextField>
                         <div className={classes.inputGetters}>
@@ -419,7 +416,7 @@ const NewMessage = (props: NewMessageProps) => {
                             variant="filled"
                             id="email_text_field"
                             rows="15"
-                            defaultValue={mailValue}
+                            defaultValue={mailText}
                             className={classes.new_message}
                             multiline
                             onChange={(event) => setMail(event.target.value)}
@@ -470,7 +467,7 @@ const NewMessage = (props: NewMessageProps) => {
                     </div>
                 </form>
                 <Dialog
-                    open={open}
+                    open={openSlidingWindow}
                     TransitionComponent={Transition}
                     keepMounted
                     onClose={handleClose}
@@ -493,7 +490,6 @@ const NewMessage = (props: NewMessageProps) => {
                     </DialogActions>
                 </Dialog>
             </div>
-        }
     </>
 
 }

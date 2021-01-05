@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Inlook_Core;
+using Inlook_Core.Entities;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Infrastructure;
 using Inlook_Infrastructure.Services;
@@ -49,6 +53,27 @@ namespace XUnitTests.Services
             this.userService = serviceProvider.GetService<IUserService>();
             this.notificationService = serviceProvider.GetService<INotificationService>();
             this.dbContext = serviceProvider.GetService<Inlook_Context>();
+
+            CreateUser();
+        }
+
+        private void CreateUser()
+        {
+            var user = dbContext.Users.Find(userId);
+            if(user == null)
+            {
+                var pendingRole = dbContext.Roles.Where(r => r.Name == Roles.Pending).FirstOrDefault();
+                var userRole = dbContext.Roles.Where(r => r.Name == Roles.User).FirstOrDefault();
+                var newUser = new User()
+                {
+                    Id = userId,
+                    Name = "TestUser",
+                    Email = "TestUser@elo.pl",
+                    UserRoles = new List<UserRole> { new UserRole() { RoleId = userRole.Id, UserId = userId }, new UserRole() { RoleId = pendingRole.Id, UserId = userId } },
+                };
+                dbContext.Users.Add(newUser);
+                dbContext.SaveChanges();
+            }
         }
 
         public static IConfiguration InitConfiguration()

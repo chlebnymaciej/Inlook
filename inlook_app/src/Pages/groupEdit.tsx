@@ -60,15 +60,14 @@ const EditGroup = (props: any) => {
     (props.location && props.location.state) || {};
   const classes = useStyles();
   const history = useHistory();
-  const [error, setError] = useState<string>();
   const [checked, setChecked] = useState<UserModel[]>([]);
-  const [left, setLeft] = useState<UserModel[]>([]);
-  const [right, setRight] = useState<UserModel[]>(group.group.users || []);
+  const [leftSideUsers, setLeftUsers] = useState<UserModel[]>([]);
+  const [rightSideUsers, setRightUsers] = useState<UserModel[]>(group.group.users || []);
   const [errorText, setErrorText] = useState<string>('');
   const [groupName, setGroupName] = useState<string>(group.group.name);
 
-  const leftChecked: UserModel[] = checked.filter((x: UserModel) => left.includes(x));
-  const rightChecked: UserModel[] = checked.filter((x: UserModel) => right.includes(x));
+  const leftSideCheckedUsers: UserModel[] = checked.filter((x: UserModel) => leftSideUsers.includes(x));
+  const rightSideCheckedUsers: UserModel[] = checked.filter((x: UserModel) => rightSideUsers.includes(x));
 
   useEffect(() => {
     getUsers().then(result => {
@@ -81,25 +80,25 @@ const EditGroup = (props: any) => {
           return users.includes(x.id) === false
         });
 
-        setLeft(leftTmp || []);
+        setLeftUsers(leftTmp || []);
       }
     })
   }, [props.user]);
 
   const handleToggle = (value: UserModel) => () => {
     const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    const newlyChecked = [...checked];
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newlyChecked.push(value);
     } else {
-      newChecked.splice(currentIndex, 1);
+      newlyChecked.splice(currentIndex, 1);
     }
 
-    setChecked(newChecked);
+    setChecked(newlyChecked);
   };
 
-  const customList = (users: UserModel[]) => (
+  const SideList = (users: UserModel[]) => (
     <Paper className={classes.paper}>
       <List dense component="div" role="list">
         {users.map((x: UserModel) => {
@@ -123,29 +122,29 @@ const EditGroup = (props: any) => {
     </Paper>
   );
 
-  const handleAllRight = () => {
-    setRight(right.concat(left));
-    setLeft([]);
+  const handleAllRightClick = () => {
+    setRightUsers(rightSideUsers.concat(leftSideUsers));
+    setLeftUsers([]);
   };
-  const handleAllLeft = () => {
-    setLeft(left.concat(right));
-    setRight([]);
+  const handleAllLeftClick = () => {
+    setLeftUsers(leftSideUsers.concat(rightSideUsers));
+    setRightUsers([]);
   };
 
-  const handleCheckedRight = () => {
-    setRight(right.concat(leftChecked));
-    setLeft(left.filter((x: UserModel) => !leftChecked.includes(x)));
+  const handleCheckedUsersRightClick = () => {
+    setRightUsers(rightSideUsers.concat(leftSideCheckedUsers));
+    setLeftUsers(leftSideUsers.filter((x: UserModel) => !leftSideCheckedUsers.includes(x)));
     setChecked([]);
   };
 
-  const handleCheckedLeft = () => {
-    setLeft(left.concat(rightChecked));
-    setRight(right.filter((x: UserModel) => !rightChecked.includes(x)));
+  const handleCheckedUsersLeftClick = () => {
+    setLeftUsers(leftSideUsers.concat(rightSideCheckedUsers));
+    setRightUsers(rightSideUsers.filter((x: UserModel) => !rightSideCheckedUsers.includes(x)));
     setChecked([]);
   };
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (right.length === 0) {
+    if (rightSideUsers.length === 0) {
       setErrorText('List of user in group cannot be empty.');
       return;
     }
@@ -158,7 +157,7 @@ const EditGroup = (props: any) => {
       {
         id: group.group.id,
         name: groupName,
-        users: right.map(x => x.id),
+        users: rightSideUsers.map(x => x.id),
       }).then(r => {
         if (r.isError) {
           enqueueSnackbar("Something went wrong", { variant: "error" });
@@ -182,14 +181,14 @@ const EditGroup = (props: any) => {
         {errorText ? <FormHelperText className={classes.error}>{errorText}</FormHelperText> : <></>}
 
         <Grid container spacing={2} justify="center" alignItems="center" className={classes.grid}>
-          <Grid item>{customList(left)}</Grid>
+          <Grid item>{SideList(leftSideUsers)}</Grid>
           <Grid item>
             <Grid container direction="column" alignItems="center">
               <Button
                 variant="outlined"
                 size="small"
-                disabled={left.length === 0}
-                onClick={handleAllRight}
+                disabled={leftSideUsers.length === 0}
+                onClick={handleAllRightClick}
                 aria-label="move all right"
               >
                 ≫
@@ -198,8 +197,8 @@ const EditGroup = (props: any) => {
                 variant="outlined"
                 size="small"
                 aria-label="move selected right"
-                onClick={handleCheckedRight}
-                disabled={leftChecked.length === 0}
+                onClick={handleCheckedUsersRightClick}
+                disabled={leftSideCheckedUsers.length === 0}
               >
                 &gt;
           </Button>
@@ -207,8 +206,8 @@ const EditGroup = (props: any) => {
                 variant="outlined"
                 size="small"
                 aria-label="move selected left"
-                onClick={handleCheckedLeft}
-                disabled={rightChecked.length === 0}
+                onClick={handleCheckedUsersLeftClick}
+                disabled={rightSideCheckedUsers.length === 0}
 
               >
                 &lt;
@@ -216,15 +215,15 @@ const EditGroup = (props: any) => {
               <Button
                 variant="outlined"
                 size="small"
-                disabled={right.length === 0}
+                disabled={rightSideUsers.length === 0}
                 aria-label="move all left"
-                onClick={handleAllLeft}
+                onClick={handleAllLeftClick}
               >
                 ≪
           </Button>
             </Grid>
           </Grid>
-          <Grid item>{customList(right)}</Grid>
+          <Grid item>{SideList(rightSideUsers)}</Grid>
         </Grid>
         <Button className={classes.button} type="submit">Update group</Button>
       </form>

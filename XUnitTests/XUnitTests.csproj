@@ -45,4 +45,10 @@
     <ProjectReference Include="..\Inlook_Infrastructure\Inlook_Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Controllers\logo_mniej_skomblikowane.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

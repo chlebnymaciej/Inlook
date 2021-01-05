@@ -16,7 +16,8 @@ namespace Inlook_Infrastructure.Configurations
 
             builder.HasOne(g => g.GroupOwner)
                 .WithMany(u => u.GroupsOwned)
-                .HasForeignKey(g => g.GroupOwnerId);
+                .HasForeignKey(g => g.GroupOwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(g => g.Name)
                 .IsRequired()

@@ -4,14 +4,16 @@ using Inlook_Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Inlook_Infrastructure.Migrations
 {
     [DbContext(typeof(Inlook_Context))]
-    partial class Inlook_ContextModelSnapshot : ModelSnapshot
+    [Migration("20210104202924_DeleteBehaviors")]
+    partial class DeleteBehaviors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

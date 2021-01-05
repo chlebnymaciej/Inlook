@@ -63,7 +63,7 @@ export const getMails = async () => {
 
 export const getEmailList = async (page: number = 0, pageSize: number = 10, searchText?: string, orderBy?: keyof EmailProps, orderType?: OrderType) => {
     type T = IApiResponse<EmailPropsPageModel>;
-    let url = target_url + "getContactList";
+    let url = target_url + "GetMails";
     url += `?page=${page}`;
     url += `&pageSize=${pageSize}`;
     if (searchText) url += `&searchText=${searchText}`;
