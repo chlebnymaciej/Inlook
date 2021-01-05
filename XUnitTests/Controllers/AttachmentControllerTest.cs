@@ -30,7 +30,7 @@ namespace XUnitTests.Controllers
         public async Task UploadAttachmentTest_NotNUll()
         {
             var fileMock = new Mock<IFormFile>();
-            var physicalFile = new FileInfo("logo_mniej_skomblikowane.png");
+            var physicalFile = new FileInfo(@"Controllers/logo_mniej_skomblikowane.png");
             var ms = new MemoryStream();
             var writer = new StreamWriter(ms);
             writer.Write(physicalFile.OpenRead());
