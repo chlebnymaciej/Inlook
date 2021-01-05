@@ -13,6 +13,8 @@ namespace Inlook_Infrastructure.Services
 {
     public class UserService : BaseService<User>, IUserService
     {
+        private readonly IRoleService roleService;
+
         public UserService(Inlook_Context context)
             : base(context)
         {
@@ -183,8 +185,8 @@ namespace Inlook_Infrastructure.Services
                 return;
             }
 
-            var user = this.context.Users.Find(userId);
-            if (user == null)
+            var user = await this.context.Users.Include(u => u.UserRoles).Where(u => u.Id == userId).FirstOrDefaultAsync();
+            if (user == null || user.UserRoles.Any(ur => ur.RoleId == role.Id))
             {
                 return;
             }
