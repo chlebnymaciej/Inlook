@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Inlook_API.Extensions;
+using Inlook_API.Helpers;
 using Inlook_Core.Interfaces.Services;
 using Inlook_Core.Models;
 using Inlook_Infrastructure.Services;
@@ -53,16 +55,28 @@ namespace Inlook_API.Controllers
         /// <response code="200">List of mails.</response>
         [ProducesResponseType(typeof(List<GetMailModel>), 200)]
         [HttpGet("GetMails")]
-        public IActionResult GetMails()
+        public IActionResult GetMails(int page, int pageSize, string orderBy, string orderType)
         {
             var userId = this.GetUserId();
-            NotificationService notificationService = new NotificationService();
-            notificationService._userID = userId;
-            NotificationController notificationController = new NotificationController(notificationService);
-            var result = notificationController.GetNotification(userId);
-            //Console.WriteLine(result.ToString());
             var mails = this._userService.GetMails(userId);
-            return new JsonResult(mails);
+            int totalCount;
+            string searchText = "";
+            (mails, totalCount) = Paging.GetPage(mails,
+                page,
+                pageSize,
+                searchText,
+                new Func<GetMailModel, string>[]
+                {
+                    u => u.Subject,
+                    u => u.Text,
+                    u=> u.From.Email
+                },
+                orderType,
+                string.IsNullOrEmpty(orderBy) ? null :
+                u => u.GetType().GetProperty(StringHelpers.FirstCharToUpper(orderBy)).GetValue(u, null)
+                );
+
+            return new JsonResult(new GetEmailPageModel() { Mails = mails, TotalCount = totalCount }); ;
         }
 
         /// <summary>

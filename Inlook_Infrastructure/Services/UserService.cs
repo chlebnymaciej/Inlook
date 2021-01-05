@@ -196,6 +196,7 @@ namespace Inlook_Infrastructure.Services
         public string GetMail(Guid userId)
         {
             var user = this.context.Users.Find(userId);
+            if (user == null) return "";
             return user.Email;
         }
 
