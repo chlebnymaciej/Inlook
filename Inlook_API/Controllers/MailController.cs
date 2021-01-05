@@ -49,34 +49,17 @@ namespace Inlook_API.Controllers
             return this.NoContent();
         }
 
-        /// <summary>
-        /// Gets all mails for calling user.
-        /// </summary>
-        /// <response code="200">List of mails.</response>
         [ProducesResponseType(typeof(List<GetMailModel>), 200)]
         [HttpGet("GetMails")]
-        public IActionResult GetMails(int page, int pageSize, string orderBy, string orderType)
+        public IActionResult GetMails()
         {
             var userId = this.GetUserId();
+            NotificationService notificationService = new NotificationService();
+            notificationService._userID = userId;
+            NotificationController notificationController = new NotificationController(notificationService);
+            var result = notificationController.GetNotification(userId); 
             var mails = this._userService.GetMails(userId);
-            int totalCount;
-            string searchText = "";
-            (mails, totalCount) = Paging.GetPage(mails,
-                page,
-                pageSize,
-                searchText,
-                new Func<GetMailModel, string>[]
-                {
-                    u => u.Subject,
-                    u => u.Text,
-                    u=> u.From.Email
-                },
-                orderType,
-                string.IsNullOrEmpty(orderBy) ? null :
-                u => u.GetType().GetProperty(StringHelpers.FirstCharToUpper(orderBy)).GetValue(u, null)
-                );
-
-            return new JsonResult(new GetEmailPageModel() { Mails = mails, TotalCount = totalCount }); ;
+            return new JsonResult(mails);
         }
 
         /// <summary>

@@ -33,6 +33,14 @@ const Inbox = () => {
       let emails: EmailProps[] = r.data || [];
       emails = emails.map(e => { return { ...e, sendTime: new Date(e.sendTime) } });
       setAllEmails(emails.sort(sortDateDescending));
+      // setAllEmails(emails.sort((a, b) => {
+      //   if (a.read === b.read) {
+      //     if (a.sendTime <= b.sendTime) return -1;
+      //     else return 1;
+      //   }
+      //   if (a.read) return 1;
+      //   return -1;
+      // }));
       setSelectedEmail(r.data ? r.data.length > 0 ? r.data[0] : undefined : undefined);
       setSelectedIndex(r.data ? r.data.length > 0 ? 0 : -1 : -1);
       
