@@ -13,8 +13,6 @@ namespace Inlook_Infrastructure.Services
 {
     public class UserService : BaseService<User>, IUserService
     {
-        private readonly IRoleService roleService;
-
         public UserService(Inlook_Context context)
             : base(context)
         {
