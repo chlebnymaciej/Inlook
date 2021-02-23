@@ -3,11 +3,11 @@ Projekt wielowarstowej apliacji internetowej obejmuje symulację aplikacji mailo
 
 # Getting Started
 Projekt jest podzielony na 5 projektów: 
-    1. API ("Inlook_Api"). Projekt zawierający API serwera, odbierająca i wysyłająca zapytania REST;
-    2. Core ("Inlook_Core"). Projekt zawierjący logikę serwera;
-    3. Infrastructure ("Inlook_Infrastructure"). Projekt modelujący i obsługujący zapytania do bazy danych.
-    4. ClientApp ("Inlook_app"). Projekt frontendowty odpowiadający aplikacji klienckiej.
-    5. Tests ("XUnitTests"). Projekt zawierający testy jednostkowe API oraz testy aplikacji; 
+1. API ("Inlook_Api"). Projekt zawierający API serwera, odbierająca i wysyłająca zapytania REST;
+2. Core ("Inlook_Core"). Projekt zawierjący logikę serwera;
+3. Infrastructure ("Inlook_Infrastructure"). Projekt modelujący i obsługujący zapytania do bazy danych.
+4. ClientApp ("Inlook_app"). Projekt frontendowty odpowiadający aplikacji klienckiej.
+5. Tests ("XUnitTests"). Projekt zawierający testy jednostkowe API oraz testy aplikacji; 
 
 Projekty API, Core, Infrastructure, Tests są napisane w technologi .NET Core.
 Projet ClientApp jest napisany z użyciem technologi React w języku TypeScript. Do stylizacji został użyty framework Material-UI.
