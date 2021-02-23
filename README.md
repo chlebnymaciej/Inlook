@@ -1,20 +1,30 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Projekt wielowarstowej apliacji internetowej obejmuje symulację aplikacji mailowej. Główną motywacją do stworzenia tego projektu była chęć zdania przedmiotu na studiach.
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+Projekt jest podzielony na 5 projektów: 
+    1. API ("Inlook_Api"). Projekt zawierający API serwera, odbierająca i wysyłająca zapytania REST;
+    2. Core ("Inlook_Core"). Projekt zawierjący logikę serwera;
+    3. Infrastructure ("Inlook_Infrastructure"). Projekt modelujący i obsługujący zapytania do bazy danych.
+    4. ClientApp ("Inlook_app"). Projekt frontendowty odpowiadający aplikacji klienckiej.
+    5. Tests ("XUnitTests"). Projekt zawierający testy jednostkowe API oraz testy aplikacji; 
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+Projekty API, Core, Infrastructure, Tests są napisane w technologi .NET Core.
+Projet ClientApp jest napisany z użyciem technologi React w języku TypeScript. Do stylizacji został użyty framework Material-UI.
+
+# Database
+Do połączenia z bazą danych korzystamy z frameworku EntityFramework Core. 
+
+# Build and Test 
+Projekty  API, Core, Infrastructure, Tests należy uruchomić w dowolnym środowisku obsługującym technologię .NET Core.
+Projek ClientApp należy uruchomić przy pomocy środowiska NodeJS z włączoną obsługą TypeScript. Np.: korzystając z narzędzia npm należy wywołać: "npm install; npm start;"
+
 
 # Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Każdy użytkownik może modyfikować kod i dostosowywać go do swoich potrzeb. 
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+# Authors
+Team "JaKubenBogen": 
+    Maciej "Bogen" Chlebny
+    Artur "Ja" Chmura
+    Jakub "Kuben" Królik
